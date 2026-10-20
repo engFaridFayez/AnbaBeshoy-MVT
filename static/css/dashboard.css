@@ -1,0 +1,431 @@
+
+.dashboard-page {
+    padding-bottom: 50px;
+}
+
+.dashboard-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.dashboard-header h1 {
+    margin: 5px 0;
+    color: #4b1520;
+}
+
+.dashboard-header p {
+    color: #817b7d;
+}
+
+.dashboard-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.report-filters {
+    display: flex;
+    align-items: end;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 22px;
+    margin-bottom: 30px;
+    background: white;
+    border: 1px solid #e9e2e2;
+    border-radius: 18px;
+}
+
+.filter-field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    flex: 1;
+    min-width: 170px;
+}
+
+.filter-field label {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.filter-field input,
+.filter-field select {
+    min-height: 46px;
+    padding: 10px;
+    border: 1px solid #ddd2d5;
+    border-radius: 10px;
+    background: white;
+}
+
+.daily-menu-grid {
+    display: grid;
+    grid-template-columns: repeat(
+        auto-fit,
+        minmax(200px, 1fr)
+    );
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.daily-menu-card,
+.empty-card {
+    padding: 22px;
+    border: 1px solid #e9e2e2;
+    border-radius: 16px;
+    background: white;
+}
+
+.daily-menu-card h3 {
+    margin: 0 0 10px;
+}
+
+.daily-menu-card p {
+    color: #817b7d;
+    font-size: 13px;
+}
+
+.status-pill {
+    display: inline-block;
+    padding: 5px 12px;
+    font-size: 12px;
+    border-radius: 30px;
+}
+
+.status-pill.published {
+    background: #e5f4eb;
+    color: #237344;
+}
+
+.status-pill.draft {
+    background: #f4e9e9;
+    color: #8b4444;
+}
+
+.report-sheet {
+    background: white;
+    border: 1px solid #e9e2e2;
+    border-radius: 20px;
+    padding: 35px;
+}
+
+.report-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding-bottom: 25px;
+    border-bottom: 2px solid #4b1520;
+    text-align: center;
+    justify-content: center;
+}
+
+.report-cross {
+    font-size: 50px;
+    color: #4b1520;
+}
+
+.report-header h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.report-header h1 {
+    color: #4b1520;
+    font-size: 24px;
+    margin: 8px 0;
+}
+
+.report-header p {
+    margin: 3px;
+    font-size: 13px;
+    color: #817b7d;
+}
+
+.report-statistics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin: 25px 0;
+}
+
+.stat-card {
+    padding: 20px;
+    background: #f7f2f3;
+    border-radius: 14px;
+    text-align: center;
+}
+
+.stat-card span {
+    display: block;
+    font-size: 13px;
+    color: #817b7d;
+}
+
+.stat-card strong {
+    display: block;
+    font-size: 30px;
+    color: #4b1520;
+}
+
+.report-section {
+    margin-top: 35px;
+}
+
+.report-section-heading h2 {
+    margin-bottom: 4px;
+    font-size: 19px;
+}
+
+.report-section-heading p {
+    margin-top: 0;
+    color: #817b7d;
+    font-size: 13px;
+}
+
+.report-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.report-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 550px;
+}
+
+.report-table th {
+    background: #4b1520;
+    color: white;
+    padding: 13px;
+    text-align: right;
+    font-size: 13px;
+}
+
+.report-table td {
+    padding: 12px;
+    border-bottom: 1px solid #eee7e9;
+    font-size: 13px;
+}
+
+.report-table tbody tr:nth-child(even) {
+    background: #faf8f8;
+}
+
+.empty-table {
+    text-align: center;
+    color: #817b7d;
+    padding: 30px !important;
+}
+
+.report-footer {
+    border-top: 1px solid #e9e2e2;
+    margin-top: 35px;
+    padding-top: 15px;
+    text-align: center;
+    color: #817b7d;
+    font-size: 12px;
+}
+
+@media (max-width: 650px) {
+    .dashboard-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .report-sheet {
+        padding: 18px;
+    }
+
+    .report-header h1 {
+        font-size: 19px;
+    }
+
+    .report-statistics {
+        gap: 8px;
+    }
+
+    .stat-card {
+        padding: 12px 5px;
+    }
+
+    .stat-card strong {
+        font-size: 24px;
+    }
+}
+
+/* Print Report */
+
+@page {
+    size: A4;
+    margin: 12mm;
+}
+
+@media print {
+    body {
+        background: white !important;
+        color: black;
+    }
+
+    .topbar,
+    .no-print {
+        display: none !important;
+    }
+
+    .main-content,
+    .dashboard-page {
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+        max-width: none !important;
+    }
+
+    .report-sheet {
+        border: none;
+        border-radius: 0;
+        padding: 0;
+    }
+
+    .report-statistics {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .report-table {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .report-table th {
+        background: #eee !important;
+        color: black !important;
+    }
+
+    .report-table th,
+    .report-table td {
+        border: 1px solid #bbb;
+        padding: 7px;
+        font-size: 11px;
+    }
+
+    .report-table-wrap {
+        overflow: visible;
+    }
+
+    .report-section {
+        break-inside: auto;
+    }
+
+    .report-table tr {
+        break-inside: avoid;
+    }
+
+    .report-table thead {
+        display: table-header-group;
+    }
+}
+
+
+/* =====================================
+   Grouped Monk Orders
+===================================== */
+
+.monk-orders-table {
+    width: 100%;
+    table-layout: auto;
+}
+
+.monk-name {
+    font-weight: bold;
+    white-space: nowrap;
+    color: #4b1520;
+}
+
+.monk-items-cell {
+    line-height: 2;
+}
+
+.monk-meal-group {
+    margin-bottom: 5px;
+}
+
+.monk-meal-group:last-child {
+    margin-bottom: 0;
+}
+
+.meal-label {
+    color: #4b1520;
+    margin-left: 8px;
+}
+
+.ordered-item {
+    display: inline-block;
+    padding: 2px 9px;
+    margin: 2px 3px;
+    border-radius: 6px;
+    background: #f6f0f1;
+    white-space: nowrap;
+    font-size: 12px;
+}
+
+.ordered-item strong {
+    color: #4b1520;
+}
+
+
+/* =====================================
+   Print Optimization
+===================================== */
+
+@media print {
+
+    .monk-orders-table {
+        width: 100%;
+        table-layout: auto;
+        min-width: 0;
+        font-size: 11px;
+    }
+
+    .monk-orders-table th,
+    .monk-orders-table td {
+        padding: 6px 8px;
+        vertical-align: top;
+    }
+
+    .monk-name {
+        color: black;
+        white-space: normal;
+        width: 125px;
+    }
+
+    .monk-items-cell {
+        line-height: 1.5;
+    }
+
+    .monk-meal-group {
+        margin-bottom: 3px;
+    }
+
+    .ordered-item {
+        display: inline-block;
+        background: transparent;
+        color: black;
+        padding: 0;
+        margin: 0 5px 0 0;
+        font-size: 10px;
+    }
+
+    .ordered-item::after {
+        content: " | ";
+        color: #777;
+    }
+
+    .ordered-item:last-child::after {
+        content: "";
+    }
+
+    .monk-orders-table tr {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+}

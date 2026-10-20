@@ -1,0 +1,680 @@
+
+{% extends "accounts/base.html" %}
+{% load static %}
+
+{% block title %}
+إدارة قائمة اليوم | طلبات الدير
+{% endblock %}
+
+{% block content %}
+
+<div class="ui-wrap ui-narrow">
+
+    <!-- =====================================
+         NAVIGATION
+    ====================================== -->
+
+    <div class="ui-actions">
+
+        <a
+            href="{% url 'accounts:home' %}"
+            class="ui-button ui-secondary"
+        >
+            🏠 الرئيسية
+        </a>
+
+        <a
+            href="{% url 'kitchen:dashboard' %}"
+            class="ui-button ui-secondary"
+        >
+            📋 تقرير المطبخ
+        </a>
+
+    </div>
+
+
+    <!-- =====================================
+         PAGE HEADER
+    ====================================== -->
+
+    <div class="ui-page-heading">
+
+        <h1>🍽️ تجهيز الوجبات</h1>
+
+        <p class="ui-muted">
+            {{ selected_date|date:"j F Y" }}
+        </p>
+
+        <p class="ui-muted">
+            حدد الأصناف المتاحة للرهبان
+            في كل وجبة.
+        </p>
+
+    </div>
+
+
+    <!-- =====================================
+         MEAL TABS
+    ====================================== -->
+
+    <nav
+        class="ui-meal-tabs"
+        aria-label="اختيار الوجبة"
+    >
+
+        {% for value, label in meal_choices %}
+
+        <a
+            href="{% url 'kitchen:manage_menu' %}?date={{ selected_date|date:'Y-m-d' }}&amp;meal={{ value }}"
+            class="ui-meal-tab {% if selected_meal == value %}is-active{% endif %}"
+            {% if selected_meal == value %}
+                aria-current="page"
+            {% endif %}
+        >
+
+            {% if value == "breakfast" %}
+                🌤️
+            {% elif value == "lunch" %}
+                ☀️
+            {% elif value == "dinner" %}
+                🌙
+            {% endif %}
+
+            {{ label }}
+
+        </a>
+
+        {% endfor %}
+
+    </nav>
+
+
+    <!-- =====================================
+         MENU STATUS
+    ====================================== -->
+
+    <section class="ui-panel">
+
+        <h2>
+            قائمة {{ meal_name }}
+        </h2>
+
+        {% if daily_menu.is_published %}
+
+            <p class="ui-status ui-open">
+                ✅ القائمة منشورة
+            </p>
+
+            <p class="ui-muted">
+                الطلبات متاحة للرهبان ما دام
+                موعد الطلب لم ينتهِ.
+            </p>
+
+        {% else %}
+
+            <p class="ui-status ui-closed">
+                🔴 القائمة مغلقة
+            </p>
+
+            <p class="ui-muted">
+                جهز الأصناف واحفظها،
+                ثم افتح الطلبات.
+            </p>
+
+        {% endif %}
+
+
+        {% if daily_menu.ordering_deadline %}
+
+        <p class="ui-muted">
+
+            آخر موعد للطلب:
+
+            <strong>
+                {{ daily_menu.ordering_deadline|date:"j/m/Y g:i A" }}
+            </strong>
+
+        </p>
+
+        {% endif %}
+
+
+        <!-- OPEN / CLOSE MENU -->
+
+        <form
+            method="post"
+            action="{% url 'kitchen:manage_menu' %}"
+        >
+
+            {% csrf_token %}
+
+            <input
+                type="hidden"
+                name="date"
+                value="{{ selected_date|date:'Y-m-d' }}"
+            >
+
+            <input
+                type="hidden"
+                name="meal"
+                value="{{ selected_meal }}"
+            >
+
+
+            {% if daily_menu.is_published %}
+
+            <button
+                type="submit"
+                name="action"
+                value="unpublish"
+                class="ui-button ui-danger ui-wide"
+                onclick="return confirm('هل تريد إغلاق طلبات {{ meal_name }}؟')"
+            >
+                🔒 إغلاق طلبات {{ meal_name }}
+            </button>
+
+            {% else %}
+
+            <button
+                type="submit"
+                name="action"
+                value="publish"
+                class="ui-button ui-primary ui-wide"
+            >
+                ✅ فتح طلبات {{ meal_name }}
+            </button>
+
+            {% endif %}
+
+        </form>
+
+    </section>
+
+
+    <!-- =====================================
+         AVAILABLE ITEMS
+    ====================================== -->
+
+    <form
+        method="post"
+        action="{% url 'kitchen:manage_menu' %}"
+        id="availabilityForm"
+        data-track-changes
+        data-change-note="availabilityNote"
+    >
+
+        {% csrf_token %}
+
+        <input
+            type="hidden"
+            name="action"
+            value="save_meal"
+        >
+
+        <input
+            type="hidden"
+            name="date"
+            value="{{ selected_date|date:'Y-m-d' }}"
+        >
+
+        <input
+            type="hidden"
+            name="meal"
+            value="{{ selected_meal }}"
+        >
+
+
+        <section class="ui-panel">
+
+            <h2>
+                الأصناف المتاحة في {{ meal_name }}
+            </h2>
+
+            <p class="ui-muted">
+                شغّل الزر الموجود بجانب الصنف
+                لإتاحته للرهبان.
+            </p>
+
+
+            <div class="ui-catalog">
+
+                {% for item in catalog_items %}
+
+                <label class="ui-item-row">
+
+                    <!-- ITEM DETAILS -->
+
+                    <span class="ui-item-name">
+
+                        <strong class="ui-item-title">
+
+                            <!-- ITEM IMAGE -->
+
+                            {% if item.icon %}
+
+                                <img
+                                    src="{{ item.icon.url }}"
+                                    alt=""
+                                    class="ui-menu-photo"
+                                    width="76"
+                                    height="76"
+                                    loading="lazy"
+                                >
+
+                            {% else %}
+
+                                <span
+                                    class="ui-menu-photo ui-photo-placeholder"
+                                    aria-hidden="true"
+                                >
+                                    🍽️
+                                </span>
+
+                            {% endif %}
+
+
+                            <!-- ITEM NAME -->
+
+                            <span>
+                                {{ item.name }}
+                            </span>
+
+                        </strong>
+
+
+                        <!-- ITEM CATEGORY -->
+
+                        <small>
+                            {{ item.get_category_display }}
+                        </small>
+
+                    </span>
+
+
+                    <!-- TOGGLE -->
+
+                    <span class="ui-toggle">
+
+                        <input
+                            type="checkbox"
+                            role="switch"
+                            name="item_ids"
+                            value="{{ item.pk }}"
+                            aria-label="إتاحة {{ item.name }} في {{ meal_name }}"
+                            {% if item.available_today %}
+                                checked
+                            {% endif %}
+                        >
+
+                        <span
+                            class="ui-toggle-track"
+                            aria-hidden="true"
+                        ></span>
+
+                        <span
+                            class="ui-toggle-text"
+                            aria-hidden="true"
+                        >
+
+                            <span class="ui-toggle-on">
+                                متاح
+                            </span>
+
+                            <span class="ui-toggle-off">
+                                غير متاح
+                            </span>
+
+                        </span>
+
+                    </span>
+
+                </label>
+
+
+                {% empty %}
+
+                <div class="ui-empty">
+
+                    <div class="ui-meal-icon">
+                        🍽️
+                    </div>
+
+                    <h3>
+                        لا توجد أصناف حتى الآن
+                    </h3>
+
+                    <p>
+                        أضف أول صنف من القسم
+                        الموجود أسفل الصفحة.
+                    </p>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================
+             SAVE ITEMS
+        ====================================== -->
+
+        <div class="ui-save-bar">
+
+            <p
+                class="ui-alert warning"
+                id="availabilityNote"
+                role="status"
+                hidden
+            >
+                ⚠️ لديك تعديلات لم تُحفظ
+            </p>
+
+            <p>
+
+                <strong id="availableCount">
+                    {{ total_available }}
+                </strong>
+
+                صنف متاح في {{ meal_name }}
+
+            </p>
+
+            <button
+                type="submit"
+                class="ui-button ui-primary ui-wide"
+                {% if not catalog_items %}
+                    disabled
+                {% endif %}
+            >
+                💾 حفظ أصناف {{ meal_name }}
+            </button>
+
+            <small class="ui-muted">
+                بعد تغيير الأصناف اضغط حفظ
+                لتطبيق التعديلات.
+            </small>
+
+        </div>
+
+    </form>
+
+
+    <!-- =====================================
+         ADD NEW ITEM WITH IMAGE
+    ====================================== -->
+
+    <details class="ui-panel ui-details">
+
+        <summary>
+            ➕ إضافة صنف جديد
+        </summary>
+
+
+        <form
+            method="post"
+            action="{% url 'kitchen:manage_menu' %}"
+            enctype="multipart/form-data"
+        >
+
+            {% csrf_token %}
+
+            <input
+                type="hidden"
+                name="action"
+                value="add_item"
+            >
+
+            <input
+                type="hidden"
+                name="date"
+                value="{{ selected_date|date:'Y-m-d' }}"
+            >
+
+            <input
+                type="hidden"
+                name="meal"
+                value="{{ selected_meal }}"
+            >
+
+
+            <p class="ui-muted">
+
+                سيتم إضافة الصنف للكتالوج
+                وإتاحته في قائمة {{ meal_name }}.
+
+            </p>
+
+
+            <!-- ITEM NAME -->
+
+            <label class="ui-field">
+
+                <span>
+                    اسم الصنف
+                </span>
+
+                <input
+                    type="text"
+                    name="new_item_name"
+                    class="ui-input"
+                    maxlength="120"
+                    placeholder="مثال: فول"
+                    required
+                >
+
+            </label>
+
+
+            <!-- ITEM CATEGORY -->
+
+            <label class="ui-field">
+
+                <span>
+                    القسم
+                </span>
+
+                <select
+                    name="category"
+                    class="ui-input"
+                    required
+                >
+
+                    {% for value, label in category_choices %}
+
+                    <option value="{{ value }}">
+                        {{ label }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </label>
+
+
+            <!-- ITEM IMAGE -->
+
+            <label class="ui-field">
+
+                <span>
+                    صورة الصنف
+                </span>
+
+                <input
+                    type="file"
+                    name="icon"
+                    accept="image/*"
+                    class="ui-input"
+                    id="newItemImage"
+                >
+
+                <small class="ui-muted">
+                    صورة JPG أو PNG
+                    بحجم لا يزيد عن 5 ميجابايت.
+                </small>
+
+            </label>
+
+
+            <!-- IMAGE PREVIEW -->
+
+            <div
+                id="newItemImagePreview"
+                class="ui-image-preview"
+                hidden
+            >
+
+                <img
+                    id="newItemPreviewImg"
+                    src=""
+                    alt="معاينة صورة الصنف"
+                >
+
+            </div>
+
+
+            <!-- SUBMIT -->
+
+            <button
+                type="submit"
+                class="ui-button ui-primary ui-wide"
+            >
+                ✅ إضافة الصنف
+            </button>
+
+        </form>
+
+    </details>
+
+
+    <!-- =====================================
+         OTHER DATE
+    ====================================== -->
+
+    <details class="ui-panel ui-details">
+
+        <summary>
+            📅 تجهيز وجبات يوم آخر
+        </summary>
+
+        <form
+            method="get"
+            action="{% url 'kitchen:manage_menu' %}"
+        >
+
+            <input
+                type="hidden"
+                name="meal"
+                value="{{ selected_meal }}"
+            >
+
+            <label class="ui-field">
+
+                <span>
+                    التاريخ
+                </span>
+
+                <input
+                    type="date"
+                    name="date"
+                    value="{{ selected_date|date:'Y-m-d' }}"
+                    class="ui-input"
+                    required
+                >
+
+            </label>
+
+            <button
+                type="submit"
+                class="ui-button ui-secondary ui-wide"
+            >
+                عرض اليوم المختار
+            </button>
+
+        </form>
+
+    </details>
+
+</div>
+
+
+<!-- =====================================
+     IMAGE PREVIEW JAVASCRIPT
+====================================== -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const imageInput = document.getElementById(
+        "newItemImage"
+    );
+
+    const imagePreview = document.getElementById(
+        "newItemImagePreview"
+    );
+
+    const previewImage = document.getElementById(
+        "newItemPreviewImg"
+    );
+
+    if (!imageInput || !imagePreview || !previewImage) {
+        return;
+    }
+
+    let previewUrl = null;
+
+    imageInput.addEventListener("change", function () {
+
+        const file = this.files[0];
+
+        if (previewUrl) {
+            URL.revokeObjectURL(previewUrl);
+            previewUrl = null;
+        }
+
+        if (!file) {
+            imagePreview.hidden = true;
+            previewImage.removeAttribute("src");
+            return;
+        }
+
+        if (!file.type.startsWith("image/")) {
+            alert("برجاء اختيار ملف صورة.");
+
+            this.value = "";
+            imagePreview.hidden = true;
+            return;
+        }
+
+        const maxSize = 5 * 1024 * 1024;
+
+        if (file.size > maxSize) {
+            alert("حجم الصورة يجب ألا يزيد عن 5 ميجابايت.");
+
+            this.value = "";
+            imagePreview.hidden = true;
+            return;
+        }
+
+        previewUrl = URL.createObjectURL(file);
+
+        previewImage.src = previewUrl;
+        imagePreview.hidden = false;
+
+    });
+
+    window.addEventListener("pagehide", function () {
+        if (previewUrl) {
+            URL.revokeObjectURL(previewUrl);
+        }
+    });
+
+});
+
+</script>
+
+{% endblock %}

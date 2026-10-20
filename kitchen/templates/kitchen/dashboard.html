@@ -1,0 +1,323 @@
+{% extends "accounts/base.html" %} {% load static %} {% block title %} لوحة
+المطعم | طلبات الدير {% endblock %} {% block content %}
+
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}" />
+
+<div class="page-pad dashboard-page">
+  <!-- Dashboard Header -->
+  <div class="dashboard-header no-print">
+    <div>
+      <span class="kicker"> لوحة مسؤول المطعم </span>
+
+      <h1>إدارة طلبات الوجبات</h1>
+
+      <p>متابعة الطلبات وتجهيز التقرير اليومي للمطبخ</p>
+    </div>
+
+    <div class="dashboard-actions">
+      <a href="{% url 'kitchen:manage_menu' %}" class="btn btn-primary">
+        ⚙️ إدارة قائمة اليوم
+      </a>
+
+      <a href="{% url 'accounts:home' %}" class="btn btn-secondary">
+        الرئيسية
+      </a>
+
+      <button type="button" class="btn btn-secondary" onclick="window.print()">
+        🖨️ طباعة التقرير
+      </button>
+    </div>
+  </div>
+
+  <!-- Report Filters -->
+  <form method="get" class="report-filters no-print">
+    <div class="filter-field">
+      <label for="report-date"> التاريخ </label>
+
+      <input
+        type="date"
+        id="report-date"
+        name="date"
+        value="{{ selected_date|date:'Y-m-d' }}"
+      />
+    </div>
+
+    <div class="filter-field">
+      <label for="report-meal"> الوجبة </label>
+
+      <select id="report-meal" name="meal">
+        <option
+          value="all"
+          {%
+          if
+          selected_meal=""
+          ="all"
+          %}
+          selected
+          {%
+          endif
+          %}
+        >
+          جميع الوجبات
+        </option>
+
+        <option
+          value="breakfast"
+          {%
+          if
+          selected_meal=""
+          ="breakfast"
+          %}
+          selected
+          {%
+          endif
+          %}
+        >
+          فطار
+        </option>
+
+        <option
+          value="lunch"
+          {%
+          if
+          selected_meal=""
+          ="lunch"
+          %}
+          selected
+          {%
+          endif
+          %}
+        >
+          غداء
+        </option>
+
+        <option
+          value="dinner"
+          {%
+          if
+          selected_meal=""
+          ="dinner"
+          %}
+          selected
+          {%
+          endif
+          %}
+        >
+          عشاء
+        </option>
+      </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">عرض التقرير</button>
+  </form>
+
+  <!-- Daily Menus -->
+  <section class="no-print">
+    <div class="section-heading">
+      <div>
+        <span class="kicker"> قوائم اليوم </span>
+
+        <h2>حالة الوجبات</h2>
+      </div>
+    </div>
+
+    <div class="daily-menu-grid">
+      {% for menu in daily_menus %}
+
+      <div class="daily-menu-card">
+        <h3>{{ menu.get_meal_type_display }}</h3>
+
+        <p>
+          الأصناف المتاحة:
+          <strong> {{ menu.available_count }} </strong>
+        </p>
+
+        {% if menu.is_published %}
+
+        <span class="status-pill published"> منشورة </span>
+
+        {% else %}
+
+        <span class="status-pill draft"> غير منشورة </span>
+
+        {% endif %} {% if menu.ordering_deadline %}
+
+        <p class="menu-deadline">
+          آخر موعد للطلب: {{ menu.ordering_deadline|date:"g:i A" }}
+        </p>
+
+        {% endif %}
+      </div>
+
+      {% empty %}
+
+      <div class="empty-card">لا توجد قوائم مسجلة في هذا التاريخ.</div>
+
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- Printable Report -->
+  <article class="report-sheet">
+    <div class="report-header">
+      <div class="report-cross">✠</div>
+
+      <div>
+        <h2>دير الأنبا بيشوي العامر</h2>
+
+        <h1>تقرير طلبات الوجبات اليومية</h1>
+
+        <p>التاريخ: {{ selected_date|date:"j F Y" }}</p>
+
+        <p>
+          {% if selected_meal == "all" %} جميع الوجبات {% elif selected_meal ==
+          "breakfast" %} فطار {% elif selected_meal == "lunch" %} غداء {% else
+          %} عشاء {% endif %}
+        </p>
+      </div>
+    </div>
+
+    <!-- Statistics -->
+    <div class="report-statistics">
+      <div class="stat-card">
+        <span>عدد الطلبات</span>
+
+        <strong> {{ total_orders }} </strong>
+      </div>
+
+      <div class="stat-card">
+        <span>عدد الرهبان</span>
+
+        <strong> {{ total_monks }} </strong>
+      </div>
+
+      <div class="stat-card">
+        <span>إجمالي الكميات</span>
+
+        <strong> {{ total_quantity }} </strong>
+      </div>
+    </div>
+
+    <!-- Kitchen Totals -->
+    <section class="report-section">
+      <div class="report-section-heading">
+        <h2>إجمالي الأصناف المطلوبة</h2>
+
+        <p>ملخص الكميات المطلوبة لتجهيز الوجبات</p>
+      </div>
+
+      <div class="report-table-wrap">
+        <table class="report-table">
+          <thead>
+            <tr>
+              <th>الوجبة</th>
+              <th>القسم</th>
+              <th>الصنف</th>
+              <th>الكمية</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for row in kitchen_totals %}
+
+            <tr>
+              <td>{{ row.meal }}</td>
+              <td>{{ row.category }}</td>
+              <td>{{ row.item }}</td>
+
+              <td>
+                <strong> {{ row.quantity }} </strong>
+              </td>
+            </tr>
+
+            {% empty %}
+
+            <tr>
+              <td colspan="4" class="empty-table">
+                لا توجد طلبات مسجلة لهذا التاريخ.
+              </td>
+            </tr>
+
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Detailed Orders -->
+
+    <!-- =====================================
+     Detailed Orders - Grouped By Monk
+====================================== -->
+
+    <section class="report-section">
+      <div class="report-section-heading">
+        <h2>تفاصيل طلبات الرهبان</h2>
+
+        <p>جميع الأصناف المطلوبة لكل راهب</p>
+      </div>
+
+      <div class="report-table-wrap">
+        <table class="report-table monk-orders-table">
+          <thead>
+            <tr>
+              <th style="width: 45px">#</th>
+
+              <th style="width: 170px">اسم الراهب</th>
+
+              <th>الأصناف المطلوبة</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for row in detailed_orders %}
+
+            <tr>
+              <td>{{ forloop.counter }}</td>
+
+              <td class="monk-name">{{ row.monk }}</td>
+
+              <td class="monk-items-cell">
+                {% for meal in row.meals %}
+
+                <div class="monk-meal-group">
+                  {% if selected_meal == "all" %}
+
+                  <strong class="meal-label"> {{ meal.name }}: </strong>
+
+                  {% endif %} {% for item in meal.items %}
+
+                  <span class="ordered-item">
+                    {{ item.name }}
+
+                    <strong> ×{{ item.quantity }} </strong>
+                  </span>
+
+                  {% endfor %}
+                </div>
+
+                {% endfor %}
+              </td>
+            </tr>
+
+            {% empty %}
+
+            <tr>
+              <td colspan="3" class="empty-table">
+                لا توجد طلبات مسجلة لهذا التاريخ.
+              </td>
+            </tr>
+
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <div class="report-footer">
+      <p>تقرير صادر من نظام طلبات الدير</p>
+    </div>
+  </article>
+</div>
+
+{% endblock %}

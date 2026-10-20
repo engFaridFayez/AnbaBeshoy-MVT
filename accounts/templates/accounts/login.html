@@ -1,0 +1,119 @@
+
+{% extends "accounts/base.html" %}
+
+{% block title %}
+تسجيل الدخول | طلبات الدير
+{% endblock %}
+
+{% block content %}
+
+<div class="login-wrap">
+
+    <div class="hero-card login-hero">
+
+        <div class="cross-seal">✠</div>
+
+        <p class="eyebrow">
+            مجمع رهبان دير الأنبا بيشوي العامر
+        </p>
+
+        <h1>طلبات الدير</h1>
+
+        <p>
+            خدمة تنظيم الوجبات اليومية
+            وطلبات المطعم
+        </p>
+
+    </div>
+
+    <div class="panel login-panel">
+
+        <div class="section-heading">
+
+            <span class="kicker">
+                تسجيل الدخول
+            </span>
+
+            <h2>أهلًا وسهلًا</h2>
+
+            <p>
+                أدخل بيانات حسابك للمتابعة
+            </p>
+
+        </div>
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            {% if next %}
+            <input
+                type="hidden"
+                name="next"
+                value="{{ next }}"
+            >
+            {% endif %}
+
+            {% if form.non_field_errors %}
+
+            <div class="alert-error">
+
+                {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+
+            </div>
+
+            {% endif %}
+
+            <div class="form-group">
+
+                <label for="{{ form.username.id_for_label }}">
+                    اسم المستخدم
+                </label>
+
+                {{ form.username }}
+
+                {% for error in form.username.errors %}
+                    <small class="field-error">
+                        {{ error }}
+                    </small>
+                {% endfor %}
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="{{ form.password.id_for_label }}">
+                    كلمة المرور
+                </label>
+
+                {{ form.password }}
+
+                {% for error in form.password.errors %}
+                    <small class="field-error">
+                        {{ error }}
+                    </small>
+                {% endfor %}
+
+            </div>
+
+            <button
+                type="submit"
+                class="btn btn-primary btn-wide"
+            >
+                دخول
+            </button>
+
+        </form>
+
+        <p class="helper-text">
+            في حالة نسيان كلمة المرور،
+            يرجى التواصل مع مسؤول النظام.
+        </p>
+
+    </div>
+
+</div>
+
+{% endblock %}

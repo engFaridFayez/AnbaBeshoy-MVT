@@ -1,0 +1,90 @@
+{% extends "accounts/base.html" %}
+
+{% block title %}وجبات اليوم | طلبات الدير{% endblock %}
+
+{% block content %}
+<div class="ui-wrap">
+
+    <div class="ui-page-heading">
+        <p class="ui-welcome">
+            أهلًا {{ current_user.display_name|default:current_user.username }}
+        </p>
+
+        <h1>اختار وجبتك</h1>
+
+        <p class="ui-muted">
+            {{ today|date:"j F Y" }}
+        </p>
+    </div>
+
+    <div class="ui-meals">
+
+        {% for meal in meals %}
+        <article class="ui-meal-card">
+
+            <div class="ui-meal-icon" aria-hidden="true">
+                {{ meal.icon }}
+            </div>
+
+            <h2>{{ meal.name }}</h2>
+
+            <span class="ui-status {% if meal.is_open %}ui-open{% else %}ui-closed{% endif %}">
+                {{ meal.status_text }}
+            </span>
+
+            {% if meal.has_order %}
+            <p class="ui-saved-note">
+                يوجد طلب مسجل باسمك.
+            </p>
+            {% endif %}
+
+            {% if meal.can_visit %}
+            <a
+                href="{% url 'kitchen:menu' %}?meal={{ meal.value }}"
+                class="ui-button ui-primary ui-wide"
+            >
+                {{ meal.button_text }}
+            </a>
+            {% else %}
+            <button
+                type="button"
+                class="ui-button ui-wide"
+                disabled
+            >
+                {{ meal.button_text }}
+            </button>
+            {% endif %}
+
+        </article>
+        {% endfor %}
+
+    </div>
+
+    {% if is_restaurant_admin %}
+    <section class="ui-panel ui-admin-panel">
+
+        <h2>إدارة المطعم</h2>
+
+        <div class="ui-actions">
+
+            <a
+                href="{% url 'kitchen:manage_menu' %}"
+                class="ui-button ui-primary"
+            >
+                تجهيز الوجبات
+            </a>
+
+            <a
+                href="{% url 'kitchen:dashboard' %}"
+                class="ui-button ui-secondary"
+            >
+                تقرير المطبخ
+            </a>
+
+        </div>
+
+    </section>
+    {% endif %}
+
+</div>
+{% endblock %}

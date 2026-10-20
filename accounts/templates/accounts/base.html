@@ -1,0 +1,64 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="theme-color" content="#39245c">
+
+    <title>{% block title %}طلبات الطعام | دير الأنبا بيشوي{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'css/auth.css' %}">
+    <link rel="stylesheet" href="{% static 'css/simple_ui.css' %}">
+
+    {% block extra_css %}{% endblock %}
+
+    <script src="{% static 'js/simple_ui.js' %}" defer></script>
+</head>
+
+<body>
+    <div class="app-shell">
+
+        <header class="topbar ui-topbar no-print">
+
+            <a class="ui-brand" href="{% url 'accounts:home' %}">
+                <span aria-hidden="true">✠</span>
+
+                <span>
+                    <strong>دير الأنبا بيشوي</strong>
+                    <small>طلبات الطعام</small>
+                </span>
+            </a>
+
+            {% if user.is_authenticated %}
+            <form method="post" action="{% url 'accounts:logout' %}">
+                {% csrf_token %}
+
+                <button type="submit" class="ui-button ui-header-button">
+                    تسجيل الخروج
+                </button>
+            </form>
+            {% endif %}
+
+        </header>
+
+        <main class="main-content">
+
+            {% if messages %}
+            <div class="ui-wrap ui-messages no-print" aria-live="polite">
+                {% for message in messages %}
+                <div class="ui-alert {{ message.tags }}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            {% block content %}{% endblock %}
+
+        </main>
+
+    </div>
+</body>
+</html>

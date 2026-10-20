@@ -1,0 +1,344 @@
+
+{% extends "accounts/base.html" %}
+
+{% block title %}
+طلب {{ meal_name }} | طلبات الدير
+{% endblock %}
+
+{% block content %}
+
+<div class="ui-wrap ui-narrow">
+
+    <!-- BACK BUTTON -->
+
+    <a
+        href="{% url 'accounts:home' %}"
+        class="ui-button ui-secondary"
+    >
+        ← الرجوع للوجبات
+    </a>
+
+
+    <!-- PAGE HEADING -->
+
+    <div class="ui-page-heading">
+
+        <h1>
+            🍽️ {{ meal_name }} اليوم
+        </h1>
+
+        <p class="ui-muted">
+            {{ today|date:"j F Y" }}
+        </p>
+
+    </div>
+
+
+    <!-- EXISTING ORDER -->
+
+    {% if existing_order %}
+
+    <section class="ui-panel">
+
+        <h2>✅ طلبك المسجل</h2>
+
+        <p class="ui-muted">
+            الحالة:
+            {{ existing_order.get_status_display }}
+        </p>
+
+        <ul class="ui-order-summary">
+
+            {% for line in existing_order.items.all %}
+
+            <li>
+
+                <span>
+                    {{ line.item_name_snapshot }}
+                </span>
+
+                <strong>
+                    × {{ line.quantity }}
+                </strong>
+
+            </li>
+
+            {% empty %}
+
+            <li>
+                لا توجد أصناف مسجلة.
+            </li>
+
+            {% endfor %}
+
+        </ul>
+
+    </section>
+
+    {% endif %}
+
+
+    <!-- ORDERING SECTION -->
+
+    {% if can_order %}
+
+        {% if available_items %}
+
+        <form
+            method="post"
+            action="{% url 'kitchen:menu' %}"
+            id="mealOrderForm"
+            data-track-changes
+            data-confirm="هل تريد تأكيد طلبك بهذه الكميات؟"
+        >
+
+            {% csrf_token %}
+
+            <input
+                type="hidden"
+                name="meal_type"
+                value="{{ meal_type }}"
+            >
+
+
+            <!-- AVAILABLE ITEMS -->
+
+            <section class="ui-panel">
+
+                <h2>
+                    اختار الأصناف والكميات
+                </h2>
+
+                <p class="ui-muted">
+                    اضغط + لزيادة الكمية
+                    واضغط − لتقليلها.
+                </p>
+
+
+                {% if existing_order %}
+
+                <p class="ui-muted">
+                    يمكنك تعديل طلبك قبل إغلاق الوجبة.
+                </p>
+
+                {% endif %}
+
+
+                {% if daily_menu.ordering_deadline %}
+
+                <p class="ui-muted">
+                    آخر موعد للطلب:
+                    {{ daily_menu.ordering_deadline|date:"g:i A" }}
+                </p>
+
+                {% endif %}
+
+
+                <div class="ui-catalog">
+
+                    {% for entry in available_items %}
+
+                    <div class="ui-item-row">
+
+                        <!-- ITEM NAME & IMAGE -->
+
+                        <label
+                            class="ui-item-name"
+                            for="quantity-{{ entry.id }}"
+                        >
+
+                            <strong class="ui-item-title">
+
+                                {% if entry.item.icon %}
+
+                                <img
+                                    src="{{ entry.item.icon.url }}"
+                                    alt=""
+                                    class="ui-menu-photo"
+                                    width="76"
+                                    height="76"
+                                    loading="lazy"
+                                >
+
+                                {% else %}
+
+                                <span
+                                    class="ui-menu-photo ui-photo-placeholder"
+                                    aria-hidden="true"
+                                >
+                                    🍽️
+                                </span>
+
+                                {% endif %}
+
+
+                                <span>
+                                    {{ entry.item.name }}
+                                </span>
+
+                            </strong>
+
+
+                            <small>
+                                {{ entry.item.get_category_display }}
+                            </small>
+
+                        </label>
+
+
+                        <!-- QUANTITY CONTROLS -->
+
+                        <div class="ui-stepper" dir="ltr">
+
+                            <button
+                                type="button"
+                                data-step="-1"
+                                aria-label="تقليل كمية {{ entry.item.name }}"
+                            >
+                                −
+                            </button>
+
+                            <input
+                                type="number"
+                                id="quantity-{{ entry.id }}"
+                                name="quantity_{{ entry.id }}"
+                                value="{{ entry.selected_quantity }}"
+                                min="0"
+                                max="{{ max_quantity }}"
+                                step="1"
+                                inputmode="numeric"
+                                data-quantity
+                                data-name="{{ entry.item.name }}"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                data-step="1"
+                                aria-label="زيادة كمية {{ entry.item.name }}"
+                            >
+                                +
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </section>
+
+
+            <!-- ORDER SUMMARY & SUBMIT -->
+
+            <div class="ui-save-bar">
+
+                <div>
+
+                    <strong>
+                        🛒 طلبك الحالي
+                    </strong>
+
+                    <p
+                        id="orderSummaryText"
+                        class="ui-muted"
+                        aria-live="polite"
+                    >
+                        لم تختَر أصنافًا بعد.
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="ui-button ui-primary ui-wide"
+                    id="saveOrderButton"
+                >
+
+                    {% if existing_order %}
+
+                        💾 حفظ تعديل الطلب
+
+                    {% else %}
+
+                        ✅ تأكيد الطلب
+
+                    {% endif %}
+
+                </button>
+
+            </div>
+
+        </form>
+
+        {% else %}
+
+        <!-- NO AVAILABLE ITEMS -->
+
+        <section class="ui-panel ui-empty">
+
+            <div class="ui-meal-icon">
+                🍽️
+            </div>
+
+            <h2>
+                لا توجد أصناف متاحة
+            </h2>
+
+            <p>
+                لم يحدد المسؤول أصناف هذه الوجبة بعد.
+            </p>
+
+        </section>
+
+        {% endif %}
+
+    {% else %}
+
+    <!-- ORDERING CLOSED -->
+
+    <section class="ui-panel ui-empty">
+
+        <div class="ui-meal-icon">
+            🔒
+        </div>
+
+        <h2>
+            الطلبات مغلقة حاليًا
+        </h2>
+
+
+        {% if existing_order.status == "cancelled" %}
+
+        <p>
+            طلبك ملغي.
+            برجاء التواصل مع المسؤول.
+        </p>
+
+        {% else %}
+
+        <p>
+            الطلب غير متاح لهذه الوجبة الآن.
+        </p>
+
+        {% endif %}
+
+
+        {% if existing_order %}
+
+        <p class="ui-muted">
+            يمكنك مراجعة طلبك المسجل بالأعلى.
+        </p>
+
+        {% endif %}
+
+    </section>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

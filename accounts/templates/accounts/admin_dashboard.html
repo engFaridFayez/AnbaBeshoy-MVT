@@ -1,0 +1,71 @@
+
+{% extends "accounts/base.html" %}
+
+{% block title %}
+لوحة المسؤول | طلبات الدير
+{% endblock %}
+
+{% block content %}
+
+<div class="page-pad">
+
+    <div class="admin-hero">
+
+        <div>
+
+            <span class="kicker">
+                لوحة المسؤول
+            </span>
+
+            <h1>إدارة وجبات اليوم</h1>
+
+            <p>
+                إدارة الأصناف والقوائم
+                ومتابعة طلبات الرهبان
+            </p>
+
+        </div>
+
+        <span class="admin-badge">
+            مسؤول
+        </span>
+
+    </div>
+
+    <div class="panel admin-panel">
+
+        <h2>أهلًا بك في لوحة المسؤول</h2>
+
+        <p>
+            تم تسجيل دخولك بنجاح،
+            وتم التحقق من صلاحيات حسابك.
+        </p>
+
+        <p>
+            في المرحلة التالية سنربط هذه الصفحة
+            بقوائم الوجبات والطلبات والتقارير.
+        </p>
+
+        {% if user.is_staff %}
+
+        <a href="{% url 'admin:index' %}"
+           class="btn btn-primary">
+
+            فتح Django Admin
+
+        </a>
+
+        {% endif %}
+
+        <a href="{% url 'accounts:home' %}"
+           class="btn btn-secondary">
+
+            العودة للرئيسية
+
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}
