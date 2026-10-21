@@ -1,431 +1,597 @@
-
-.dashboard-page {
-    padding-bottom: 50px;
+/* Burgundy theme for the kitchen dashboard only. */
+body {
+    --church-wine: #581a2d;
+    --church-wine-dark: #34101d;
+    --church-gold: #b48d4b;
+    --church-ivory: #f7f2e9;
+    --church-paper: #fffdf8;
+    --church-ink: #382c2a;
+    --church-muted: #71625b;
+    --church-line: #e5d9c7;
+    --ui-primary: var(--church-wine);
+    --ui-primary-dark: var(--church-wine-dark);
+    --ui-background: var(--church-ivory);
+    --ui-text: var(--church-ink);
+    --ui-muted: var(--church-muted);
+    background: var(--church-ivory);
+    color: var(--church-ink);
+    color-scheme: light;
 }
 
+/* Shared header, recolored on this page. */
+.topbar.ui-topbar,
+.topbar {
+    background: linear-gradient(110deg, #34101d, #581a2d);
+    border-bottom: 3px solid var(--church-gold);
+    color: #fff8eb;
+}
+.ui-brand,
+.brand-mini {
+    color: #fff8eb;
+}
+.ui-brand > span:first-child,
+.brand-mark {
+    color: #e5c78f;
+}
+.ui-brand small,
+.brand-mini small {
+    color: #e8d8bf;
+}
+.ui-header-button,
+.logout-btn {
+    background: transparent;
+    border: 1px solid #c6a66c;
+    color: #fff8eb;
+}
+
+/* Page title and navigation. */
+.dashboard-page {
+    width: min(100%, 1180px);
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 28px 20px 45px;
+}
 .dashboard-header {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 20px;
-    margin-bottom: 25px;
+    flex-wrap: wrap;
+    gap: 24px;
+    padding: 30px;
+    margin-bottom: 24px;
+    overflow: hidden;
+    border: 1px solid #8b5b4b;
+    border-radius: 20px;
+    color: #fff8eb;
+    background:
+        repeating-linear-gradient(90deg, #ffffff03 0 13px, #00000005 13px 26px),
+        linear-gradient(120deg, #34101d, #681e36);
+    box-shadow: 0 10px 25px #34101d12;
 }
-
+.dashboard-header::before {
+    content: "";
+    position: absolute;
+    inset-inline-end: 30px;
+    top: 16px;
+    width: 115px;
+    height: 180px;
+    border: 1px solid #e5c78f30;
+    border-radius: 75px 75px 0 0;
+    pointer-events: none;
+}
+.dashboard-header > * {
+    position: relative;
+}
 .dashboard-header h1 {
-    margin: 5px 0;
-    color: #4b1520;
+    margin: 5px 0 8px;
+    color: #fff8eb;
+    font-size: clamp(25px, 3vw, 33px);
+    line-height: 1.5;
 }
-
 .dashboard-header p {
-    color: #817b7d;
+    margin: 0;
+    color: #e8d8bf;
+    font-size: 17px;
 }
-
+.dashboard-header .kicker {
+    color: #e5c78f;
+    font-size: 15px;
+}
 .dashboard-actions {
     display: flex;
+    flex-wrap: wrap;
     gap: 10px;
-    flex-wrap: wrap;
 }
-
-.report-filters {
-    display: flex;
-    align-items: end;
-    flex-wrap: wrap;
-    gap: 15px;
-    padding: 22px;
-    margin-bottom: 30px;
-    background: white;
-    border: 1px solid #e9e2e2;
-    border-radius: 18px;
-}
-
-.filter-field {
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-    flex: 1;
-    min-width: 170px;
-}
-
-.filter-field label {
-    font-size: 13px;
-    font-weight: bold;
-}
-
-.filter-field input,
-.filter-field select {
-    min-height: 46px;
-    padding: 10px;
-    border: 1px solid #ddd2d5;
+.dashboard-page .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+    margin: 0;
+    padding: 11px 18px;
+    border: 1px solid transparent;
     border-radius: 10px;
-    background: white;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 1.6;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+}
+.dashboard-page .btn-primary {
+    background: var(--church-wine);
+    color: #fff;
+}
+.dashboard-page .btn-secondary {
+    background: #eee3d5;
+    color: var(--church-wine);
+    border-color: #dfccb3;
+}
+.dashboard-header .btn-primary {
+    background: #f4e6c8;
+    color: #451222;
+    border-color: #f4e6c8;
+}
+.dashboard-header .btn-secondary {
+    background: #ffffff0c;
+    color: #fff8eb;
+    border-color: #c6a66c;
+}
+.dashboard-page .btn:hover {
+    filter: brightness(.94);
+}
+.dashboard-page .btn:focus-visible,
+.dashboard-page input:focus-visible,
+.dashboard-page select:focus-visible {
+    outline: 3px solid var(--church-gold);
+    outline-offset: 3px;
 }
 
+/* Filters: higher specificity than the old inline style block. */
+.dashboard-page .report-filters {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 18px;
+    padding: 23px;
+    margin-bottom: 10px;
+    background: var(--church-paper);
+    border: 1px solid var(--church-line);
+    border-top: 3px solid var(--church-gold);
+    border-radius: 16px;
+}
+.dashboard-page .filter-field {
+    display: grid;
+    gap: 8px;
+    min-width: 0;
+}
+.dashboard-page .filter-field label {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--church-wine);
+}
+.dashboard-page .report-filters input,
+.dashboard-page .report-filters select {
+    width: 100%;
+    min-width: 0;
+    min-height: 54px;
+    padding: 10px 12px;
+    border: 1px solid #cbb89d;
+    border-radius: 10px;
+    font: inherit;
+    font-size: 19px;
+    color: var(--church-ink);
+    background: #fff;
+    accent-color: var(--church-wine);
+}
+.dashboard-page .report-filters select {
+    appearance: auto;
+}
+.dashboard-page .report-filters select option {
+    color: var(--church-ink);
+    background: #fff;
+}
+.dashboard-page .report-filter-help {
+    margin: 0 2px 26px;
+    color: var(--church-muted);
+    font-size: 16px;
+}
+
+/* Daily meal cards. */
+.dashboard-page .section-heading {
+    margin-bottom: 15px;
+}
+.dashboard-page .section-heading .kicker {
+    color: #856434;
+    font-size: 14px;
+}
+.dashboard-page .section-heading h2 {
+    margin: 5px 0;
+    font-size: 25px;
+    color: var(--church-wine);
+}
 .daily-menu-grid {
     display: grid;
-    grid-template-columns: repeat(
-        auto-fit,
-        minmax(200px, 1fr)
-    );
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
     gap: 15px;
-    margin-bottom: 30px;
+    margin-bottom: 28px;
 }
-
 .daily-menu-card,
 .empty-card {
-    padding: 22px;
-    border: 1px solid #e9e2e2;
-    border-radius: 16px;
-    background: white;
+    padding: 20px 23px;
+    background: var(--church-paper);
+    border: 1px solid var(--church-line);
+    border-inline-start: 4px solid var(--church-gold);
+    border-radius: 14px;
 }
-
 .daily-menu-card h3 {
-    margin: 0 0 10px;
+    margin: 0 0 9px;
+    color: var(--church-wine);
+    font-size: 23px;
 }
-
 .daily-menu-card p {
-    color: #817b7d;
-    font-size: 13px;
+    margin: 8px 0;
+    font-size: 17px;
+    color: var(--church-muted);
 }
-
 .status-pill {
     display: inline-block;
-    padding: 5px 12px;
-    font-size: 12px;
-    border-radius: 30px;
-}
-
-.status-pill.published {
-    background: #e5f4eb;
-    color: #237344;
-}
-
-.status-pill.draft {
-    background: #f4e9e9;
-    color: #8b4444;
-}
-
-.report-sheet {
-    background: white;
-    border: 1px solid #e9e2e2;
+    padding: 5px 13px;
     border-radius: 20px;
-    padding: 35px;
+    font-size: 15px;
+    font-weight: bold;
+}
+.status-pill.published {
+    background: #f0e1e6;
+    color: var(--church-wine);
+}
+.status-pill.draft {
+    background: #ede9e2;
+    color: #685e55;
 }
 
+/* Report: arched cross, ivory paper, restrained gold borders. */
+.report-sheet {
+    padding: 30px;
+    background: var(--church-paper);
+    border: 1px solid #d1b986;
+    border-radius: 19px;
+    box-shadow: 0 10px 30px #6b49230a;
+}
 .report-header {
     display: flex;
     align-items: center;
-    gap: 20px;
-    padding-bottom: 25px;
-    border-bottom: 2px solid #4b1520;
-    text-align: center;
     justify-content: center;
+    gap: 24px;
+    padding: 3px 0 25px;
+    border-bottom: 3px double var(--church-gold);
+    text-align: center;
 }
-
 .report-cross {
-    font-size: 50px;
-    color: #4b1520;
+    display: grid;
+    place-items: center;
+    width: 82px;
+    height: 100px;
+    flex-shrink: 0;
+    border: 2px solid var(--church-gold);
+    border-radius: 45px 45px 10px 10px;
+    background: linear-gradient(135deg, #6b243c, #34101d);
+    box-shadow: inset 0 0 0 5px #fff6e50d;
+    color: #e5c78f;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 52px;
+    line-height: 1;
 }
-
 .report-header h2 {
     margin: 0;
-    font-size: 18px;
+    font-family: "Traditional Arabic", "Noto Naskh Arabic", "Times New Roman", serif;
+    font-size: 31px;
+    line-height: 1.6;
+    color: var(--church-wine);
 }
-
 .report-header h1 {
-    color: #4b1520;
-    font-size: 24px;
-    margin: 8px 0;
+    margin: 4px 0 9px;
+    color: var(--church-wine);
+    font-size: 25px;
 }
-
 .report-header p {
-    margin: 3px;
-    font-size: 13px;
-    color: #817b7d;
+    margin: 3px 0;
+    font-size: 17px;
+    color: var(--church-muted);
 }
-
+.report-header p strong {
+    color: var(--church-wine);
+}
 .report-statistics {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-    margin: 25px 0;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 13px;
+    margin: 24px 0;
 }
-
 .stat-card {
-    padding: 20px;
-    background: #f7f2f3;
-    border-radius: 14px;
+    padding: 16px 10px;
+    background: #f4ecdf;
+    border: 1px solid var(--church-line);
+    border-radius: 12px;
     text-align: center;
 }
-
 .stat-card span {
     display: block;
-    font-size: 13px;
-    color: #817b7d;
+    color: var(--church-muted);
+    font-size: 17px;
 }
-
 .stat-card strong {
     display: block;
-    font-size: 30px;
-    color: #4b1520;
+    color: var(--church-wine);
+    font-size: 31px;
 }
-
 .report-section {
-    margin-top: 35px;
+    margin-top: 27px;
 }
-
 .report-section-heading h2 {
-    margin-bottom: 4px;
-    font-size: 19px;
+    margin: 0 0 5px;
+    color: var(--church-wine);
+    font-size: 24px;
 }
-
 .report-section-heading p {
-    margin-top: 0;
-    color: #817b7d;
-    font-size: 13px;
+    margin: 0 0 15px;
+    color: var(--church-muted);
+    font-size: 16px;
 }
-
 .report-table-wrap {
     width: 100%;
     overflow-x: auto;
 }
-
 .report-table {
     width: 100%;
-    border-collapse: collapse;
     min-width: 550px;
+    border-collapse: collapse;
 }
-
 .report-table th {
-    background: #4b1520;
-    color: white;
-    padding: 13px;
+    padding: 12px;
+    background: var(--church-wine);
+    color: #fff8eb;
+    border-bottom: 2px solid var(--church-gold);
+    font-size: 17px;
     text-align: right;
-    font-size: 13px;
 }
-
 .report-table td {
     padding: 12px;
-    border-bottom: 1px solid #eee7e9;
-    font-size: 13px;
+    border-bottom: 1px solid var(--church-line);
+    color: var(--church-ink);
+    font-size: 17px;
+    vertical-align: top;
 }
-
 .report-table tbody tr:nth-child(even) {
-    background: #faf8f8;
+    background: #f8f2e8;
 }
-
 .empty-table {
+    padding: 28px 15px !important;
     text-align: center;
-    color: #817b7d;
-    padding: 30px !important;
+    color: var(--church-muted);
 }
-
+.monk-orders-table .monk-name {
+    font-weight: bold;
+    color: var(--church-wine);
+    overflow-wrap: anywhere;
+}
+.monk-items-cell {
+    line-height: 1.8;
+}
+.monk-meal-group + .monk-meal-group {
+    margin-top: 5px;
+}
+.meal-label {
+    color: var(--church-wine);
+    margin-inline-end: 5px;
+}
+.ordered-item {
+    display: inline-block;
+    margin: 2px 3px;
+    padding: 2px 7px;
+    border: 1px solid #e7d9c4;
+    border-radius: 6px;
+    background: #fffaf1;
+    font-size: 16px;
+}
+.ordered-item strong {
+    color: var(--church-wine);
+}
 .report-footer {
-    border-top: 1px solid #e9e2e2;
-    margin-top: 35px;
-    padding-top: 15px;
+    margin-top: 24px;
+    padding-top: 14px;
+    border-top: 1px solid var(--church-line);
     text-align: center;
-    color: #817b7d;
-    font-size: 12px;
+    color: var(--church-muted);
+    font-size: 15px;
 }
 
-@media (max-width: 650px) {
+@media (max-width: 760px) {
+    .dashboard-page {
+        padding: 20px 14px 35px;
+    }
     .dashboard-header {
-        flex-direction: column;
-        align-items: stretch;
+        padding: 23px;
     }
-
+    .dashboard-actions {
+        width: 100%;
+    }
+    .dashboard-actions .btn {
+        flex: 1 1 135px;
+    }
+    .dashboard-page .report-filters {
+        grid-template-columns: 1fr;
+        padding: 19px;
+    }
     .report-sheet {
-        padding: 18px;
+        padding: 19px 15px;
     }
-
+    .report-header {
+        flex-direction: column;
+        gap: 14px;
+    }
+    .report-cross {
+        width: 68px;
+        height: 82px;
+        font-size: 44px;
+    }
+    .report-header h2 {
+        font-size: 28px;
+    }
     .report-header h1 {
-        font-size: 19px;
+        font-size: 23px;
     }
-
     .report-statistics {
-        gap: 8px;
+        gap: 7px;
     }
-
     .stat-card {
         padding: 12px 5px;
     }
-
+    .stat-card span {
+        font-size: 15px;
+    }
     .stat-card strong {
-        font-size: 24px;
+        font-size: 27px;
     }
 }
 
-/* Print Report */
-
+/* Compact, ink-saving print layout. */
 @page {
     size: A4;
     margin: 12mm;
 }
-
 @media print {
     body {
-        background: white !important;
-        color: black;
+        background: #fff !important;
+        color: #000;
     }
-
     .topbar,
     .no-print {
         display: none !important;
     }
-
     .main-content,
     .dashboard-page {
-        padding: 0 !important;
-        margin: 0 !important;
         width: 100% !important;
         max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
-
     .report-sheet {
-        border: none;
-        border-radius: 0;
+        background: #fff;
         padding: 0;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
     }
-
+    .report-header {
+        flex-direction: row;
+        gap: 12px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #777;
+    }
+    .report-cross {
+        width: 32px;
+        height: 40px;
+        border: 0;
+        border-radius: 0;
+        background: none;
+        box-shadow: none;
+        color: #000;
+        font-size: 30px;
+    }
+    .report-header h2 {
+        font-size: 17pt;
+    }
+    .report-header h1 {
+        font-size: 14pt;
+        margin: 2px 0;
+    }
+    .report-header p,
+    .report-header strong {
+        font-size: 10pt;
+    }
     .report-statistics {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        margin: 12px 0;
+        gap: 8px;
     }
-
+    .stat-card {
+        padding: 6px;
+        background: none;
+        border: 1px solid #bbb;
+    }
+    .stat-card span {
+        font-size: 10pt;
+    }
+    .stat-card strong {
+        font-size: 17pt;
+    }
+    .report-section {
+        margin-top: 17px;
+    }
+    .report-section-heading h2 {
+        font-size: 12pt;
+    }
+    .report-section-heading p {
+        font-size: 9pt;
+        margin-bottom: 8px;
+    }
+    .report-table-wrap {
+        overflow: visible;
+    }
     .report-table {
         min-width: 0;
         width: 100%;
     }
-
-    .report-table th {
-        background: #eee !important;
-        color: black !important;
-    }
-
     .report-table th,
     .report-table td {
-        border: 1px solid #bbb;
-        padding: 7px;
-        font-size: 11px;
+        padding: 5px 6px;
+        border: 1px solid #aaa;
+        background: none;
+        font-size: 9.5pt;
     }
-
-    .report-table-wrap {
-        overflow: visible;
+    .report-table tbody tr:nth-child(even) {
+        background: none;
     }
-
-    .report-section {
-        break-inside: auto;
-    }
-
-    .report-table tr {
-        break-inside: avoid;
-    }
-
     .report-table thead {
         display: table-header-group;
     }
-}
-
-
-/* =====================================
-   Grouped Monk Orders
-===================================== */
-
-.monk-orders-table {
-    width: 100%;
-    table-layout: auto;
-}
-
-.monk-name {
-    font-weight: bold;
-    white-space: nowrap;
-    color: #4b1520;
-}
-
-.monk-items-cell {
-    line-height: 2;
-}
-
-.monk-meal-group {
-    margin-bottom: 5px;
-}
-
-.monk-meal-group:last-child {
-    margin-bottom: 0;
-}
-
-.meal-label {
-    color: #4b1520;
-    margin-left: 8px;
-}
-
-.ordered-item {
-    display: inline-block;
-    padding: 2px 9px;
-    margin: 2px 3px;
-    border-radius: 6px;
-    background: #f6f0f1;
-    white-space: nowrap;
-    font-size: 12px;
-}
-
-.ordered-item strong {
-    color: #4b1520;
-}
-
-
-/* =====================================
-   Print Optimization
-===================================== */
-
-@media print {
-
-    .monk-orders-table {
-        width: 100%;
-        table-layout: auto;
-        min-width: 0;
-        font-size: 11px;
+    .report-table tr,
+    .report-header,
+    .report-statistics {
+        break-inside: avoid;
     }
-
-    .monk-orders-table th,
-    .monk-orders-table td {
-        padding: 6px 8px;
-        vertical-align: top;
+    .report-section-heading {
+        break-after: avoid;
     }
-
-    .monk-name {
-        color: black;
-        white-space: normal;
-        width: 125px;
+    .monk-orders-table th:nth-child(1) {
+        width: 28px !important;
     }
-
+    .monk-orders-table th:nth-child(2) {
+        width: 125px !important;
+    }
     .monk-items-cell {
         line-height: 1.5;
     }
-
-    .monk-meal-group {
-        margin-bottom: 3px;
-    }
-
     .ordered-item {
-        display: inline-block;
-        background: transparent;
-        color: black;
         padding: 0;
-        margin: 0 5px 0 0;
-        font-size: 10px;
+        margin: 0 3px;
+        border: 0;
+        background: none;
+        font-size: 9.5pt;
     }
-
-    .ordered-item::after {
+    .ordered-item:not(:last-child)::after {
         content: " | ";
-        color: #777;
     }
-
-    .ordered-item:last-child::after {
-        content: "";
+    .report-footer {
+        margin-top: 15px;
+        padding-top: 8px;
+        font-size: 9pt;
     }
-
-    .monk-orders-table tr {
-        break-inside: avoid;
-        page-break-inside: avoid;
+    .report-sheet,
+    .report-sheet * {
+        color: #000 !important;
+        text-shadow: none !important;
     }
 }

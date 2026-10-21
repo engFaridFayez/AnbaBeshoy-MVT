@@ -276,13 +276,14 @@ def menu_view(request):
 # RESTAURANT ADMIN DASHBOARD
 # ==========================================
 
+
 @login_required
 @require_GET
 def restaurant_dashboard(request):
 
-    # --------------------------------------
+    # ======================================
     # 1. Permission Check
-    # --------------------------------------
+    # ======================================
 
     allowed_roles = [
         User.Role.ADMIN,
@@ -294,25 +295,9 @@ def restaurant_dashboard(request):
             "ليس لديك صلاحية الدخول للوحة المطعم."
         )
 
-    # --------------------------------------
+    # ======================================
     # 2. Report Filters
-    # --------------------------------------
-
-    selected_date = timezone.localdate()
-
-    raw_date = request.GET.get("date")
-
-    if raw_date:
-        try:
-            selected_date = date.fromisoformat(
-                raw_date
-            )
-        except ValueError:
-            pass
-
-    selected_meal = request.GET.get(
-        "meal", "all"
-    )
+    # ======================================
 
     valid_meals = [
         "all",
@@ -321,16 +306,77 @@ def restaurant_dashboard(request):
         MealType.DINNER,
     ]
 
-    if selected_meal not in valid_meals:
-        selected_meal = "all"
+    # --------------------------------------
+    # Selected Meal - Session
+    # --------------------------------------
+
+    requested_meal = request.GET.get("meal")
+
+    if requested_meal is not None:
+
+        if requested_meal in valid_meals:
+            selected_meal = requested_meal
+        else:
+            selected_meal = "all"
+
+        # Save selected meal
+        request.session["report_meal"] = selected_meal
+
+    else:
+
+        # Restore previous selection
+        selected_meal = request.session.get(
+            "report_meal",
+            "all",
+        )
+
+        if selected_meal not in valid_meals:
+            selected_meal = "all"
 
     # --------------------------------------
-    # 3. Daily Menus
+    # Selected Date - Session
     # --------------------------------------
+
+    requested_date = request.GET.get("date")
+
+    if requested_date is not None:
+
+        try:
+            selected_date = date.fromisoformat(
+                requested_date
+            )
+
+        except (ValueError, TypeError):
+            selected_date = timezone.localdate()
+
+        # Save selected date
+        request.session["report_date"] = (
+            selected_date.isoformat()
+        )
+
+    else:
+
+        saved_date = request.session.get(
+            "report_date"
+        )
+
+        try:
+            selected_date = date.fromisoformat(
+                saved_date
+            )
+
+        except (ValueError, TypeError):
+            selected_date = timezone.localdate()
+
+    # ======================================
+    # 3. Daily Menus
+    # ======================================
 
     daily_menus = (
         DailyMenu.objects
-        .filter(date=selected_date)
+        .filter(
+            date=selected_date
+        )
         .annotate(
             available_count=Count(
                 "entries",
@@ -344,35 +390,40 @@ def restaurant_dashboard(request):
         .order_by("meal_type")
     )
 
-    # --------------------------------------
+    # ======================================
     # 4. Orders Queryset
-    # --------------------------------------
+    # ======================================
 
     orders = Order.objects.filter(
         daily_menu__date=selected_date,
         status=Order.Status.SUBMITTED,
     )
 
+    # Filter by meal
     if selected_meal != "all":
+
         orders = orders.filter(
             daily_menu__meal_type=selected_meal
         )
 
-    # --------------------------------------
+    # ======================================
     # 5. Summary Statistics
-    # --------------------------------------
+    # ======================================
 
+    # Total number of orders
     total_orders = orders.count()
 
+    # Total unique monks
     total_monks = (
-        orders.values("user_id")
+        orders
+        .values("user_id")
         .distinct()
         .count()
     )
 
-    # --------------------------------------
+    # ======================================
     # 6. Order Items Queryset
-    # --------------------------------------
+    # ======================================
 
     order_items = OrderItem.objects.filter(
         order__daily_menu__date=selected_date,
@@ -380,19 +431,21 @@ def restaurant_dashboard(request):
     )
 
     if selected_meal != "all":
+
         order_items = order_items.filter(
             order__daily_menu__meal_type=selected_meal
         )
 
+    # Total quantity
     total_quantity = (
         order_items.aggregate(
             total=Sum("quantity")
         )["total"] or 0
     )
 
-    # --------------------------------------
+    # ======================================
     # 7. Grouped Kitchen Totals
-    # --------------------------------------
+    # ======================================
 
     totals_query = (
         order_items
@@ -430,14 +483,11 @@ def restaurant_dashboard(request):
             "quantity": row["total_quantity"],
         })
 
-    # --------------------------------------
-    # 8. Detailed Orders
-    # --------------------------------------
-
     # ======================================
     # 8. Group Orders By Monk
     # ======================================
 
+    # Fetch orders with related data
     detailed_query = (
         orders
         .select_related(
@@ -458,7 +508,7 @@ def restaurant_dashboard(request):
 
         user_id = order.user_id
 
-        # Create one row per monk
+        # Create one row for each monk
         if user_id not in grouped_orders:
 
             grouped_orders[user_id] = {
@@ -469,7 +519,7 @@ def restaurant_dashboard(request):
                 "meals": [],
             }
 
-        # Items ordered in this meal
+        # Collect items for this meal
         meal_items = []
 
         for item in order.items.all():
@@ -479,6 +529,7 @@ def restaurant_dashboard(request):
                 "quantity": item.quantity,
             })
 
+        # Add meal and its items
         if meal_items:
 
             grouped_orders[user_id]["meals"].append({
@@ -489,39 +540,49 @@ def restaurant_dashboard(request):
                 "items": meal_items,
             })
 
-    # One record per monk
+    # Convert dictionary to list
     detailed_orders = list(
         grouped_orders.values()
     )
 
-    # --------------------------------------
+    # ======================================
     # 9. Template Context
-    # --------------------------------------
+    # ======================================
 
     context = {
+
+        # Filters
         "selected_date": selected_date,
         "selected_meal": selected_meal,
+
+        # Daily menus
         "daily_menus": daily_menus,
 
+        # Statistics
         "total_orders": total_orders,
         "total_monks": total_monks,
         "total_quantity": total_quantity,
 
+        # Reports
         "kitchen_totals": kitchen_totals,
         "detailed_orders": detailed_orders,
 
+        # Permissions
         "is_superadmin": (
             request.user.role
             == User.Role.SUPERADMIN
         ),
     }
 
+    # ======================================
+    # 10. Render Dashboard
+    # ======================================
+
     return render(
         request,
         "kitchen/dashboard.html",
         context,
     )
-
 
 
 # ==========================================
