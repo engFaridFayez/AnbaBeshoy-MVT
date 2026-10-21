@@ -1,0 +1,17 @@
+# ONE NEW ENTRY INSIDE your existing list:
+# TEMPLATES -> OPTIONS -> context_processors
+"core.site_branding.monastery_branding",
+
+# ADD AT TOP LEVEL in api/settings.py. Do not replace existing settings.
+MONASTERY_BRANDING = {
+    "title": "دير الأنبا بيشوي العامر",
+    "subtitle": "خدمة الوجبات وطلبات الدير",
+    "main_image": "images/branding/monastery.jpg",
+    "saint_image": "",
+    "splash_enabled": True,
+    "splash_ms": 1500,
+}
+
+# Only AFTER supplying and copying a second image, change:
+# "saint_image": "images/branding/saint-bishoy.jpg",
+# To disable the welcome screen only: "splash_enabled": False,

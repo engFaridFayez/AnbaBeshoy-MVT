@@ -1,3 +1,56 @@
+/* Anba Bishoy - unified burgundy / ivory / gold theme.
+   Drop-in replacement: no template or JavaScript changes required.
+   The palette is repeated locally so this file has no @import dependency. */
+:root {
+    --church-wine: #581a2d;
+    --church-wine-dark: #34101d;
+    --church-wine-hover: #72263e;
+    --church-wine-soft: #f3e1e7;
+    --church-gold: #b48d4b;
+    --church-gold-dark: #785821;
+    --church-gold-light: #f6e9c9;
+    --church-gold-on-wine: #e5c78f;
+    --church-ivory: #f7f2e9;
+    --church-paper: #fffdf8;
+    --church-white: #ffffff;
+    --church-on-wine: #fff8eb;
+    --church-ink: #382c2a;
+    --church-muted: #71625b;
+    --church-line: #e5d9c7;
+    --church-input-line: #a99277;
+    --church-sage: #2e5f50;
+    --church-sage-soft: #deeee8;
+    --church-sage-line: #a8c8bb;
+    --church-danger: #973737;
+    --church-danger-hover: #7d2828;
+    --church-danger-soft: #fbe8e5;
+    --church-danger-line: #dbb6ae;
+    --church-warning: #79521e;
+    --church-warning-soft: #fff0cc;
+    --church-warning-line: #d4b068;
+    --church-disabled: #e5ddd2;
+    --church-disabled-ink: #75685c;
+    --church-toggle-off: #aa9b91;
+    --church-focus: #8c651f;
+    --church-shadow: 0 8px 26px rgba(52, 16, 29, 0.07);
+    --church-gradient: linear-gradient(115deg, #34101d, #581a2d);
+
+    /* Existing variable names remain supported. */
+    --primary: var(--church-wine);
+    --primary-light: var(--church-wine-hover);
+    --background: var(--church-ivory);
+    --surface: var(--church-paper);
+    --text: var(--church-ink);
+    --muted: var(--church-muted);
+    --border: var(--church-line);
+    --radius: 18px;
+    --ui-primary: var(--church-wine);
+    --ui-primary-dark: var(--church-wine-dark);
+    --ui-background: var(--church-ivory);
+    --ui-text: var(--church-ink);
+    --ui-muted: var(--church-muted);
+    --ui-border: var(--church-line);
+}
 
 /* =====================================
    Manage Daily Menu
@@ -17,12 +70,12 @@
 }
 
 .manage-header h1 {
-    color: #4b1520;
+    color: var(--church-wine);
     margin: 5px 0;
 }
 
 .manage-header p {
-    color: #817b7d;
+    color: var(--church-muted);
     margin: 0;
 }
 
@@ -30,12 +83,12 @@
 
 .manage-filters {
     display: flex;
-    align-items: end;
+    align-items: flex-end;
     flex-wrap: wrap;
     gap: 15px;
-    background: white;
+    background: var(--church-white);
     padding: 22px;
-    border: 1px solid #e9e2e2;
+    border: 1px solid var(--church-line);
     border-radius: 18px;
     margin-bottom: 20px;
 }
@@ -50,30 +103,30 @@
 
 .filter-field label {
     font-weight: bold;
-    font-size: 13px;
+    font-size: 17px;
 }
 
 .filter-field input,
 .filter-field select {
     min-height: 46px;
     padding: 10px 12px;
-    border: 1px solid #ded4d7;
+    border: 1px solid var(--church-input-line);
     border-radius: 10px;
-    background: white;
+    background: var(--church-white);
     width: 100%;
     outline: none;
 }
 
 .filter-field input:focus,
 .filter-field select:focus {
-    border-color: #4b1520;
+    border-color: var(--church-wine);
 }
 
 /* Status */
 
 .menu-status-panel {
-    background: #4b1520;
-    color: white;
+    background: var(--church-wine);
+    color: var(--church-white);
     border-radius: 18px;
     padding: 24px;
     margin-bottom: 20px;
@@ -97,25 +150,25 @@
     display: inline-block;
     border-radius: 30px;
     padding: 8px 14px;
-    font-size: 12px;
+    font-size: 16px;
     white-space: nowrap;
 }
 
 .menu-status.published {
-    background: #e3f5e9;
-    color: #236b3b;
+    background: var(--church-sage-soft);
+    color: var(--church-sage);
 }
 
 .menu-status.draft {
-    background: #f4e2e2;
-    color: #8b3333;
+    background: var(--church-danger-soft);
+    color: var(--church-danger);
 }
 
 /* Panels */
 
 .manage-panel {
-    background: white;
-    border: 1px solid #e9e2e2;
+    background: var(--church-white);
+    border: 1px solid var(--church-line);
     border-radius: 18px;
     padding: 25px;
     margin-bottom: 20px;
@@ -127,13 +180,13 @@
 
 .manage-section-heading h2 {
     margin: 5px 0;
-    color: #4b1520;
+    color: var(--church-wine);
 }
 
 .manage-section-heading p {
     margin: 0;
-    color: #817b7d;
-    font-size: 13px;
+    color: var(--church-muted);
+    font-size: 17px;
 }
 
 /* Catalog */
@@ -150,14 +203,14 @@
     justify-content: space-between;
     gap: 15px;
     padding: 15px;
-    border: 1px solid #ece5e7;
-    background: #faf8f8;
+    border: 1px solid var(--church-line);
+    background: var(--church-ivory);
     border-radius: 12px;
     cursor: pointer;
 }
 
 .catalog-item:hover {
-    border-color: #bca2a9;
+    border-color: var(--church-gold);
 }
 
 .catalog-item-info {
@@ -172,7 +225,7 @@
     width: 46px;
     height: 46px;
     border-radius: 12px;
-    background: #f2e7e9;
+    background: var(--church-wine-soft);
     font-size: 25px;
 }
 
@@ -184,21 +237,21 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    color: #4b1520;
-    font-size: 13px;
+    color: var(--church-wine);
+    font-size: 17px;
 }
 
 .catalog-toggle input {
     width: 20px;
     height: 20px;
-    accent-color: #4b1520;
+    accent-color: var(--church-wine);
 }
 
 /* Add Item */
 
 .add-item-form {
     display: flex;
-    align-items: end;
+    align-items: flex-end;
     gap: 15px;
     flex-wrap: wrap;
 }
@@ -211,16 +264,16 @@
 /* Buttons */
 
 .btn-danger {
-    background: #9d3030;
-    color: white;
+    background: var(--church-danger);
+    color: var(--church-white);
 }
 
 .btn-primary:hover {
-    background: #74303e;
+    background: var(--church-wine-hover);
 }
 
 .btn-danger:hover {
-    background: #7d2424;
+    background: var(--church-danger-hover);
 }
 
 /* Alerts */
@@ -229,18 +282,18 @@
     padding: 14px 18px;
     border-radius: 12px;
     margin-bottom: 20px;
-    background: #f0e5e7;
-    color: #4b1520;
+    background: var(--church-gold-light);
+    color: var(--church-wine);
 }
 
 .manage-alert.success {
-    background: #e5f5eb;
-    color: #236b3b;
+    background: var(--church-sage-soft);
+    color: var(--church-sage);
 }
 
 .manage-alert.error {
-    background: #ffeded;
-    color: #9c2929;
+    background: var(--church-danger-soft);
+    color: var(--church-danger);
 }
 
 /* Empty State */
@@ -248,7 +301,7 @@
 .manage-empty {
     padding: 35px 15px;
     text-align: center;
-    color: #817b7d;
+    color: var(--church-muted);
 }
 
 .manage-empty div {
@@ -256,7 +309,7 @@
 }
 
 .manage-empty h3 {
-    color: #4b1520;
+    color: var(--church-wine);
 }
 
 /* Mobile */
@@ -297,5 +350,127 @@
 
     .icon-input {
         flex: auto;
+    }
+}
+
+/* Original management screen - matching burgundy theme. */
+.manage-header {
+    padding: 25px;
+    background: var(--church-gradient);
+    border: 1px solid var(--church-gold);
+    border-bottom: 4px solid var(--church-gold);
+    border-radius: 18px;
+}
+
+.manage-header h1 {
+    color: var(--church-on-wine);
+}
+
+.manage-header .kicker {
+    color: var(--church-gold-on-wine);
+    font-size: 15px;
+}
+
+.manage-header p {
+    color: var(--church-on-wine);
+}
+
+.manage-header .btn-secondary {
+    background: var(--church-gold-light);
+    color: var(--church-wine);
+}
+
+.manage-filters,
+.manage-panel {
+    background: var(--church-paper);
+    border-top: 3px solid var(--church-gold);
+    box-shadow: var(--church-shadow);
+}
+
+.filter-field {
+    min-width: 0;
+}
+
+.filter-field input,
+.filter-field select {
+    min-height: 52px;
+    color: var(--church-ink);
+    font: inherit;
+    font-size: 18px;
+}
+
+.filter-field input:focus-visible,
+.filter-field select:focus-visible,
+.catalog-toggle input:focus-visible {
+    outline: 3px solid var(--church-focus);
+    outline-offset: 3px;
+}
+
+.menu-status-panel {
+    background: var(--church-gradient);
+    border: 1px solid var(--church-gold);
+}
+
+.menu-status-panel .kicker {
+    color: var(--church-gold-on-wine);
+}
+
+.menu-status-panel p {
+    color: var(--church-on-wine);
+    opacity: 1;
+}
+
+.catalog-item {
+    background: #fbf6ed;
+    flex-wrap: wrap;
+}
+
+.catalog-item:has(input:checked) {
+    background: var(--church-wine-soft);
+    border-color: #b47f90;
+}
+
+.catalog-item-info {
+    min-width: 0;
+    flex: 1;
+}
+
+.catalog-name {
+    color: var(--church-wine);
+    overflow-wrap: anywhere;
+}
+
+.catalog-icon {
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.catalog-icon img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.catalog-toggle input {
+    width: 24px;
+    height: 24px;
+}
+
+.manage-alert {
+    border-inline-start: 4px solid var(--church-wine);
+}
+
+.manage-alert.success {
+    border-inline-start-color: var(--church-sage);
+}
+
+.manage-alert.error {
+    border-inline-start-color: var(--church-danger);
+}
+
+@media (max-width: 650px) {
+    .manage-header {
+        padding: 22px 18px;
     }
 }

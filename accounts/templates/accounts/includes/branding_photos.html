@@ -1,0 +1,13 @@
+{% load static %}
+{% with photo=monastery_brand.main_image|default:"images/branding/monastery.jpg" %}
+<span class="monastery-photos">
+    <span class="monastery-photo-frame">
+        <img src="{% static photo %}" alt="الصورة المعتمدة للدير" width="1237" height="1600" decoding="async" data-monastery-photo>
+    </span>
+    {% if monastery_brand.saint_image %}
+    <span class="monastery-photo-frame">
+        <img src="{% static monastery_brand.saint_image %}" alt="صورة قديس الدير" decoding="async" data-monastery-photo>
+    </span>
+    {% endif %}
+</span>
+{% endwith %}

@@ -1,0 +1,325 @@
+{% extends "accounts/base.html" %}
+{% load static %}
+
+{% block title %}
+تقرير المطعم | طلبات الدير
+{% endblock %}
+
+{% block content %}
+{% with report_meal=selected_meal|default:"all" %}
+
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+
+<style>
+    .report-filters input,
+    .report-filters select {
+        min-height: 52px;
+        font: inherit;
+        font-size: 18px;
+        color: #241b32;
+        background-color: #ffffff;
+    }
+
+    .report-filters select {
+        appearance: auto;
+    }
+
+    .report-filters select option {
+        color: #241b32;
+        background-color: #ffffff;
+    }
+
+    .report-filter-help {
+        margin: 0 0 24px;
+        color: #62576f;
+        font-size: 16px;
+    }
+</style>
+
+<div class="page-pad dashboard-page">
+
+    <!-- Page header -->
+    <div class="dashboard-header no-print">
+        <div>
+            <span class="kicker">لوحة مسؤول المطعم</span>
+            <h1>تقرير طلبات الوجبات</h1>
+            <p>اختَر التاريخ والوجبة ثم اضغط عرض التقرير.</p>
+        </div>
+
+        <div class="dashboard-actions">
+            <a href="{% url 'kitchen:manage_menu' %}" class="btn btn-primary">
+                إدارة قائمة اليوم
+            </a>
+
+            <a href="{% url 'accounts:home' %}" class="btn btn-secondary">
+                الرئيسية
+            </a>
+
+            <button type="button" class="btn btn-secondary" onclick="window.print()">
+                طباعة التقرير
+            </button>
+        </div>
+    </div>
+
+    <!-- Filters: fixed options, no meal_options or JavaScript needed -->
+    <form
+        method="get"
+        action="{% url 'kitchen:dashboard' %}"
+        class="report-filters no-print"
+        id="reportFilterForm"
+    >
+        <div class="filter-field">
+            <label for="report-date">التاريخ</label>
+
+            <input
+                type="date"
+                id="report-date"
+                name="date"
+                value="{{ selected_date|date:'Y-m-d' }}"
+                required
+            >
+        </div>
+
+        <div class="filter-field">
+            <label for="report-meal">الوجبة</label>
+
+            <select id="report-meal" name="meal" required>
+
+                {% if report_meal == "all" %}
+                <option value="all" selected>جميع الوجبات</option>
+                {% else %}
+                <option value="all">جميع الوجبات</option>
+                {% endif %}
+
+                {% if report_meal == "breakfast" %}
+                <option value="breakfast" selected>فطار</option>
+                {% else %}
+                <option value="breakfast">فطار</option>
+                {% endif %}
+
+                {% if report_meal == "lunch" %}
+                <option value="lunch" selected>غداء</option>
+                {% else %}
+                <option value="lunch">غداء</option>
+                {% endif %}
+
+                {% if report_meal == "dinner" %}
+                <option value="dinner" selected>عشاء</option>
+                {% else %}
+                <option value="dinner">عشاء</option>
+                {% endif %}
+
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            عرض التقرير
+        </button>
+    </form>
+
+    <p class="report-filter-help no-print">
+        اضغط «عرض التقرير» بعد تغيير الاختيار وقبل الطباعة.
+        الطباعة تعرض التقرير المحمّل حاليًا.
+    </p>
+
+    <!-- Matching daily menus -->
+    <section class="no-print">
+        <div class="section-heading">
+            <div>
+                <span class="kicker">قوائم التاريخ المختار</span>
+                <h2>حالة القوائم المطابقة للفلتر</h2>
+            </div>
+        </div>
+
+        <div class="daily-menu-grid">
+            {% for menu in daily_menus %}
+            {% with m=menu.meal_type %}
+            {% if report_meal == "all" or report_meal == m %}
+
+            <div class="daily-menu-card">
+                <h3>{{ menu.get_meal_type_display }}</h3>
+
+                <p>
+                    الأصناف المتاحة:
+                    <strong>{{ menu.available_count }}</strong>
+                </p>
+
+                {% if menu.is_published %}
+                <span class="status-pill published">منشورة</span>
+                {% else %}
+                <span class="status-pill draft">غير منشورة</span>
+                {% endif %}
+
+                {% if menu.ordering_deadline %}
+                <p class="menu-deadline">
+                    آخر موعد للطلب:
+                    {{ menu.ordering_deadline|date:"g:i A" }}
+                </p>
+                {% endif %}
+            </div>
+
+            {% endif %}
+            {% endwith %}
+            {% empty %}
+            <div class="empty-card">
+                لا توجد قوائم مسجلة للفلتر الحالي.
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Printable report -->
+    <article class="report-sheet">
+
+        <div class="report-header report-branding-header">
+            <div class="report-cross" aria-hidden="true">✠</div>
+
+            <div class="report-heading-copy">
+                <h2>دير الأنبا بيشوي العامر</h2>
+                <h1>تقرير طلبات الوجبات اليومية</h1>
+
+                <p>
+                    التاريخ:
+                    <strong>{{ selected_date|date:"j F Y" }}</strong>
+                </p>
+
+                <p>
+                    الوجبة:
+                    <strong id="reportMealLabel">
+                        {% if report_meal == "all" %}
+                        جميع الوجبات
+                        {% elif report_meal == "breakfast" %}
+                        فطار
+                        {% elif report_meal == "lunch" %}
+                        غداء
+                        {% elif report_meal == "dinner" %}
+                        عشاء
+                        {% endif %}
+                    </strong>
+                </p>
+            </div>
+            {% include "accounts/includes/report_branding.html" %}
+        </div>
+
+        <!-- Statistics -->
+        <div class="report-statistics">
+            <div class="stat-card">
+                <span>عدد الطلبات</span>
+                <strong>{{ total_orders|default:"0" }}</strong>
+            </div>
+
+            <div class="stat-card">
+                <span>عدد أصحاب الطلبات</span>
+                <strong>{{ total_monks|default:"0" }}</strong>
+            </div>
+
+            <div class="stat-card">
+                <span>إجمالي الكميات</span>
+                <strong>{{ total_quantity|default:"0" }}</strong>
+            </div>
+        </div>
+
+        <!-- Kitchen totals -->
+        <section class="report-section">
+            <div class="report-section-heading">
+                <h2>إجمالي الأصناف المطلوبة</h2>
+                <p>ملخص الكميات المطلوبة للتاريخ والوجبة المختارين.</p>
+            </div>
+
+            <div class="report-table-wrap">
+                <table class="report-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">الوجبة</th>
+                            <th scope="col">القسم</th>
+                            <th scope="col">الصنف</th>
+                            <th scope="col">الكمية</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for row in kitchen_totals %}
+                        <tr>
+                            <td>{{ row.meal }}</td>
+                            <td>{{ row.category }}</td>
+                            <td>{{ row.item }}</td>
+                            <td><strong>{{ row.quantity }}</strong></td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" class="empty-table">
+                                لا توجد طلبات مسجلة للتاريخ والوجبة المختارين.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- One row per monk -->
+        <section class="report-section">
+            <div class="report-section-heading">
+                <h2>تفاصيل طلبات الرهبان</h2>
+                <p>كل راهب في صف واحد، مع جميع الأصناف والكميات.</p>
+            </div>
+
+            <div class="report-table-wrap">
+                <table class="report-table monk-orders-table">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="width: 45px;">#</th>
+                            <th scope="col" style="width: 170px;">اسم الراهب</th>
+                            <th scope="col">الأصناف المطلوبة</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for row in detailed_orders %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+
+                            <td class="monk-name">{{ row.monk }}</td>
+
+                            <td class="monk-items-cell">
+                                {% for meal in row.meals %}
+                                <div class="monk-meal-group">
+
+                                    {% if report_meal == "all" %}
+                                    <strong class="meal-label">
+                                        {{ meal.name }}:
+                                    </strong>
+                                    {% endif %}
+
+                                    {% for item in meal.items %}
+                                    <span class="ordered-item">
+                                        {{ item.name }}
+                                        <strong><bdi>× {{ item.quantity }}</bdi></strong>
+                                    </span>
+                                    {% endfor %}
+
+                                </div>
+                                {% endfor %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" class="empty-table">
+                                لا توجد طلبات مسجلة للتاريخ والوجبة المختارين.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <div class="report-footer">
+            <p>تقرير صادر من نظام طلبات الدير</p>
+        </div>
+
+    </article>
+</div>
+
+{% endwith %}
+{% endblock %}

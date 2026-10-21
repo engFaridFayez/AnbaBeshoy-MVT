@@ -269,7 +269,7 @@ body {
     text-align: center;
 }
 .report-cross {
-    display: grid;
+    display: none;
     place-items: center;
     width: 82px;
     height: 100px;
@@ -526,7 +526,7 @@ body {
     }
 
     .report-cross {
-        display: grid;
+        display: none;
         place-items: center;
         width: 58px;
         height: 74px;

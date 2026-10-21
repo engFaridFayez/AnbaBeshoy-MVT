@@ -1,3 +1,56 @@
+/* Anba Bishoy - unified burgundy / ivory / gold theme.
+   Drop-in replacement: no template or JavaScript changes required.
+   The palette is repeated locally so this file has no @import dependency. */
+:root {
+    --church-wine: #581a2d;
+    --church-wine-dark: #34101d;
+    --church-wine-hover: #72263e;
+    --church-wine-soft: #f3e1e7;
+    --church-gold: #b48d4b;
+    --church-gold-dark: #785821;
+    --church-gold-light: #f6e9c9;
+    --church-gold-on-wine: #e5c78f;
+    --church-ivory: #f7f2e9;
+    --church-paper: #fffdf8;
+    --church-white: #ffffff;
+    --church-on-wine: #fff8eb;
+    --church-ink: #382c2a;
+    --church-muted: #71625b;
+    --church-line: #e5d9c7;
+    --church-input-line: #a99277;
+    --church-sage: #2e5f50;
+    --church-sage-soft: #deeee8;
+    --church-sage-line: #a8c8bb;
+    --church-danger: #973737;
+    --church-danger-hover: #7d2828;
+    --church-danger-soft: #fbe8e5;
+    --church-danger-line: #dbb6ae;
+    --church-warning: #79521e;
+    --church-warning-soft: #fff0cc;
+    --church-warning-line: #d4b068;
+    --church-disabled: #e5ddd2;
+    --church-disabled-ink: #75685c;
+    --church-toggle-off: #aa9b91;
+    --church-focus: #8c651f;
+    --church-shadow: 0 8px 26px rgba(52, 16, 29, 0.07);
+    --church-gradient: linear-gradient(115deg, #34101d, #581a2d);
+
+    /* Existing variable names remain supported. */
+    --primary: var(--church-wine);
+    --primary-light: var(--church-wine-hover);
+    --background: var(--church-ivory);
+    --surface: var(--church-paper);
+    --text: var(--church-ink);
+    --muted: var(--church-muted);
+    --border: var(--church-line);
+    --radius: 18px;
+    --ui-primary: var(--church-wine);
+    --ui-primary-dark: var(--church-wine-dark);
+    --ui-background: var(--church-ivory);
+    --ui-text: var(--church-ink);
+    --ui-muted: var(--church-muted);
+    --ui-border: var(--church-line);
+}
 
 .kitchen-page {
     padding-bottom: 115px;
@@ -6,10 +59,10 @@
 .food-banner {
     background: linear-gradient(
         135deg,
-        #4b1520,
-        #823c4b
+        var(--church-wine),
+        var(--church-wine-hover)
     );
-    color: white;
+    color: var(--church-white);
     border-radius: 22px;
     padding: 28px;
     display: flex;
@@ -30,7 +83,7 @@
 
 .mini-seal {
     font-size: 45px;
-    color: #ead3ad;
+    color: var(--church-gold-on-wine);
 }
 
 .meal-tabs,
@@ -47,10 +100,10 @@
     align-items: center;
     gap: 7px;
     padding: 17px 10px;
-    background: white;
-    border: 1px solid #eee3e5;
+    background: var(--church-white);
+    border: 1px solid var(--church-line);
     border-radius: 16px;
-    color: #514549;
+    color: var(--church-ink);
     transition: .2s;
 }
 
@@ -59,24 +112,24 @@
 }
 
 .meal-tab.is-active {
-    background: #4b1520;
-    color: white;
-    border-color: #4b1520;
+    background: var(--church-wine);
+    color: var(--church-white);
+    border-color: var(--church-wine);
 }
 
 .category-tab {
-    border: 1px solid #e5dadd;
+    border: 1px solid var(--church-line);
     border-radius: 12px;
-    background: white;
+    background: var(--church-white);
     padding: 12px 5px;
-    color: #514549;
+    color: var(--church-ink);
     cursor: pointer;
 }
 
 .category-tab.is-active {
-    background: #f1e5e8;
-    color: #4b1520;
-    border-color: #4b1520;
+    background: var(--church-wine-soft);
+    color: var(--church-wine);
+    border-color: var(--church-wine);
     font-weight: bold;
 }
 
@@ -92,18 +145,18 @@
 }
 
 .available-label {
-    color: #22804a;
-    font-size: 12px;
+    color: var(--church-sage);
+    font-size: 16px;
 }
 
 .closed-label {
-    color: #a32626;
-    font-size: 12px;
+    color: var(--church-danger);
+    font-size: 16px;
 }
 
 .deadline-note {
-    color: #786e71;
-    font-size: 13px;
+    color: var(--church-muted);
+    font-size: 16px;
 }
 
 .food-grid {
@@ -116,8 +169,8 @@
 }
 
 .food-card {
-    background: white;
-    border: 1px solid #e9e2e2;
+    background: var(--church-white);
+    border: 1px solid var(--church-line);
     border-radius: 18px;
     padding: 20px;
     display: flex;
@@ -143,7 +196,7 @@
     display: grid;
     place-items: center;
     border-radius: 14px;
-    background: #f7f0f1;
+    background: var(--church-wine-soft);
     font-size: 30px;
 }
 
@@ -152,7 +205,7 @@
 }
 
 .food-description small {
-    color: #85797d;
+    color: var(--church-muted);
 }
 
 .quantity-section {
@@ -162,30 +215,30 @@
 }
 
 .quantity-section label {
-    font-size: 13px;
-    color: #74696d;
+    font-size: 16px;
+    color: var(--church-muted);
 }
 
 .quantity-input {
     width: 85px;
     padding: 10px;
     text-align: center;
-    border: 1px solid #ded4d7;
+    border: 1px solid var(--church-input-line);
     border-radius: 10px;
     outline: none;
 }
 
 .quantity-input:focus {
-    border-color: #4b1520;
+    border-color: var(--church-wine);
 }
 
 .sticky-order-bar {
     position: sticky;
     bottom: 15px;
     z-index: 10;
-    background: white;
-    border: 1px solid #e9e2e2;
-    box-shadow: 0 8px 35px #00000015;
+    background: var(--church-white);
+    border: 1px solid var(--church-line);
+    box-shadow: 0 8px 35px rgba(52, 16, 29, 0.09);
     padding: 15px 20px;
     border-radius: 18px;
     margin-top: 25px;
@@ -197,7 +250,7 @@
 
 .sticky-order-bar small {
     display: block;
-    color: #81767b;
+    color: var(--church-muted);
 }
 
 .sticky-order-bar strong {
@@ -210,8 +263,8 @@
 }
 
 .existing-order-panel {
-    background: #fff;
-    border: 1px solid #e4d9dc;
+    background: var(--church-white);
+    border: 1px solid var(--church-line);
     border-radius: 18px;
     padding: 20px;
     margin-bottom: 22px;
@@ -223,23 +276,23 @@
 
 .existing-order-panel p,
 .existing-order-panel small {
-    color: #74696d;
+    color: var(--church-muted);
 }
 
 .existing-item {
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px solid #f0e9eb;
+    border-bottom: 1px solid var(--church-line);
     padding: 9px 0;
 }
 
 .menu-empty-state {
-    background: white;
-    border: 1px solid #eee5e7;
+    background: var(--church-white);
+    border: 1px solid var(--church-line);
     border-radius: 18px;
     padding: 45px 20px;
     text-align: center;
-    color: #756b6e;
+    color: var(--church-muted);
 }
 
 .empty-icon {
@@ -250,18 +303,18 @@
     border-radius: 12px;
     padding: 14px;
     margin-bottom: 20px;
-    background: #f0e5e7;
-    color: #4b1520;
+    background: var(--church-gold-light);
+    color: var(--church-wine);
 }
 
 .kitchen-alert.success {
-    background: #e5f5eb;
-    color: #20633c;
+    background: var(--church-sage-soft);
+    color: var(--church-sage);
 }
 
 .kitchen-alert.error {
-    background: #ffeded;
-    color: #9c2929;
+    background: var(--church-danger-soft);
+    color: var(--church-danger);
 }
 
 @media (max-width: 600px) {
@@ -285,5 +338,125 @@
     .sticky-order-bar {
         bottom: 10px;
         padding: 12px;
+    }
+}
+
+/* Original kitchen screen - matching burgundy theme. */
+.food-banner {
+    background: var(--church-gradient);
+    border: 1px solid var(--church-gold);
+    border-bottom: 4px solid var(--church-gold);
+    box-shadow: var(--church-shadow);
+}
+
+.food-banner .kicker {
+    color: var(--church-gold-on-wine);
+    font-size: 15px;
+}
+
+.food-banner p {
+    color: var(--church-on-wine);
+    opacity: 1;
+}
+
+.meal-tab.is-active {
+    box-shadow: inset 0 -3px 0 var(--church-gold);
+}
+
+.food-card,
+.existing-order-panel,
+.menu-empty-state {
+    background: var(--church-paper);
+    box-shadow: var(--church-shadow);
+}
+
+.food-description h3,
+.menu-heading h2,
+.existing-order-panel h3 {
+    color: var(--church-wine);
+}
+
+.food-card-header {
+    min-width: 0;
+}
+
+.food-icon {
+    flex-shrink: 0;
+    overflow: hidden;
+    border: 1px solid var(--church-line);
+}
+
+.food-icon img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.food-description {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.category-tab {
+    min-height: 48px;
+    font-size: 18px;
+}
+
+.category-tab.is-active {
+    background: var(--church-gold-light);
+    border-color: var(--church-gold);
+}
+
+.quantity-input {
+    min-height: 50px;
+    font-size: 20px;
+    color: var(--church-wine);
+    background: var(--church-white);
+}
+
+.quantity-input:focus-visible,
+.meal-tab:focus-visible,
+.category-tab:focus-visible {
+    outline: 3px solid var(--church-focus);
+    outline-offset: 3px;
+}
+
+.sticky-order-bar {
+    background: var(--church-paper);
+    border-top: 3px solid var(--church-gold);
+    flex-wrap: wrap;
+}
+
+.sticky-order-bar strong {
+    color: var(--church-wine);
+}
+
+.existing-item:nth-child(even) {
+    background: #f7eee6;
+}
+
+.existing-item strong {
+    padding-inline: 8px;
+    border-radius: 6px;
+    color: var(--church-sage);
+    background: var(--church-sage-soft);
+}
+
+.kitchen-alert {
+    border-inline-start: 4px solid var(--church-wine);
+}
+
+.kitchen-alert.success {
+    border-inline-start-color: var(--church-sage);
+}
+
+.kitchen-alert.error {
+    border-inline-start-color: var(--church-danger);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .meal-tab {
+        transition: none;
     }
 }

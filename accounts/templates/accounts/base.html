@@ -4,61 +4,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <meta name="theme-color" content="#39245c">
-
-    <title>{% block title %}طلبات الطعام | دير الأنبا بيشوي{% endblock %}</title>
-
+    <meta name="theme-color" content="#581a2d">
+    {% with preload_photo=monastery_brand.main_image|default:"images/branding/monastery.jpg" %}
+    <link rel="preload" as="image" href="{% static preload_photo %}">
+    {% endwith %}
+    <title>{% block title %}طلبات الدير{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/auth.css' %}">
     <link rel="stylesheet" href="{% static 'css/simple_ui.css' %}">
-
+    <link rel="stylesheet" href="{% static 'css/monastery_branding.css' %}">
     {% block extra_css %}{% endblock %}
-
+    <script src="{% static 'js/monastery_branding.js' %}" defer></script>
     <script src="{% static 'js/simple_ui.js' %}" defer></script>
 </head>
-
 <body>
+    {% include "accounts/includes/branding_splash.html" %}
     <div class="app-shell">
-
         <header class="topbar ui-topbar no-print">
-
-            <a class="ui-brand" href="{% url 'accounts:home' %}">
-                <span aria-hidden="true">✠</span>
-
-                <span>
-                    <strong>دير الأنبا بيشوي</strong>
-                    <small>طلبات الطعام</small>
+            <a class="ui-brand monastery-brand" href="{% url 'accounts:home' %}">
+                {% include "accounts/includes/branding_photos.html" %}
+                <span class="monastery-brand-copy">
+                    <strong>{{ monastery_brand.title|default:"دير الأنبا بيشوي العامر" }}</strong>
+                    <small>{{ monastery_brand.subtitle|default:"خدمة الوجبات وطلبات الدير" }}</small>
                 </span>
             </a>
-
             {% if user.is_authenticated %}
             <form method="post" action="{% url 'accounts:logout' %}">
                 {% csrf_token %}
-
-                <button type="submit" class="ui-button ui-header-button">
-                    تسجيل الخروج
-                </button>
+                <button type="submit" class="ui-button ui-header-button">تسجيل الخروج</button>
             </form>
             {% endif %}
-
         </header>
-
         <main class="main-content">
-
             {% if messages %}
             <div class="ui-wrap ui-messages no-print" aria-live="polite">
                 {% for message in messages %}
-                <div class="ui-alert {{ message.tags }}">
-                    {{ message }}
-                </div>
+                <div class="ui-alert {{ message.tags }}">{{ message }}</div>
                 {% endfor %}
             </div>
             {% endif %}
-
             {% block content %}{% endblock %}
-
         </main>
-
     </div>
+    {% block extra_js %}{% endblock %}
 </body>
 </html>

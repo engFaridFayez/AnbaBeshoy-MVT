@@ -1,10 +1,55 @@
+/* Anba Bishoy - unified burgundy / ivory / gold theme.
+   Drop-in replacement: no template or JavaScript changes required.
+   The palette is repeated locally so this file has no @import dependency. */
 :root {
-    --ui-primary: #6842a0;
-    --ui-primary-dark: #39245c;
-    --ui-background: #f4f1f8;
-    --ui-text: #241b32;
-    --ui-muted: #62576f;
-    --ui-border: #e1d9eb;
+    --church-wine: #581a2d;
+    --church-wine-dark: #34101d;
+    --church-wine-hover: #72263e;
+    --church-wine-soft: #f3e1e7;
+    --church-gold: #b48d4b;
+    --church-gold-dark: #785821;
+    --church-gold-light: #f6e9c9;
+    --church-gold-on-wine: #e5c78f;
+    --church-ivory: #f7f2e9;
+    --church-paper: #fffdf8;
+    --church-white: #ffffff;
+    --church-on-wine: #fff8eb;
+    --church-ink: #382c2a;
+    --church-muted: #71625b;
+    --church-line: #e5d9c7;
+    --church-input-line: #a99277;
+    --church-sage: #2e5f50;
+    --church-sage-soft: #deeee8;
+    --church-sage-line: #a8c8bb;
+    --church-danger: #973737;
+    --church-danger-hover: #7d2828;
+    --church-danger-soft: #fbe8e5;
+    --church-danger-line: #dbb6ae;
+    --church-warning: #79521e;
+    --church-warning-soft: #fff0cc;
+    --church-warning-line: #d4b068;
+    --church-disabled: #e5ddd2;
+    --church-disabled-ink: #75685c;
+    --church-toggle-off: #aa9b91;
+    --church-focus: #8c651f;
+    --church-shadow: 0 8px 26px rgba(52, 16, 29, 0.07);
+    --church-gradient: linear-gradient(115deg, #34101d, #581a2d);
+
+    /* Existing variable names remain supported. */
+    --primary: var(--church-wine);
+    --primary-light: var(--church-wine-hover);
+    --background: var(--church-ivory);
+    --surface: var(--church-paper);
+    --text: var(--church-ink);
+    --muted: var(--church-muted);
+    --border: var(--church-line);
+    --radius: 18px;
+    --ui-primary: var(--church-wine);
+    --ui-primary-dark: var(--church-wine-dark);
+    --ui-background: var(--church-ivory);
+    --ui-text: var(--church-ink);
+    --ui-muted: var(--church-muted);
+    --ui-border: var(--church-line);
 }
 
 * {
@@ -58,7 +103,7 @@ select {
     display: flex;
     align-items: center;
     gap: 14px;
-    color: white;
+    color: var(--church-white);
     text-decoration: none;
 }
 
@@ -77,7 +122,7 @@ select {
 
 .ui-brand small {
     font-size: 16px;
-    color: #e5dcf3;
+    color: var(--church-gold-on-wine);
 }
 
 .ui-page-heading {
@@ -118,27 +163,27 @@ select {
 
 .ui-primary {
     background: var(--ui-primary);
-    color: white;
+    color: var(--church-white);
 }
 
 .ui-primary:hover {
-    background: #533382;
+    background: var(--church-wine-hover);
 }
 
 .ui-secondary {
-    background: #eae2f3;
+    background: var(--church-gold-light);
     color: var(--ui-primary-dark);
 }
 
 .ui-danger {
-    background: #a23636;
-    color: white;
+    background: var(--church-danger);
+    color: var(--church-white);
 }
 
 .ui-header-button {
     background: transparent;
-    border-color: #b8a5d2;
-    color: white;
+    border-color: var(--church-gold);
+    color: var(--church-white);
     font-size: 17px;
     min-height: 48px;
 }
@@ -148,8 +193,8 @@ select {
 }
 
 .ui-button:disabled {
-    background: #dfd9e6;
-    color: #625969;
+    background: var(--church-disabled);
+    color: var(--church-disabled-ink);
     cursor: not-allowed;
 }
 
@@ -159,7 +204,7 @@ select {
 .ui-stepper button:focus-visible,
 .ui-stepper input:focus-visible,
 .ui-details summary:focus-visible {
-    outline: 3px solid #9770cb;
+    outline: 3px solid var(--church-focus);
     outline-offset: 4px;
 }
 
@@ -175,10 +220,10 @@ select {
     align-items: flex-start;
     gap: 15px;
     padding: 26px;
-    background: white;
+    background: var(--church-white);
     border: 1px solid var(--ui-border);
     border-radius: 20px;
-    box-shadow: 0 6px 22px #241b3209;
+    box-shadow: 0 6px 22px rgba(52, 16, 29, 0.04);
 }
 
 .ui-meal-card h2 {
@@ -204,13 +249,13 @@ select {
 }
 
 .ui-open {
-    background: #dff6e8;
-    color: #176b40;
+    background: var(--church-sage-soft);
+    color: var(--church-sage);
 }
 
 .ui-closed {
-    background: #fde8e8;
-    color: #8b3030;
+    background: var(--church-danger-soft);
+    color: var(--church-danger);
 }
 
 .ui-saved-note {
@@ -222,7 +267,7 @@ select {
 .ui-panel {
     margin: 22px 0;
     padding: 24px;
-    background: white;
+    background: var(--church-white);
     border: 1px solid var(--ui-border);
     border-radius: 18px;
 }
@@ -251,7 +296,7 @@ select {
 
 .ui-meal-tab {
     padding: 16px 8px;
-    background: white;
+    background: var(--church-white);
     border: 2px solid var(--ui-border);
     border-radius: 14px;
     text-align: center;
@@ -264,7 +309,7 @@ select {
 .ui-meal-tab.is-active {
     background: var(--ui-primary-dark);
     border-color: var(--ui-primary-dark);
-    color: white;
+    color: var(--church-white);
 }
 
 .ui-catalog {
@@ -280,7 +325,7 @@ select {
     justify-content: space-between;
     gap: 15px;
     padding: 16px;
-    background: #fcfafe;
+    background: var(--church-paper);
     border: 1px solid var(--ui-border);
     border-radius: 14px;
 }
@@ -319,7 +364,7 @@ label.ui-item-row {
     border: 0;
     border-radius: 10px;
     background: var(--ui-primary);
-    color: white;
+    color: var(--church-white);
     font-size: 29px;
     font-weight: bold;
     cursor: pointer;
@@ -329,9 +374,9 @@ label.ui-item-row {
     width: 64px;
     height: 50px;
     padding: 4px;
-    border: 1px solid #bfb0d0;
+    border: 1px solid var(--church-input-line);
     border-radius: 10px;
-    background: white;
+    background: var(--church-white);
     text-align: center;
     font-size: 23px;
     font-weight: bold;
@@ -366,7 +411,7 @@ label.ui-item-row {
     height: 36px;
     margin: 4px auto 8px;
     border-radius: 30px;
-    background: #b9b0c3;
+    background: var(--church-toggle-off);
 }
 
 .ui-toggle-track::after {
@@ -377,8 +422,8 @@ label.ui-item-row {
     width: 28px;
     height: 28px;
     border-radius: 50%;
-    background: white;
-    box-shadow: 0 2px 5px #00000020;
+    background: var(--church-white);
+    box-shadow: 0 2px 5px rgba(52, 16, 29, 0.13);
 }
 
 .ui-toggle input:checked + .ui-toggle-track {
@@ -390,7 +435,7 @@ label.ui-item-row {
 }
 
 .ui-toggle input:focus-visible + .ui-toggle-track {
-    outline: 3px solid #9770cb;
+    outline: 3px solid var(--church-focus);
     outline-offset: 4px;
 }
 
@@ -418,10 +463,10 @@ label.ui-item-row {
     bottom: 12px;
     z-index: 5;
     padding: 18px;
-    background: white;
+    background: var(--church-white);
     border: 1px solid var(--ui-border);
     border-radius: 16px;
-    box-shadow: 0 6px 28px #241b3218;
+    box-shadow: 0 6px 28px rgba(52, 16, 29, 0.10);
 }
 
 .ui-save-bar p {
@@ -458,8 +503,8 @@ label.ui-item-row {
     width: 100%;
     min-height: 54px;
     padding: 12px;
-    background: white;
-    border: 1px solid #bfb0d0;
+    background: var(--church-white);
+    border: 1px solid var(--church-input-line);
     border-radius: 10px;
     color: var(--ui-text);
     font-size: 19px;
@@ -481,23 +526,23 @@ label.ui-item-row {
     margin-bottom: 14px;
     padding: 14px 18px;
     border-radius: 12px;
-    background: #ebe3f5;
+    background: var(--church-wine-soft);
     color: var(--ui-primary-dark);
 }
 
 .ui-alert.success {
-    background: #dff6e8;
-    color: #176b40;
+    background: var(--church-sage-soft);
+    color: var(--church-sage);
 }
 
 .ui-alert.error {
-    background: #fde8e8;
-    color: #8b3030;
+    background: var(--church-danger-soft);
+    color: var(--church-danger);
 }
 
 .ui-alert.warning {
-    background: #fff2d7;
-    color: #795200;
+    background: var(--church-warning-soft);
+    color: var(--church-warning);
 }
 
 /* تحسين صفحة الدخول الموجودة دون تغيير نموذجها. */
@@ -561,10 +606,237 @@ label.ui-item-row {
     }
 }
 
-.ui-item-name > .ui-item-title {
+/* Burgundy identity, while retaining the original markup and interactions. */
+body {
+    color-scheme: light;
+}
+
+.ui-topbar {
+    background: var(--church-gradient);
+    border-bottom: 3px solid var(--church-gold);
+}
+
+.ui-brand,
+.ui-brand strong {
+    color: var(--church-on-wine);
+}
+
+.ui-brand > span:first-child {
+    color: var(--church-gold-on-wine);
+}
+
+.ui-header-button {
+    color: var(--church-on-wine);
+    border-color: var(--church-gold);
+}
+
+.ui-header-button:hover {
+    background: rgba(229, 199, 143, 0.12);
+}
+
+.ui-topbar .ui-header-button:focus-visible {
+    outline-color: var(--church-gold-on-wine);
+}
+
+.ui-page-heading {
+    padding-inline-start: 16px;
+    border-inline-start: 4px solid var(--church-gold);
+}
+
+.ui-welcome {
+    color: var(--church-wine);
+}
+
+.ui-secondary {
+    border-color: var(--church-gold);
+}
+
+.ui-secondary:hover {
+    background: #efdcad;
+}
+
+.ui-danger:hover {
+    background: var(--church-danger-hover);
+}
+
+.ui-button:disabled:hover {
+    background: var(--church-disabled);
+    color: var(--church-disabled-ink);
+}
+
+.ui-meal-card {
+    background: var(--church-paper);
+    border-top: 4px solid var(--church-wine);
+    box-shadow: var(--church-shadow);
+}
+
+.ui-meal-card h2 {
+    color: var(--church-wine);
+}
+
+.ui-meal-card .ui-meal-icon {
+    display: grid;
+    place-items: center;
+    width: 74px;
+    height: 82px;
+    padding: 7px;
+    border: 1px solid var(--church-gold);
+    border-radius: 38px 38px 12px 12px;
+    background: var(--church-gold-light);
+}
+
+.ui-status {
+    border: 1px solid transparent;
+}
+
+.ui-open {
+    border-color: var(--church-sage-line);
+}
+
+.ui-closed {
+    border-color: var(--church-danger-line);
+}
+
+.ui-panel {
+    background: var(--church-paper);
+    border-top: 3px solid var(--church-gold);
+    box-shadow: var(--church-shadow);
+}
+
+.ui-admin-panel {
+    background: #fbf1dd;
+}
+
+.ui-meal-tab {
+    background: var(--church-paper);
+}
+
+.ui-meal-tab.is-active {
+    background: var(--church-wine);
+    border-color: var(--church-wine);
+    box-shadow: inset 0 -3px 0 var(--church-gold);
+}
+
+.ui-item-row {
+    background: #fbf6ed;
+}
+
+label.ui-item-row:hover {
+    border-color: var(--church-gold);
+}
+
+.ui-item-row:focus-within {
+    outline: 2px solid var(--church-gold);
+    outline-offset: 2px;
+}
+
+.ui-item-row:has(.ui-toggle input:checked) {
+    background: var(--church-wine-soft);
+    border-color: #b47f90;
+}
+
+.ui-item-name strong {
+    color: var(--church-wine);
+}
+
+.ui-stepper button:hover {
+    background: var(--church-wine-hover);
+}
+
+.ui-stepper input {
+    color: var(--church-wine);
+    background: var(--church-white);
+    font-variant-numeric: tabular-nums;
+}
+
+.ui-input::placeholder {
+    color: var(--church-muted);
+    opacity: 1;
+}
+
+.ui-input[type="file"] {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 16px;
+}
+
+.ui-input::file-selector-button {
+    margin-inline-end: 10px;
+    padding: 8px 12px;
+    background: var(--church-gold-light);
+    color: var(--church-wine);
+    border: 1px solid var(--church-gold);
+    border-radius: 8px;
+    font: inherit;
+    cursor: pointer;
+}
+
+.ui-save-bar {
+    background: var(--church-paper);
+    border-top: 3px solid var(--church-gold);
+    box-shadow: 0 6px 28px rgba(52, 16, 29, 0.12);
+}
+
+.ui-save-bar > p strong,
+.ui-save-bar > div > strong {
+    color: var(--church-wine);
+}
+
+.ui-order-summary li:nth-child(even) {
+    background: #f7eee6;
+}
+
+.ui-order-summary li {
+    padding: 12px 10px;
+}
+
+.ui-order-summary strong {
+    color: var(--church-sage);
+    background: var(--church-sage-soft);
+    border-radius: 6px;
+    padding-inline: 8px;
+    align-self: flex-start;
+    white-space: nowrap;
+}
+
+.ui-alert {
+    border-inline-start: 4px solid var(--church-wine);
+}
+
+.ui-alert.success {
+    border-inline-start-color: var(--church-sage);
+}
+
+.ui-alert.error {
+    border-inline-start-color: var(--church-danger);
+}
+
+.ui-alert.warning {
+    border-inline-start-color: var(--church-gold);
+}
+
+.login-hero {
+    background:
+        repeating-linear-gradient(90deg, #ffffff03 0 14px, #00000004 14px 28px),
+        var(--church-gradient);
+}
+
+.login-panel .btn-primary:hover {
+    background: var(--church-wine-hover);
+}
+
+/* Image styling consolidated from the two existing copies. */
+.ui-item-name > .ui-item-title,
+.ui-item-title {
     display: flex;
     align-items: center;
     gap: 14px;
+}
+
+.ui-item-title > span:last-child {
+    flex: 1;
+    min-width: 0;
 }
 
 .ui-menu-photo {
@@ -573,70 +845,37 @@ label.ui-item-row {
     height: 76px;
     flex-shrink: 0;
     object-fit: cover;
+    border: 1px solid var(--church-line);
     border-radius: 14px;
-    background: #eee7f5;
+    background: var(--church-wine-soft);
 }
 
 .ui-photo-placeholder {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 34px;
-}
-
-@media (max-width: 600px) {
-    .ui-menu-photo {
-        width: 64px;
-        height: 64px;
-    }
-}
-
-
-/* =====================================
-   ITEM IMAGES
-===================================== */
-
-.ui-item-title {
-    display: flex !important;
-    align-items: center;
-    gap: 14px;
-}
-
-.ui-item-title > span:last-child {
-    flex: 1;
-}
-
-.ui-menu-photo {
-    width: 76px;
-    height: 76px;
-    flex-shrink: 0;
-    object-fit: cover;
-    border-radius: 14px;
-    background: #eee7f5;
-}
-
-.ui-photo-placeholder {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    color: var(--church-wine);
     font-size: 34px;
 }
 
 .ui-image-preview {
     margin: 20px 0;
     padding: 15px;
-    background: #f4f1f8;
+    background: var(--church-ivory);
+    border: 1px solid var(--church-line);
     border-radius: 14px;
     text-align: center;
 }
 
 .ui-image-preview img {
+    display: block;
     width: 160px;
     height: 160px;
     max-width: 100%;
+    margin-inline: auto;
     object-fit: cover;
+    border: 2px solid var(--church-gold);
     border-radius: 14px;
-    border: 2px solid #e1d9eb;
 }
 
 @media (max-width: 600px) {
@@ -644,9 +883,32 @@ label.ui-item-row {
         width: 64px;
         height: 64px;
     }
-
     .ui-image-preview img {
         width: 130px;
         height: 130px;
+    }
+}
+
+@media (max-width: 380px) {
+    .ui-panel,
+    .ui-meal-card {
+        padding: 18px 14px;
+    }
+    .ui-item-row {
+        padding: 12px;
+    }
+    .ui-item-row .ui-stepper {
+        margin-inline-start: auto;
+    }
+    .ui-actions .ui-button {
+        flex-basis: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ui-button,
+    .ui-toggle-track,
+    .ui-toggle-track::after {
+        transition: none;
     }
 }

@@ -72,6 +72,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                "core.site_branding.monastery_branding",
             ],
         },
     },
@@ -134,3 +135,16 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+MONASTERY_BRANDING = {
+    "title": "دير الأنبا بيشوي العامر",
+    "subtitle": "خدمة الوجبات وطلبات الدير",
+
+    "main_image": "images/branding/monastery.jpg",
+
+    "saint_image": "",
+
+    "splash_enabled": True,
+    "splash_ms": 1500,
+}

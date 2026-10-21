@@ -1,0 +1,20 @@
+{% if monastery_brand.splash_enabled %}
+<dialog
+    id="monasterySplash"
+    class="monastery-splash no-print"
+    aria-labelledby="monasterySplashTitle"
+    aria-describedby="monasterySplashDescription"
+    data-duration="{{ monastery_brand.splash_ms }}"
+>
+    <div class="monastery-splash-card">
+        <div class="monastery-splash-ornament" aria-hidden="true"><span></span> &#10016; <span></span></div>
+        <h2 id="monasterySplashTitle">{{ monastery_brand.title }}</h2>
+        <p id="monasterySplashDescription">{{ monastery_brand.subtitle }}</p>
+        <div class="monastery-splash-portraits">
+            {% include "accounts/includes/branding_photos.html" %}
+        </div>
+        <button type="button" id="monasterySplashSkip" class="monastery-enter-button" autofocus>الدخول للتطبيق</button>
+        <p class="monastery-splash-hint">أهلًا وسهلًا — تفتح الصفحة تلقائيًا</p>
+    </div>
+</dialog>
+{% endif %}

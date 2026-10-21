@@ -171,10 +171,10 @@
     <!-- Printable report -->
     <article class="report-sheet">
 
-        <div class="report-header">
-            <div class="report-cross" aria-hidden="true">✠</div>
-
-            <div>
+        <div class="report-header report-branding-header">
+            
+            {% include "accounts/includes/report_branding.html" %}
+            <div class="report-heading-copy">
                 <h2>دير الأنبا بيشوي العامر</h2>
                 <h1>تقرير طلبات الوجبات اليومية</h1>
 
@@ -198,6 +198,8 @@
                     </strong>
                 </p>
             </div>
+            
+            
         </div>
 
         <!-- Statistics -->
