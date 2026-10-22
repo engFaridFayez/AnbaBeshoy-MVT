@@ -1,0 +1,33 @@
+{% extends "accounts/base.html" %}
+{% block title %}{{ receipt.notice.title }} | طلبات الدير{% endblock %}
+{% block content %}
+<div class="nfy-page nfy-narrow">
+    <a class="nfy-btn nfy-light" href="{% url 'notifications:inbox' %}">العودة للإشعارات</a>
+    <article class="nfy-card nfy-message nfy-kind-{{ receipt.notice.kind }}">
+        <span class="nfy-label">{{ receipt.notice.get_kind_display }}</span>
+        <h1>{{ receipt.notice.title }}</h1>
+        <p class="nfy-body">{{ receipt.notice.body|linebreaksbr }}</p>
+        <p class="nfy-muted">{{ receipt.created_at|date:"j/m/Y — g:i A" }}</p>
+
+        {% if receipt.notice.menu_date %}
+        <p class="nfy-muted">تاريخ الوجبة: {{ receipt.notice.menu_date|date:"j/m/Y" }}</p>
+        {% endif %}
+
+        <form method="post" action="{% url 'notifications:read' receipt.pk %}" class="nfy-actions">
+            {% csrf_token %}
+            {% if meal_url %}
+            <button type="submit" name="open_menu" value="1" class="nfy-btn nfy-primary">فتح صفحة الوجبة</button>
+            {% endif %}
+            {% if not receipt.read_at %}
+            <button type="submit" class="nfy-btn nfy-light">تمت القراءة</button>
+            {% else %}
+            <span class="nfy-label">مقروء</span>
+            {% endif %}
+        </form>
+
+        {% if receipt.notice.menu_date and not meal_url %}
+        <p class="nfy-muted">هذه ليست وجبة اليوم. الإشعار محفوظ للمراجعة دون فتح قائمة يوم آخر بالخطأ.</p>
+        {% endif %}
+    </article>
+</div>
+{% endblock %}

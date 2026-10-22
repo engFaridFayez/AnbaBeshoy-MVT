@@ -1,0 +1,21 @@
+<div class="nfy-audience">
+    <fieldset class="nfy-fieldset">
+        <legend>المستلمون</legend>
+        <div class="nfy-radio-list">{{ audience.mode }}</div>
+        {{ audience.mode.errors }}
+    </fieldset>
+    <div class="nfy-people">
+        <label class="nfy-field">
+            <span>البحث بالاسم</span>
+            <input type="search" class="nfy-search" placeholder="اكتب اسم المستخدم" autocomplete="off">
+        </label>
+        <div class="nfy-actions">
+            <button type="button" class="nfy-btn nfy-light nfy-select-visible">تحديد الظاهر</button>
+            <button type="button" class="nfy-btn nfy-light nfy-clear">إلغاء التحديد</button>
+            <span class="nfy-selected-count" aria-live="polite"></span>
+        </div>
+        <div class="nfy-user-list">{{ audience.users }}</div>
+        {{ audience.users.errors }}
+    </div>
+    <p class="nfy-muted">«الكل» يشمل كل الحسابات النشطة وقت الإرسال. اختيار الأسماء لا يغيّر صلاحيات مشاهدة الوجبات.</p>
+</div>

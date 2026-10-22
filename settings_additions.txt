@@ -1,0 +1,12 @@
+# Add to INSTALLED_APPS (do not replace your existing list):
+"notifications.apps.NotificationsConfig",
+
+# Add to TEMPLATES -> OPTIONS -> context_processors:
+"notifications.context_processors.notification_ui",
+
+# Add at the end of api/settings.py (outside lists):
+NOTIFICATIONS_PUSH_ENABLED = False
+NOTIFICATIONS_VAPID_FILE = BASE_DIR / ".secrets" / "webpush.json"
+
+# Keep .secrets/ OUT of static/, media/, Git and publicly served directories.
+# Use True only after generate_push_keys and HTTPS configuration.

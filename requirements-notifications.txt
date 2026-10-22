@@ -1,0 +1,2 @@
+# Do not replace or downgrade your project's Django version.
+pywebpush>=2.0,<3.0

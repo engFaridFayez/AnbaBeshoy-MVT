@@ -1,0 +1,81 @@
+{% extends "accounts/base.html" %}
+{% block title %}إدارة الإشعارات | طلبات الدير{% endblock %}
+{% block content %}
+<div class="nfy-page">
+    <header class="nfy-manager-hero">
+        <span class="nfy-kicker">لوحة مسؤول المطعم</span>
+        <h1>إرسال وإدارة الإشعارات</h1>
+        <p>رسالة واضحة، إلى الأشخاص المناسبين.</p>
+        <div class="nfy-actions">
+            <a href="{% url 'kitchen:manage_menu' %}" class="nfy-btn nfy-gold">تجهيز الوجبات</a>
+            <a href="{% url 'notifications:inbox' %}" class="nfy-btn nfy-light">إشعاراتي</a>
+        </div>
+    </header>
+
+    <section class="nfy-card">
+        <span class="nfy-kicker">إرسال يدوي</span><h2>إرسال إشعار الآن</h2>
+        <form method="post" data-confirm="هل تريد إرسال هذا الإشعار للمستلمين المختارين؟">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="send">
+            {{ compose_form.token }}
+            {{ compose_form.non_field_errors }}
+            <label class="nfy-field"><span>{{ compose_form.title.label }}</span>{{ compose_form.title }}{{ compose_form.title.errors }}</label>
+            <label class="nfy-field"><span>{{ compose_form.body.label }}</span>{{ compose_form.body }}{{ compose_form.body.errors }}</label>
+            <label class="nfy-field"><span>{{ compose_form.menu.label }}</span>{{ compose_form.menu }}{{ compose_form.menu.errors }}</label>
+            {% include "notifications/audience_fields.html" with audience=compose_form %}
+            <button type="submit" class="nfy-btn nfy-primary nfy-wide">إرسال الإشعار</button>
+        </form>
+    </section>
+
+    <section class="nfy-card" id="automatic">
+        <span class="nfy-kicker">إرسال تلقائي</span><h2>مين نبلّغه عند فتح أو إغلاق الوجبة؟</h2>
+        <p class="nfy-muted">الافتراضي لكل قائمة جديدة: كل الحسابات النشطة. احفظ اختيارك هنا قبل نشر الوجبة.</p>
+
+        <form method="get" class="nfy-actions">
+            <label class="nfy-field nfy-grow"><span>القائمة</span>
+                <select name="menu" required>
+                    <option value="">اختَر الوجبة والتاريخ</option>
+                    {% for menu in menus %}
+                    {% if policy_menu.pk == menu.pk %}
+                    <option value="{{ menu.pk }}" selected>{{ menu.date|date:"j/m/Y" }} — {{ menu.get_meal_type_display }}</option>
+                    {% else %}
+                    <option value="{{ menu.pk }}">{{ menu.date|date:"j/m/Y" }} — {{ menu.get_meal_type_display }}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
+            </label>
+            <button type="submit" class="nfy-btn nfy-light">عرض الإعدادات</button>
+        </form>
+
+        {% if policy_menu %}
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="audience">
+            <input type="hidden" name="policy_menu" value="{{ policy_menu.pk }}">
+            <h3>{{ policy_menu.get_meal_type_display }} — {{ policy_menu.date|date:"j/m/Y" }}</h3>
+            <label class="nfy-check">{{ audience_form.enabled }}<span>{{ audience_form.enabled.label }}</span></label>
+            {% include "notifications/audience_fields.html" with audience=audience_form %}
+            <button type="submit" class="nfy-btn nfy-primary nfy-wide">حفظ مستلمي الإشعارات التلقائية</button>
+        </form>
+        {% else %}
+        <p class="nfy-muted">أنشئ قائمة الوجبة من «تجهيز الوجبات»، ثم اختَرها هنا.</p>
+        {% endif %}
+    </section>
+
+    <section class="nfy-card">
+        <span class="nfy-kicker">سجل الإرسال</span><h2>آخر الإشعارات</h2>
+        <p class="nfy-muted">قبول Push يعني قبول خدمة الإرسال للطلب، وليس تأكيد ظهور الإشعار أو قراءته على الهاتف.</p>
+        <div class="nfy-history">
+            {% for notice in recent_notices %}
+            <article class="nfy-history-row">
+                <h3>{{ notice.title }}</h3>
+                <p>{{ notice.created_at|date:"j/m/Y g:i A" }} · {{ notice.recipient_count }} مستلم</p>
+                <small>Push مقبول: {{ notice.push_sent_count }} · قيد الإرسال: {{ notice.push_pending_count }} · تعذّر: {{ notice.push_failed_count }}</small>
+            </article>
+            {% empty %}
+            <p class="nfy-muted">لا توجد رسائل مرسلة بعد.</p>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+{% endblock %}

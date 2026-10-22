@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "notifications.apps.NotificationsConfig",
     'accounts',
     'store',
     'kitchen',
@@ -73,6 +74,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 "core.site_branding.monastery_branding",
+                "notifications.context_processors.notification_ui",
             ],
         },
     },
@@ -148,3 +150,11 @@ MONASTERY_BRANDING = {
     "splash_enabled": True,
     "splash_ms": 1500,
 }
+
+# نبدأ بتجربة الإشعارات الداخلية.
+# سنفعّل Push بعد تجهيز HTTPS ومفاتيح الإرسال.
+NOTIFICATIONS_PUSH_ENABLED = False
+
+NOTIFICATIONS_VAPID_FILE = (
+    BASE_DIR / ".secrets" / "webpush.json"
+)

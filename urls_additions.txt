@@ -1,0 +1,18 @@
+# Add to imports in api/urls.py:
+from notifications import views as notification_views
+
+# Add inside urlpatterns; keep all existing paths:
+path("notifications/", include("notifications.urls")),
+path(
+    "notifications-sw.js",
+    notification_views.worker_script,
+    name="notifications_worker",
+),
+path(
+    "notifications.webmanifest",
+    notification_views.manifest,
+    name="notifications_manifest",
+),
+
+# django.urls.path and include must already be imported:
+# from django.urls import path, include

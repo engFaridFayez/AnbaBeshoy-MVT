@@ -12,6 +12,10 @@
     <link rel="stylesheet" href="{% static 'css/auth.css' %}">
     <link rel="stylesheet" href="{% static 'css/simple_ui.css' %}">
     <link rel="stylesheet" href="{% static 'css/monastery_branding.css' %}">
+    <link rel="stylesheet" href="{% static 'notifications/notifications.css' %}">
+    <link rel="manifest" href="{% url 'notifications_manifest' %}">
+    <link rel="apple-touch-icon" href="{% static 'notifications/icon-192.png' %}">
+    <script src="{% static 'notifications/notifications.js' %}" defer></script>
     {% block extra_css %}{% endblock %}
     <script src="{% static 'js/monastery_branding.js' %}" defer></script>
     <script src="{% static 'js/simple_ui.js' %}" defer></script>
@@ -27,6 +31,7 @@
                     <small>{{ monastery_brand.subtitle|default:"خدمة الوجبات وطلبات الدير" }}</small>
                 </span>
             </a>
+            {% include "notifications/widget.html" %}
             {% if user.is_authenticated %}
             <form method="post" action="{% url 'accounts:logout' %}">
                 {% csrf_token %}

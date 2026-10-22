@@ -1,0 +1,46 @@
+{% if user.is_authenticated %}
+<details
+    class="nfy-widget no-print"
+    id="notificationWidget"
+    data-user-id="{{ user.pk }}"
+    data-feed-url="{% url 'notifications:feed' %}"
+    data-config-url="{% url 'notifications:config' %}"
+    data-subscribe-url="{% url 'notifications:subscribe' %}"
+    data-unsubscribe-url="{% url 'notifications:unsubscribe' %}"
+>
+    <summary class="nfy-bell" aria-label="الإشعارات">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+            <path d="M9 21h6M12 1v1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+        <span>الإشعارات</span>
+        <span id="nfyCount" class="nfy-count" hidden>0</span>
+    </summary>
+
+    <div class="nfy-panel">
+        <div class="nfy-panel-head">
+            <div><small>طلبات الدير</small><h2>الإشعارات</h2></div>
+            <button type="button" class="nfy-close" id="nfyClose" aria-label="إغلاق الإشعارات">×</button>
+        </div>
+
+        <div class="nfy-push-box">
+            <p id="nfyPushStatus">الإشعارات محفوظة هنا داخل التطبيق.</p>
+            <button type="button" class="nfy-btn nfy-primary" id="nfyEnable">تفعيل تنبيهات الموبايل</button>
+            <button type="button" class="nfy-btn nfy-light" id="nfyDisable" hidden>إيقاف تنبيهات هذا الجهاز</button>
+        </div>
+
+        <div id="nfyList" class="nfy-list">
+            <p class="nfy-muted">جارٍ تحميل الإشعارات…</p>
+        </div>
+
+        <div class="nfy-panel-foot">
+            <a href="{% url 'notifications:inbox' %}" class="nfy-btn nfy-light">كل الإشعارات</a>
+            {% if notices_manager %}
+            <a href="{% url 'notifications:manage' %}" class="nfy-btn nfy-primary">إرسال وإدارة الإشعارات</a>
+            {% endif %}
+        </div>
+        <form class="nfy-token" hidden>{% csrf_token %}</form>
+    </div>
+</details>
+<div id="nfyToast" class="nfy-toast no-print" role="status" aria-live="polite" hidden></div>
+{% endif %}

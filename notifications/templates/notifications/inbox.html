@@ -1,0 +1,43 @@
+{% extends "accounts/base.html" %}
+{% block title %}إشعاراتي | طلبات الدير{% endblock %}
+{% block content %}
+<div class="nfy-page">
+    <div class="nfy-heading">
+        <div><span class="nfy-kicker">طلبات الدير</span><h1>إشعاراتي</h1></div>
+        <a href="{% url 'accounts:home' %}" class="nfy-btn nfy-light">الرئيسية</a>
+    </div>
+    <div class="nfy-card nfy-intro">
+        <p>إشعارات فتح الوجبات وإغلاقها ورسائل المسؤولين، كلها محفوظة هنا.</p>
+        <form method="post" action="{% url 'notifications:read_all' %}">
+            {% csrf_token %}
+            <button type="submit" class="nfy-btn nfy-light">تحديد الكل كمقروء</button>
+        </form>
+    </div>
+    {% for receipt in page_obj %}
+    <article class="nfy-card nfy-message nfy-kind-{{ receipt.notice.kind }}">
+        <div class="nfy-message-top">
+            <span class="nfy-label">{{ receipt.notice.get_kind_display }}</span>
+            {% if not receipt.read_at %}<span class="nfy-new">جديد</span>{% endif %}
+        </div>
+        <h2>{{ receipt.notice.title }}</h2>
+        <p>{{ receipt.notice.body }}</p>
+        <time class="nfy-muted">{{ receipt.created_at|date:"j/m/Y — g:i A" }}</time>
+        <a href="{% url 'notifications:detail' receipt.pk %}" class="nfy-btn nfy-light">فتح الإشعار</a>
+    </article>
+    {% empty %}
+    <section class="nfy-card nfy-empty">
+        <h2>لا توجد إشعارات حتى الآن</h2>
+        <p>عند نشر الوجبة ستظهر الرسائل هنا.</p>
+    </section>
+    {% endfor %}
+    <nav class="nfy-actions" aria-label="صفحات الإشعارات">
+        {% if page_obj.has_previous %}
+        <a class="nfy-btn nfy-light" href="?page={{ page_obj.previous_page_number }}">الأحدث</a>
+        {% endif %}
+        <span>صفحة {{ page_obj.number }} من {{ page_obj.paginator.num_pages }}</span>
+        {% if page_obj.has_next %}
+        <a class="nfy-btn nfy-light" href="?page={{ page_obj.next_page_number }}">الأقدم</a>
+        {% endif %}
+    </nav>
+</div>
+{% endblock %}

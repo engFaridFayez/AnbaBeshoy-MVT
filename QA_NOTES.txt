@@ -1,0 +1,20 @@
+QUALITY CHECKS — notifications package
+
+Executed in the artifact environment:
+- Python source files parsed/compiled (no Django imports executed).
+- JavaScript syntax checked with Node.
+- CSS stylesheet parsed and Django tag nesting checked structurally.
+- Chromium UI checks with mocked feed data: bell badge/list, Escape, incoming toast,
+  audience modes, search, clear/select-visible, mobile width, print hiding.
+- Screenshots inspected at mobile and desktop sizes.
+
+Included: 29 Django tests in notifications/tests.py.
+Not executed here: Django migrations, ORM tests, actual project integration,
+Web Push encryption/network delivery, Android/iPhone device behavior.
+Django was unavailable in this container; dependency installation could not access the network.
+
+Run in your project:
+python manage.py check
+python manage.py test notifications
+
+Review with test accounts first. Never begin by sending to all real users.

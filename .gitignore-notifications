@@ -1,0 +1,2 @@
+# Append these patterns to the project's .gitignore:
+.secrets/

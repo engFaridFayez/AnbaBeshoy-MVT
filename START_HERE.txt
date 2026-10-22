@@ -1,0 +1,26 @@
+ابدأ من هنا
+===========
+
+1) أوقف runserver مؤقتًا، وخذ نسخة احتياطية من قاعدة البيانات وbase.html.
+2) انسخ notifications وaccounts وrequirements-notifications.txt بجانب manage.py.
+   ادمج المجلدات؛ لا تحذف مجلد accounts القديم.
+3) أضف سطور settings_additions.txt في أماكنها داخل api/settings.py.
+4) أضف سطور urls_additions.txt داخل api/urls.py، ولا تستبدل الملف كله.
+5) نفذ:
+   python -m pip install -r requirements-notifications.txt
+   python manage.py makemigrations notifications
+   python manage.py migrate
+   python manage.py init_notifications
+   python manage.py check
+6) شغّل في نافذتين:
+   python manage.py runserver
+   python manage.py run_notification_worker
+7) افتح /notifications/manage/ بحساب admin أو superadmin.
+8) جرّب رسالة لمستخدم واحد قبل اختيار الكل.
+
+Push خارج الموقع يحتاج قسم «تشغيل Push» في README_AR.md:
+HTTPS + مفاتيح VAPID + موافقة الجهاز + العامل.
+لا تتوقع وصول تنبيه لشاشة الهاتف من تشغيل localhost على الكمبيوتر وحده.
+
+داخل الموقع: تظهر الرسالة في الجرس/السجل.
+خارج الموقع: لا يعمل Push قبل إعداد الخطوات المذكورة.
