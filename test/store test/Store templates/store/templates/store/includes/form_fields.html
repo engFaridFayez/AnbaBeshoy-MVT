@@ -1,0 +1,23 @@
+{% if form.non_field_errors %}
+<div class="st-form-errors" role="alert">{{ form.non_field_errors }}</div>
+{% endif %}
+{% for field in form %}
+    {% if field.is_hidden %}
+    {{ field }}
+    {% else %}
+    <div class="st-field">
+        {% if field.field.widget.input_type == "checkbox" %}
+        <label class="st-checkbox-label" for="{{ field.id_for_label }}">{{ field }} <span>{{ field.label }}</span></label>
+        {% else %}
+        <label for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %} <span class="st-required">*</span>{% endif %}</label>
+        {{ field }}
+        {% endif %}
+        {% if field.help_text %}
+        <small id="{{ field.id_for_label }}_help" class="st-help">{{ field.help_text }}</small>
+        {% endif %}
+        {% if field.errors %}
+        <div class="st-field-errors" role="alert">{{ field.errors }}</div>
+        {% endif %}
+    </div>
+    {% endif %}
+{% endfor %}

@@ -1,0 +1,14 @@
+{% extends "store/base.html" %}
+{% block title %}تأكيد الحذف | المخزن{% endblock %}
+{% block store_content %}
+<div class="st-form-wrap st-panel">
+    <h1>تأكيد حذف {{ obj }}</h1>
+    <p>الحذف نهائي، ومسموح فقط للسجل غير المرتبط ببيانات أخرى.</p>
+    {% if error %}<p class="st-form-errors" role="alert">{{ error }}</p>{% endif %}
+    <form method="post" data-store-submit>
+        {% csrf_token %}
+        <label class="st-checkbox-label"><input class="st-check" type="checkbox" name="confirm" value="yes" required>أؤكد حذف هذا السجل</label>
+        <div class="st-submit-actions"><button class="st-btn st-danger-button" type="submit">حذف السجل</button><a class="st-btn st-light" href="{{ back_url }}">إلغاء</a></div>
+    </form>
+</div>
+{% endblock %}

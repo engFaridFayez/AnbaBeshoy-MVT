@@ -1,0 +1,17 @@
+{% extends "store/base.html" %}
+{% block title %}{{ title }} | المخزن{% endblock %}
+{% block store_content %}
+<div class="st-results-heading"><h1>{{ title }}</h1>{% if actions.add %}<a class="st-btn st-primary" href="{% url 'store:reference_add' kind %}">+ إضافة</a>{% endif %}</div>
+<div class="st-reference-list">
+    {% for obj in objects %}
+    <article class="st-panel st-reference-row">
+        <div><h2>{{ obj.name }}</h2>{% if obj.is_active %}<span class="st-badge st-success">نشط</span>{% else %}<span class="st-badge st-muted">موقوف</span>{% endif %}{% if obj.symbol %}<span class="st-help">{{ obj.symbol }} | تقبل كسورًا: {{ obj.allow_fractions|yesno:"نعم,لا" }}</span>{% endif %}</div>
+        <div class="st-toolbar">
+            {% if actions.change %}<a class="st-btn st-light" href="{% url 'store:reference_edit' kind obj.pk %}">تعديل</a>{% endif %}
+            {% if actions.delete %}<a class="st-btn st-danger-button" href="{% url 'store:delete' kind obj.pk %}">حذف</a>{% endif %}
+        </div>
+    </article>
+    {% empty %}<section class="st-panel st-empty"><p>لا توجد بيانات بعد.</p></section>{% endfor %}
+</div>
+<p class="st-note">السجل المرتبط بمنتجات أو دفعات لا يُحذف. يمكن إيقافه من صفحة التعديل.</p>
+{% endblock %}

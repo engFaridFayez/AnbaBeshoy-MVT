@@ -1,0 +1,71 @@
+{% extends "admin/base_site.html" %}
+{% block extrahead %}
+{{ block.super }}
+<style>
+    .stock-page { max-width: 780px; direction: rtl; margin: 0 auto; }
+    .stock-card {
+        padding: 22px; margin-bottom: 18px; border: 1px solid #e5d9c7;
+        border-radius: 14px; background: #fffdf8; color: #382c2a;
+    }
+    .stock-card h1, .stock-card h2 { color: #581a2d; }
+    .stock-field { margin-bottom: 18px; }
+    .stock-field label { display: block; font-weight: bold; margin-bottom: 6px; }
+    .stock-field input, .stock-field select, .stock-field textarea {
+        width: 100%; box-sizing: border-box; font: inherit;
+        min-height: 46px; padding: 9px; border: 1px solid #b7a28b;
+        border-radius: 8px; background: white; color: #382c2a;
+    }
+    .stock-page .errorlist {
+        padding: 12px 24px; background: #fce6e7; color: #8b2436;
+    }
+    .stock-actions { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+    .stock-actions button {
+        background: #581a2d; color: white; padding: 12px 24px;
+        border: 0; border-radius: 8px; font: inherit; cursor: pointer;
+    }
+    .stock-help { color: #71625b; font-size: 14px; margin-top: 6px; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="stock-page">
+    <section class="stock-card">
+        <h1>{{ title }}</h1>
+        <h2>{{ product.name }}</h2>
+        <p>وحدة القياس: <strong>{{ product.unit.name }}</strong></p>
+        <p>الموجود فعليًا: <strong>{{ current_stock }}</strong></p>
+        <p>المتاح للصرف: <strong>{{ available_stock }}</strong></p>
+
+        {% if receiving %}
+        <p class="stock-help">
+            الحفظ ينشئ دفعة جديدة وحركة وارد معًا. لا تكرر الإرسال لنفس الاستلام.
+        </p>
+        {% else %}
+        <p class="stock-help">
+            الصرف من الأقرب انتهاءً أولًا. لا يُحفظ صرف جزئي إذا لم يكفِ الرصيد.
+        </p>
+        {% endif %}
+    </section>
+
+    <form method="post" class="stock-card">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+
+        {% for field in form %}
+        <div class="stock-field">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {{ field.errors }}
+            {% if field.help_text %}
+            <div class="stock-help">{{ field.help_text }}</div>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+        <div class="stock-actions">
+            <button type="submit">تأكيد وحفظ الحركة</button>
+            <a href="{{ back_url }}">إلغاء والعودة للمنتجات</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

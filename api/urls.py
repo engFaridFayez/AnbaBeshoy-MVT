@@ -35,6 +35,7 @@ path(
     notification_views.manifest,
     name="notifications_manifest",
 ),
+path("store/", include("store.web_urls")),
 ]
 if settings.DEBUG:
     urlpatterns += static(

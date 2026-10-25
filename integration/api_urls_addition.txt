@@ -1,0 +1,7 @@
+# Add this import only if not present:
+from django.urls import path, include
+
+# Add this one route inside your EXISTING urlpatterns, before accounts:
+path("store/", include("store.web_urls")),
+
+# Keep admin, kitchen, accounts, notifications, worker, manifest and media routes.

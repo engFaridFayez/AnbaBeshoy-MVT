@@ -1,0 +1,12 @@
+{% extends "store/base.html" %}
+{% block title %}{{ page_title }} | المخزن{% endblock %}
+{% block store_content %}
+<div class="st-form-wrap">
+    <header class="st-heading"><h1>{{ page_title }}</h1><p>{{ help_text }}</p></header>
+    <form method="post" enctype="multipart/form-data" class="st-panel st-edit-form" data-store-submit>
+        {% csrf_token %}
+        {% include "store/includes/form_fields.html" %}
+        <div class="st-submit-actions"><button type="submit" class="st-btn st-primary">حفظ البيانات</button><a href="{{ back_url }}" class="st-btn st-light">رجوع</a></div>
+    </form>
+</div>
+{% endblock %}

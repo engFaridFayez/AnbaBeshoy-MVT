@@ -1,0 +1,55 @@
+{% extends "store/base.html" %}
+{% block title %}المخزن | طلبات الدير{% endblock %}
+{% block store_content %}
+<header class="st-hero">
+    <div>
+        <p class="st-eyebrow">خدمة المخزن</p>
+        <h1>مخزن الدير</h1>
+        <p>المنتجات، الأرصدة، والصلاحية في مكان واحد.</p>
+    </div>
+    <span class="st-cross" aria-hidden="true">&#10016;</span>
+</header>
+<div class="st-toolbar">
+    {% if can_add_product %}
+    <a class="st-btn st-primary" href="{% url 'store:product_add' %}">+ إضافة منتج</a>
+    {% endif %}
+    {% if can_manage_categories %}
+    <a class="st-btn st-light" href="{% url 'store:references' 'categories' %}">إدارة الأقسام</a>
+    {% endif %}
+    {% if can_manage_units %}
+    <a class="st-btn st-light" href="{% url 'store:references' 'units' %}">وحدات القياس</a>
+    {% endif %}
+</div>
+<div class="st-metrics" aria-label="ملخص المخزن">
+    <div class="st-metric"><small>المنتجات</small><strong>{{ counts.products }}</strong></div>
+    <div class="st-metric st-metric-danger"><small>مخزون منخفض</small><strong>{{ counts.low }}</strong></div>
+    <div class="st-metric st-metric-gold"><small>صلاحية قريبة</small><strong>{{ counts.expiring }}</strong></div>
+    <div class="st-metric"><small>به دفعات منتهية</small><strong>{{ counts.expired }}</strong></div>
+</div>
+<p class="st-help">الأرقام تعدّ المنتجات بعد البحث والقسم، قبل فلتر الحالة. قد يظهر المنتج في أكثر من حالة.</p>
+<nav class="st-categories" aria-label="أقسام المخزن">
+    <a href="{% url 'store:catalog' %}" class="st-category">كل الأقسام</a>
+    {% for category in categories %}
+    <a href="{% url 'store:catalog' %}?category={{ category.pk }}" class="st-category">{{ category.name }} <b>{{ category.ui_count }}</b></a>
+    {% endfor %}
+</nav>
+<form method="get" class="st-panel st-filters" action="{% url 'store:catalog' %}">
+    {% include "store/includes/form_fields.html" %}
+    <div class="st-filter-actions">
+        <button class="st-btn st-primary" type="submit">بحث وتصفية</button>
+        <a class="st-btn st-light" href="{% url 'store:catalog' %}">إظهار الكل</a>
+    </div>
+</form>
+<div class="st-results-heading"><h2>المنتجات</h2><span>{{ page_obj.paginator.count }} منتج</span></div>
+<div class="st-product-grid">
+    {% for card in cards %}
+    {% include "store/includes/product_card.html" %}
+    {% empty %}
+    <div class="st-panel st-empty"><h2>لا توجد منتجات مطابقة</h2><p>غيّر البحث أو القسم. يمكن للمسؤول إضافة المنتجات من الأعلى.</p></div>
+    {% endfor %}
+</div>
+{% include "store/includes/pagination.html" %}
+{% if not can_operate %}
+<p class="st-note">هذه الشاشة لعرض الأصناف والرصيد. الاستلام والصرف من خلال مسؤول المخزن. طلب الاحتياجات إلكترونيًا لم يُفعّل بعد.</p>
+{% endif %}
+{% endblock %}

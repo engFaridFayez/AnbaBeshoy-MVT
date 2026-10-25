@@ -1,0 +1,20 @@
+{% extends "accounts/base.html" %}
+{% load static %}
+{% block extra_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'store/store.css' %}">
+{% endblock %}
+{% block extra_js %}
+{{ block.super }}
+<script src="{% static 'store/store.js' %}" defer></script>
+{% endblock %}
+{% block content %}
+<div class="st-shell">
+    <nav class="st-nav" aria-label="التنقل">
+        <a class="st-btn st-light" href="{% url 'accounts:home' %}">الرئيسية</a>
+        <a class="st-btn st-light" href="{% url 'store:catalog' %}">المخزن</a>
+        <a class="st-btn st-light" href="{% url 'accounts:meals' %}">المطعم</a>
+    </nav>
+    {% block store_content %}{% endblock %}
+</div>
+{% endblock %}

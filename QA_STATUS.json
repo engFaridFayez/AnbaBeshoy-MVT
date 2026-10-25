@@ -1,0 +1,13 @@
+{
+  "python_syntax": "passed",
+  "javascript_syntax": "passed (node --check)",
+  "css_top_level_parse": "passed",
+  "template_tags": "balanced; no tags split across physical lines; not Django compilation",
+  "browser_preview": "passed at 320/390/1280/1440 widths using static rendering stand-in; see browser_checks.json",
+  "django_test_methods_included": 38,
+  "django_tests_run": false,
+  "django_runtime_tested": false,
+  "reason": "Django unavailable in the build environment; installation/download unsuccessful.",
+  "production_database_and_notifications_tested": false,
+  "store_models_services_admin_and_base_modified": false
+}

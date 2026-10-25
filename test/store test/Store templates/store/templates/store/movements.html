@@ -1,0 +1,18 @@
+{% extends "store/base.html" %}
+{% block title %}سجل حركات {{ product.name }}{% endblock %}
+{% block store_content %}
+<header class="st-heading"><h1>سجل الحركات</h1><p>{{ product.name }} | {{ product.unit.name }}</p><a class="st-btn st-light" href="{% url 'store:product' product.pk %}">العودة للمنتج</a></header>
+<section class="st-panel">
+    <div class="st-table-scroll" tabindex="0" aria-label="جدول الحركات">
+        <table class="st-table">
+            <thead><tr><th>#</th><th>التاريخ</th><th>الحركة</th><th>الكمية</th><th>المستلم</th><th>المسؤول</th><th>مرجع / ملاحظات</th></tr></thead>
+            <tbody>
+                {% for movement in movements %}
+                <tr><td>{{ movement.pk }}</td><td>{{ movement.created_at|date:"j/m/Y H:i" }}</td><td>{{ movement.get_movement_type_display }}</td><td><bdi>{{ movement.quantity }}</bdi></td><td>{{ movement.recipient|default:"—" }}</td><td>{{ movement.performed_by }}</td><td>{{ movement.reference|default:"—" }}<small class="st-block">{{ movement.notes }}</small></td></tr>
+                {% empty %}<tr><td colspan="7">لا توجد حركات حتى الآن.</td></tr>{% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% include "store/includes/pagination.html" %}
+</section>
+{% endblock %}

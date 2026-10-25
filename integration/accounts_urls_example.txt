@@ -1,0 +1,13 @@
+# Reference only. Preserve any additional routes already in your project.
+from django.contrib.auth.views import LogoutView
+from django.urls import path
+from . import views, portal_views
+
+app_name = "accounts"
+urlpatterns = [
+    path("", portal_views.services_home, name="home"),
+    path("meals/", views.home, name="meals"),
+    path("login/", views.UserLoginView.as_view(), name="login"),
+    path("logout/", LogoutView.as_view(next_page="accounts:login"), name="logout"),
+    path("dashboard/", views.admin_dashboard, name="admin_dashboard"),
+]

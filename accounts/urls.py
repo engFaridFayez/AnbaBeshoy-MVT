@@ -1,7 +1,7 @@
 
 from django.urls import path
 from django.contrib.auth.views import LogoutView
-
+from . import portal_views
 from . import views
 
 
@@ -9,11 +9,9 @@ app_name = "accounts"
 
 urlpatterns = [
 
-    path(
-        "",
-        views.home,
-        name="home",
-    ),
+    path("", portal_views.services_home, name="home"),
+
+    path("meals/", views.home, name="meals"),
 
     path(
         "login/",

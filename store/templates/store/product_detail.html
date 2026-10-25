@@ -1,0 +1,40 @@
+{% extends "store/base.html" %}
+{% block title %}{{ product.name }} | المخزن{% endblock %}
+{% block store_content %}
+<div class="st-detail-grid">
+    <div>{% include "store/includes/product_card.html" %}</div>
+    <section class="st-panel st-product-info">
+        <h1>{{ product.name }}</h1>
+        <p class="st-help">{{ product.category.name }}</p>
+        <dl class="st-definition">
+            <div><dt>وحدة القياس</dt><dd>{{ product.unit.name }}</dd></div>
+            <div><dt>الباركود</dt><dd><bdi>{{ product.barcode|default:"غير مسجل" }}</bdi></dd></div>
+            <div><dt>الكود الداخلي</dt><dd><bdi>{{ product.code }}</bdi></dd></div>
+            <div><dt>تنبيه الصلاحية</dt><dd>{{ product.expiry_warning_days }} أيام قبل الانتهاء</dd></div>
+        </dl>
+        {% if product.description %}<p>{{ product.description|linebreaksbr }}</p>{% endif %}
+        <div class="st-toolbar">
+            {% if can_edit_product %}<a class="st-btn st-primary" href="{% url 'store:product_edit' product.pk %}">تعديل البيانات</a>{% endif %}
+            {% if can_view_history %}<a class="st-btn st-light" href="{% url 'store:movements' product.pk %}">سجل الحركات</a>{% endif %}
+            {% if can_delete_product %}<a class="st-btn st-danger-button" href="{% url 'store:delete' 'products' product.pk %}">حذف منتج بلا سجل</a>{% endif %}
+        </div>
+    </section>
+</div>
+<p class="st-note">المتاح للصرف لا يشمل الدفعات الموقوفة أو المنتهية. الرصيد الموجود فعليًا يشملها حتى تسجيل حركة التالف.</p>
+{% if can_view_history %}
+<section class="st-panel">
+    <h2>دفعات المنتج</h2>
+    <div class="st-table-scroll" tabindex="0" aria-label="جدول الدفعات">
+        <table class="st-table">
+            <thead><tr><th>الدفعة</th><th>الاستلام</th><th>الإنتاج</th><th>الانتهاء</th><th>الوارد</th><th>المتبقي</th><th>الحالة</th></tr></thead>
+            <tbody>
+                {% for row in batch_rows %}
+                <tr><td><bdi>{{ row.batch.code|stringformat:"s"|slice:":8" }}</bdi><small class="st-block">{{ row.batch.supplier_name }}</small></td><td>{{ row.batch.received_date|date:"j/m/Y" }}</td><td>{{ row.batch.production_date|date:"j/m/Y"|default:"—" }}</td><td>{{ row.batch.expiry_date|date:"j/m/Y"|default:"—" }}</td><td>{{ row.received }}</td><td><strong>{{ row.remaining }}</strong></td><td><span class="st-badge st-{{ row.state }}">{{ row.label }}</span></td></tr>
+                {% empty %}<tr><td colspan="7">لا توجد دفعات. استخد توريد لتسجيل أول استلام.</td></tr>{% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% include "store/includes/pagination.html" %}
+</section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "store/base.html" %}
+{% block title %}{{ page_title }} | المخزن{% endblock %}
+{% block store_content %}
+<div class="st-form-wrap">
+    <header class="st-heading"><h1>{{ page_title }}</h1><p>{{ product.name }} <span class="st-badge">{{ product.unit.name }}</span></p></header>
+    <div class="st-operation-balance"><span>المتاح حاليًا</span><strong>{{ card.available }} {{ product.unit.symbol }}</strong></div>
+    {% if not receiving %}
+    <p class="st-note">يُصرف تلقائيًا من الدفعات الأقرب انتهاءً. لن يتم صرف جزئي إذا كان الرصيد لا يكفي.</p>
+    {% endif %}
+    <form method="post" class="st-panel st-edit-form" data-store-submit>
+        {% csrf_token %}
+        {% include "store/includes/form_fields.html" %}
+        <div class="st-submit-actions"><button class="st-btn st-primary" type="submit">تأكيد وحفظ الحركة</button><a class="st-btn st-light" href="{% url 'store:product' product.pk %}">رجوع</a></div>
+        <p class="st-help">اضغط الحفظ مرة واحدة. راجع سجل الحركات قبل إعادة العملية بعد انقطاع الاتصال.</p>
+    </form>
+</div>
+{% endblock %}

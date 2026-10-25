@@ -1,0 +1,7 @@
+{% if page_obj.has_other_pages %}
+<nav class="st-pagination" aria-label="صفحات النتائج">
+    {% if previous_url %}<a class="st-btn st-light" href="{{ previous_url }}">السابق</a>{% endif %}
+    <span>صفحة {{ page_obj.number }} من {{ page_obj.paginator.num_pages }}</span>
+    {% if next_url %}<a class="st-btn st-light" href="{{ next_url }}">التالي</a>{% endif %}
+</nav>
+{% endif %}

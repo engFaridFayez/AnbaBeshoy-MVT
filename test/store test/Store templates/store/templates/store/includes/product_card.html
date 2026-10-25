@@ -1,0 +1,39 @@
+<article class="st-product-card" data-low="{{ card.low|yesno:'true,false' }}" data-expiring="{{ card.expiring|yesno:'true,false' }}">
+    <a class="st-product-top" href="{% url 'store:product' card.product.pk %}">
+        {% if card.image_url %}
+        <img class="st-product-photo" src="{{ card.image_url }}" alt="" width="84" height="84" loading="lazy">
+        {% else %}
+        <span class="st-product-photo st-placeholder" aria-hidden="true">&#128230;</span>
+        {% endif %}
+        <div><small>{{ card.product.category.name }}</small><h3>{{ card.product.name }}</h3><span class="st-help">{{ card.product.unit.name }}</span></div>
+    </a>
+    <div class="st-balance"><span>المتاح للصرف</span><strong><bdi>{{ card.available }}</bdi> <small>{{ card.product.unit.symbol }}</small></strong></div>
+    <div class="st-card-meta"><span>الموجود: <bdi>{{ card.total }}</bdi></span><span>حد التنبيه: <bdi>{{ card.minimum }}</bdi></span></div>
+    <div class="st-badges">
+        {% if not card.active %}
+        <span class="st-badge st-muted">موقوف</span>
+        {% elif card.low %}
+        <span class="st-badge st-danger">&#9888; مخزون منخفض</span>
+        {% else %}
+        <span class="st-badge st-success">رصيد متاح</span>
+        {% endif %}
+        {% if card.expiring %}
+        <span class="st-badge st-warning">صلاحية قريبة: {{ card.expiry_date|date:"j/m/Y" }}</span>
+        {% endif %}
+        {% if card.expired_count %}
+        <span class="st-badge st-danger">{{ card.expired_count }} دفعة منتهية مستبعدة</span>
+        {% endif %}
+        {% if card.negative %}
+        <span class="st-badge st-danger">راجع سجل الرصيد</span>
+        {% endif %}
+    </div>
+    <div class="st-card-actions">
+        <a class="st-btn st-light" href="{% url 'store:product' card.product.pk %}">التفاصيل</a>
+        {% if can_operate and card.active %}
+        <a class="st-btn st-primary" href="{% url 'store:receive' card.product.pk %}">+ توريد</a>
+        {% if card.can_issue %}
+        <a class="st-btn st-outline" href="{% url 'store:issue' card.product.pk %}">صرف</a>
+        {% endif %}
+        {% endif %}
+    </div>
+</article>
