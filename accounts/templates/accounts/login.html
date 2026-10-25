@@ -1,5 +1,5 @@
-
 {% extends "accounts/base.html" %}
+{% load static %}
 
 {% block title %}
 تسجيل الدخول | طلبات الدير
@@ -11,13 +11,24 @@
 
     <div class="hero-card login-hero">
 
-        <div class="cross-seal">✠</div>
+        <div class="cross-seal">
+            ✠
+        </div>
+
+        <div class="login-sayedna-photo">
+            <img
+                src="{% static 'images/branding/monastery.jpg' %}"
+                alt="صورة الدير"
+            >
+        </div>
 
         <p class="eyebrow">
             مجمع رهبان دير الأنبا بيشوي العامر
         </p>
 
-        <h1>طلبات الدير</h1>
+        <h1>
+            طلبات الدير
+        </h1>
 
         <p>
             خدمة تنظيم الوجبات اليومية
@@ -34,7 +45,9 @@
                 تسجيل الدخول
             </span>
 
-            <h2>أهلًا وسهلًا</h2>
+            <h2>
+                أهلًا وسهلًا
+            </h2>
 
             <p>
                 أدخل بيانات حسابك للمتابعة
@@ -47,22 +60,24 @@
             {% csrf_token %}
 
             {% if next %}
-            <input
-                type="hidden"
-                name="next"
-                value="{{ next }}"
-            >
+                <input
+                    type="hidden"
+                    name="next"
+                    value="{{ next }}"
+                >
             {% endif %}
 
             {% if form.non_field_errors %}
 
-            <div class="alert-error">
+                <div class="alert-error">
 
-                {% for error in form.non_field_errors %}
-                    <p>{{ error }}</p>
-                {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <p>
+                            {{ error }}
+                        </p>
+                    {% endfor %}
 
-            </div>
+                </div>
 
             {% endif %}
 

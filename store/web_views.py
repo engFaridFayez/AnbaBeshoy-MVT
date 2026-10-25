@@ -16,19 +16,34 @@ from django.views.decorators.http import require_GET, require_http_methods
 from .models import ZERO, Category, Product, StockMovement, UnitOfMeasure
 from .services import can_manage_stock, issue_stock, receive_stock
 from .web_forms import CatalogFilterForm, CategoryForm, ProductForm, UnitForm, WebIssueForm, WebReceiveForm
-from .web_permissions import access_flags, can_see_inactive, can_view_history, has_store_permission
+from .web_permissions import (
+    access_flags,
+    can_access_store,
+    can_see_inactive,
+    can_view_history,
+    has_store_permission,
+)
 from .web_selectors import batches_with_balances, batch_row, expiry_product_ids, product_card, products_with_balances, with_display_batches
 
 
-def active_login(view):
+def store_admin_required(view):
+
     @login_required
     @wraps(view)
     def wrapper(request, *args, **kwargs):
-        if not request.user.is_active:
-            raise PermissionDenied
-        return view(request, *args, **kwargs)
-    return wrapper
 
+        if not can_access_store(request.user):
+            raise PermissionDenied(
+                "المخزن متاح للمسؤول فقط."
+            )
+
+        return view(
+            request,
+            *args,
+            **kwargs,
+        )
+
+    return wrapper
 
 def base_context(request, **context):
     return {**access_flags(request.user), **context}
@@ -64,7 +79,7 @@ def page_context(queryset, request, size=12, page_key="page"):
     }
 
 
-@active_login
+@store_admin_required
 @require_GET
 def catalog(request):
     can_inactive = can_see_inactive(request.user)
@@ -98,7 +113,7 @@ def catalog(request):
     ))
 
 
-@active_login
+@store_admin_required
 @require_GET
 def product_detail(request, pk):
     product = get_object_or_404(with_display_batches(visible_products(request.user)), pk=pk)
@@ -111,7 +126,7 @@ def product_detail(request, pk):
     return render(request, "store/product_detail.html", context)
 
 
-@active_login
+@store_admin_required
 @require_GET
 def movements(request, pk):
     if not can_view_history(request.user):
@@ -124,7 +139,7 @@ def movements(request, pk):
     ))
 
 
-@active_login
+@store_admin_required
 @require_http_methods(["GET", "POST"])
 def stock_operation(request, pk, operation):
     if not can_manage_stock(request.user):
@@ -156,7 +171,7 @@ def stock_operation(request, pk, operation):
     ))
 
 
-@active_login
+@store_admin_required
 @require_http_methods(["GET", "POST"])
 def product_edit(request, pk=None):
     codename = "change_product" if pk is not None else "add_product"
@@ -197,7 +212,7 @@ def entity_config(kind):
     return ENTITY_CONFIG[kind]
 
 
-@active_login
+@store_admin_required
 @require_GET
 def reference_list(request, kind):
     model, _, code, title = entity_config(kind)
@@ -209,7 +224,7 @@ def reference_list(request, kind):
     ))
 
 
-@active_login
+@store_admin_required
 @require_http_methods(["GET", "POST"])
 def reference_edit(request, kind, pk=None):
     model, form_class, code, title = entity_config(kind)
@@ -236,7 +251,7 @@ def reference_edit(request, kind, pk=None):
     ))
 
 
-@active_login
+@store_admin_required
 @require_http_methods(["GET", "POST"])
 def delete_empty(request, kind, pk):
     if kind == "products":

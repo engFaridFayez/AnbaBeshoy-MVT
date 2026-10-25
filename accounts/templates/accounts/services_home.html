@@ -1,34 +1,130 @@
 {% extends "accounts/base.html" %}
 {% load static %}
-{% block title %}الرئيسية | طلبات الدير{% endblock %}
+
+{% block title %}
+الرئيسية | طلبات الدير
+{% endblock %}
+
 {% block extra_css %}
 {{ block.super }}
-<link rel="stylesheet" href="{% static 'store/store.css' %}">
+<link
+    rel="stylesheet"
+    href="{% static 'store/store.css' %}"
+>
 {% endblock %}
+
 {% block content %}
+
 <div class="st-shell st-portal">
+
     <header class="st-hero">
+
         <div>
-            <p class="st-eyebrow">خدمات الدير</p>
-            <h1>أهلًا {{ current_user.display_name|default:current_user.username }}</h1>
-            <p>اختار الخدمة اللي تحتاجها</p>
-            <small>{{ today|date:"j F Y" }}</small>
+
+            <p class="st-eyebrow">
+                خدمات الدير
+            </p>
+
+            <h1>
+                أهلًا
+                {{ current_user.display_name|default:current_user.username }}
+            </h1>
+
+            <p>
+                اختار الخدمة اللي تحتاجها
+            </p>
+
+            <small>
+                {{ today|date:"j F Y" }}
+            </small>
+
         </div>
-        <span class="st-cross" aria-hidden="true">&#10016;</span>
+
+        <span
+            class="st-cross"
+            aria-hidden="true"
+        >
+            ✠
+        </span>
+
     </header>
+
     <div class="st-service-grid">
-        <a href="{% url 'accounts:meals' %}" class="st-service">
-            <span class="st-service-icon" aria-hidden="true">&#127869;</span>
-            <h2>المطعم</h2>
-            <p>فطار · غداء · عشاء</p>
-            <span class="st-service-link">اختيار الوجبات <span aria-hidden="true">&#8592;</span></span>
+
+        <!-- =========================
+             RESTAURANT
+        ========================== -->
+
+        <a
+            href="{% url 'accounts:meals' %}"
+            class="st-service"
+        >
+
+            <span
+                class="st-service-icon"
+                aria-hidden="true"
+            >
+                🍽️
+            </span>
+
+            <h2>
+                المطعم
+            </h2>
+
+            <p>
+                فطار · غداء · عشاء
+            </p>
+
+            <span class="st-service-link">
+                اختيار الوجبات
+                <span aria-hidden="true">
+                    ←
+                </span>
+            </span>
+
         </a>
-        <a href="{% url 'store:catalog' %}" class="st-service">
-            <span class="st-service-icon" aria-hidden="true">&#128230;</span>
-            <h2>المخزن</h2>
-            <p>الأقسام والمنتجات والكميات</p>
-            <span class="st-service-link">فتح المخزن <span aria-hidden="true">&#8592;</span></span>
+
+        <!-- =========================
+             STORE
+             Admin / Superadmin only
+        ========================== -->
+
+        {% if can_access_store %}
+
+        <a
+            href="{% url 'store:catalog' %}"
+            class="st-service"
+        >
+
+            <span
+                class="st-service-icon"
+                aria-hidden="true"
+            >
+                📦
+            </span>
+
+            <h2>
+                المخزن
+            </h2>
+
+            <p>
+                الأقسام والمنتجات والكميات
+            </p>
+
+            <span class="st-service-link">
+                فتح المخزن
+
+                <span aria-hidden="true">
+                    ←
+                </span>
+            </span>
+
         </a>
+
+        {% endif %}
+
     </div>
+
 </div>
+
 {% endblock %}

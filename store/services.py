@@ -25,7 +25,11 @@ from .models import (
 
 
 def can_manage_stock(user):
-    """صلاحية عمليات المخزون، وليست مجرد صلاحية المطعم."""
+    """
+    تنفيذ حركات المخزن مسموح فقط
+    للراهب المسؤول أو المطور.
+    """
+
     if (
         not user
         or not user.is_authenticated
@@ -36,13 +40,11 @@ def can_manage_stock(user):
 
     return bool(
         user.is_superuser
-        or getattr(user, "role", "") == "superadmin"
-        or (
-            getattr(user, "role", "") == "admin"
-            and user.has_perm("store.add_stockmovement")
+        or getattr(user, "role", "") in (
+            "admin",
+            "superadmin",
         )
     )
-
 
 def _check_permission(user):
     if not can_manage_stock(user):
