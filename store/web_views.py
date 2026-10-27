@@ -1,7 +1,7 @@
 """Store website. Requires phase-1 models and phase-2 services/admin_forms."""
 from functools import wraps
 from urllib.parse import urlencode
-
+from .web_selectors import get_expiry_groups
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied, ValidationError
@@ -83,34 +83,159 @@ def page_context(queryset, request, size=12, page_key="page"):
 @require_GET
 def catalog(request):
     can_inactive = can_see_inactive(request.user)
-    form = CatalogFilterForm(request.GET or None, include_inactive_allowed=can_inactive)
-    data = form.cleaned_data if form.is_valid() else {}
-    products = visible_products(request.user)
-    if not (can_inactive and data.get("include_inactive")):
-        products = products.filter(is_active=True, category__is_active=True, unit__is_active=True)
-    keyword = data.get("q", "")
-    if keyword:
-        products = products.filter(Q(name__icontains=keyword) | Q(code__iexact=keyword) | Q(barcode__iexact=keyword))
-    if data.get("category"):
-        products = products.filter(category=data["category"])
-    soon_ids, expired_ids = expiry_product_ids(products.values("pk"))
-    low_products = products.filter(is_active=True, category__is_active=True, unit__is_active=True, ui_available__lte=F("minimum_stock"))
-    counts = {"products": products.count(), "low": low_products.count(), "expiring": len(soon_ids), "expired": len(expired_ids)}
-    state = data.get("state", "")
-    if state == "low":
-        products = low_products
-    elif state == "expiring":
-        products = products.filter(pk__in=soon_ids)
-    elif state == "expired":
-        products = products.filter(pk__in=expired_ids)
-    page, pagination = page_context(with_display_batches(products), request)
-    category_queryset = Category.objects.filter(is_active=True).annotate(
-        ui_count=Count("products", filter=Q(products__is_active=True, products__unit__is_active=True))
+
+    form = CatalogFilterForm(
+        request.GET or None,
+        include_inactive_allowed=can_inactive,
     )
-    return render(request, "store/catalog.html", base_context(
-        request, form=form, cards=[product_card(p) for p in page], counts=counts,
-        categories=category_queryset, **pagination,
-    ))
+
+    data = form.cleaned_data if form.is_valid() else {}
+
+    products = visible_products(request.user)
+
+    # =====================================
+    # Active / inactive products
+    # =====================================
+
+    if not (
+        can_inactive
+        and data.get("include_inactive")
+    ):
+        products = products.filter(
+            is_active=True,
+            category__is_active=True,
+            unit__is_active=True,
+        )
+
+    # =====================================
+    # Search
+    # =====================================
+
+    keyword = data.get("q", "")
+
+    if keyword:
+        products = products.filter(
+            Q(name__icontains=keyword)
+            | Q(code__iexact=keyword)
+            | Q(barcode__iexact=keyword)
+        )
+
+    # =====================================
+    # Category filter
+    # =====================================
+
+    if data.get("category"):
+        products = products.filter(
+            category=data["category"]
+        )
+
+    # =====================================
+    # Expiry status
+    # =====================================
+
+    soon_ids, expired_ids = expiry_product_ids(
+        products.values("pk")
+    )
+
+    # =====================================
+    # Low stock
+    # =====================================
+
+    low_products = products.filter(
+        is_active=True,
+        category__is_active=True,
+        unit__is_active=True,
+        ui_available__lte=F("minimum_stock"),
+    )
+
+    # =====================================
+    # Dashboard counts
+    # =====================================
+
+    counts = {
+        "products": products.count(),
+        "low": low_products.count(),
+        "expiring": len(soon_ids),
+        "expired": len(expired_ids),
+    }
+
+    # =====================================
+    # State filter
+    # =====================================
+
+    state = data.get("state", "")
+
+    if state == "low":
+
+        products = low_products
+
+    elif state == "expiring":
+
+        products = products.filter(
+            pk__in=soon_ids
+        )
+
+    elif state == "expired":
+
+        products = products.filter(
+            pk__in=expired_ids
+        )
+
+    # =====================================
+    # Pagination
+    # =====================================
+
+    page, pagination = page_context(
+        with_display_batches(products),
+        request,
+    )
+
+    # =====================================
+    # Categories
+    # =====================================
+
+    category_queryset = (
+        Category.objects
+        .filter(is_active=True)
+        .annotate(
+            ui_count=Count(
+                "products",
+                filter=Q(
+                    products__is_active=True,
+                    products__unit__is_active=True,
+                ),
+            )
+        )
+    )
+
+    # =====================================
+    # Template
+    # =====================================
+
+    return render(
+        request,
+        "store/catalog.html",
+        base_context(
+            request,
+
+            form=form,
+
+            cards=[
+                product_card(product)
+                for product in page
+            ],
+
+            counts=counts,
+
+            # للقسمين الجديدين
+            expiring_count=counts["expiring"],
+            expired_count=counts["expired"],
+
+            categories=category_queryset,
+
+            **pagination,
+        ),
+    )
 
 
 @store_admin_required
@@ -279,3 +404,38 @@ def delete_empty(request, kind, pk):
     return render(request, "store/delete_confirm.html", base_context(
         request, obj=obj, error=error, back_url=back_url,
     ))
+
+@store_admin_required
+def expiring_products(request):
+
+    expiry_data = get_expiry_groups()
+
+    return render(
+        request,
+        "store/expiry_list.html",
+        {
+            "page_type": "expiring",
+            "page_title": "قرب انتهاء الصلاحية",
+            "page_icon": "⚠️",
+            "batches": expiry_data["expiring"],
+            "total_count": expiry_data["expiring_count"],
+        },
+    )
+
+
+@store_admin_required
+def expired_products(request):
+
+    expiry_data = get_expiry_groups()
+
+    return render(
+        request,
+        "store/expiry_list.html",
+        {
+            "page_type": "expired",
+            "page_title": "منتجات منتهية الصلاحية",
+            "page_icon": "⛔",
+            "batches": expiry_data["expired"],
+            "total_count": expiry_data["expired_count"],
+        },
+    )

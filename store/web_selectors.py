@@ -132,3 +132,84 @@ def batch_row(batch):
         "received": quantity_text(batch.ui_received),
         "remaining": quantity_text(batch.ui_balance), "days": days,
     }
+
+def get_expiry_groups():
+    """
+    يرجع:
+    - الدفعات القريبة من انتهاء الصلاحية.
+    - الدفعات المنتهية ولسه فيها رصيد.
+
+    الصلاحية مرتبطة بالدفعة وليس المنتج كله.
+    """
+
+    signed_quantity = Case(
+        When(
+            movements__movement_type__in=INCOMING_TYPES,
+            then=F("movements__quantity"),
+        ),
+        default=-F("movements__quantity"),
+        output_field=DecimalField(
+            max_digits=18,
+            decimal_places=3,
+        ),
+    )
+
+    batches = (
+        StockBatch.objects
+        .select_related(
+            "product",
+            "product__category",
+            "product__unit",
+        )
+        .filter(
+            expiry_date__isnull=False,
+        )
+        .annotate(
+            remaining_amount=Sum(
+                signed_quantity,
+                default=ZERO,
+            )
+        )
+        .filter(
+            remaining_amount__gt=ZERO,
+        )
+        .order_by(
+            "expiry_date",
+            "product__name",
+        )
+    )
+
+    today = timezone.localdate()
+
+    expiring = []
+    expired = []
+
+    for batch in batches:
+
+        days = (
+            batch.expiry_date - today
+        ).days
+
+        # نسخة سهلة للاستخدام داخل الـ template
+        batch.remaining_for_view = (
+            batch.remaining_amount
+        )
+
+        if days < 0:
+
+            batch.days_overdue = abs(days)
+
+            expired.append(batch)
+
+        elif days <= batch.product.expiry_warning_days:
+
+            batch.days_remaining = days
+
+            expiring.append(batch)
+
+    return {
+        "expiring": expiring,
+        "expired": expired,
+        "expiring_count": len(expiring),
+        "expired_count": len(expired),
+    }

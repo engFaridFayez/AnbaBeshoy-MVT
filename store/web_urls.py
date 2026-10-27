@@ -14,4 +14,15 @@ urlpatterns = [
     path("settings/<str:kind>/add/", views.reference_edit, name="reference_add"),
     path("settings/<str:kind>/<int:pk>/edit/", views.reference_edit, name="reference_edit"),
     path("remove/<str:kind>/<int:pk>/", views.delete_empty, name="delete"),
+    path(
+    "expiry/soon/",
+    views.expiring_products,
+    name="expiring_products",
+),
+
+path(
+    "expiry/expired/",
+    views.expired_products,
+    name="expired_products",
+),
 ]

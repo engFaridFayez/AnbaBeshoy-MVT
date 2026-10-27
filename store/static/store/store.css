@@ -160,3 +160,982 @@
 @media (prefers-reduced-motion:reduce) {
     .st-shell *, .st-shell *::before, .st-shell *::after {transition:none!important;animation:none!important;}
 }
+
+/* =====================================
+   EXPIRY SHORTCUTS - STORE HOME
+===================================== */
+
+.expiry-shortcuts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    margin: 22px 0 28px;
+}
+
+.expiry-shortcut {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    min-width: 0;
+    padding: 22px;
+
+    background: var(--st-paper);
+    border: 2px solid;
+    border-radius: 18px;
+
+    color: var(--st-ink);
+    text-decoration: none;
+
+    transition:
+        transform .15s ease,
+        box-shadow .15s ease,
+        border-color .15s ease;
+}
+
+.expiry-shortcut:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px #34101d12;
+}
+
+.expiry-shortcut--warning {
+    background: #fff9e8;
+    border-color: #d4a23e;
+}
+
+.expiry-shortcut--danger {
+    background: #fcebee;
+    border-color: #b74650;
+}
+
+.expiry-shortcut-icon {
+    display: grid;
+    place-items: center;
+
+    width: 58px;
+    height: 58px;
+
+    flex-shrink: 0;
+
+    border-radius: 15px;
+
+    background: #ffffffb5;
+
+    font-size: 31px;
+}
+
+.expiry-shortcut-copy {
+    min-width: 0;
+    flex: 1;
+}
+
+.expiry-shortcut-copy span {
+    display: block;
+
+    color: var(--st-muted);
+
+    font-size: 13px;
+}
+
+.expiry-shortcut-copy h2 {
+    margin: 2px 0 3px;
+
+    color: var(--st-wine);
+
+    font-size: 21px;
+}
+
+.expiry-shortcut-copy p {
+    margin: 0;
+
+    color: var(--st-muted);
+
+    font-size: 14px;
+}
+
+.expiry-shortcut-count {
+    display: grid;
+    place-items: center;
+
+    min-width: 52px;
+    height: 52px;
+
+    padding: 0 8px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: var(--st-wine);
+    color: #fff8eb;
+
+    font-size: 21px;
+    font-weight: bold;
+}
+
+
+/* =====================================
+   EXPIRY PAGE
+===================================== */
+
+.st-expiry-page {
+    padding-bottom: 55px;
+}
+
+
+/* =====================================
+   BACK BUTTON
+===================================== */
+
+.st-expiry-topbar {
+    display: flex;
+    align-items: center;
+
+    margin: 0 0 18px;
+}
+
+.st-expiry-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    min-height: 46px;
+
+    padding: 8px 15px;
+
+    background: #f0e6d8;
+    border: 1px solid #dcc8aa;
+    border-radius: 11px;
+
+    color: var(--st-wine);
+
+    font-size: 16px;
+    font-weight: bold;
+
+    text-decoration: none;
+}
+
+.st-expiry-back:hover {
+    background: var(--st-wine);
+    border-color: var(--st-wine);
+
+    color: #fff8eb;
+}
+
+.st-expiry-back span {
+    font-size: 21px;
+}
+
+
+/* =====================================
+   HERO
+===================================== */
+
+.st-expiry-hero {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 24px;
+
+    padding: 28px 30px;
+
+    margin-bottom: 18px;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    box-shadow: 0 10px 28px #34101d0c;
+}
+
+.st-expiry-hero::after {
+    content: "✠";
+
+    position: absolute;
+
+    left: 25px;
+    bottom: -45px;
+
+    color: currentColor;
+
+    font-family: Georgia, serif;
+    font-size: 145px;
+
+    opacity: .055;
+
+    pointer-events: none;
+}
+
+
+/* Near expiry */
+
+.st-expiry-hero-warning {
+    background:
+        linear-gradient(
+            115deg,
+            #fff9e8,
+            #f4e1ad
+        );
+
+    border: 1px solid #d2aa59;
+    border-bottom: 4px solid #b48d4b;
+
+    color: #63491d;
+}
+
+
+/* Expired */
+
+.st-expiry-hero-danger {
+    background:
+        linear-gradient(
+            115deg,
+            #34101d,
+            #702238
+        );
+
+    border: 1px solid #8f4d60;
+    border-bottom: 4px solid #c59b57;
+
+    color: #fff8eb;
+}
+
+
+.st-expiry-hero-copy {
+    position: relative;
+    z-index: 1;
+
+    display: flex;
+    align-items: center;
+
+    gap: 18px;
+
+    min-width: 0;
+}
+
+.st-expiry-hero-icon {
+    display: grid;
+    place-items: center;
+
+    width: 68px;
+    height: 68px;
+
+    flex-shrink: 0;
+
+    border-radius: 17px;
+
+    background: #ffffffc7;
+
+    font-size: 32px;
+
+    box-shadow: 0 5px 20px #0000000f;
+}
+
+.st-expiry-hero-danger .st-expiry-hero-icon {
+    background: #ffffff16;
+
+    border: 1px solid #ffffff2e;
+}
+
+.st-expiry-kicker {
+    margin: 0 !important;
+
+    font-size: 14px;
+    font-weight: bold;
+
+    opacity: .8;
+}
+
+.st-expiry-hero h1 {
+    margin: 2px 0 4px;
+
+    color: inherit;
+
+    font-size: 31px;
+}
+
+.st-expiry-hero p {
+    max-width: 650px;
+
+    margin: 0;
+
+    color: inherit;
+
+    font-size: 16px;
+
+    opacity: .86;
+}
+
+
+/* Count */
+
+.st-expiry-big-count {
+    position: relative;
+    z-index: 1;
+
+    min-width: 100px;
+
+    padding: 14px 18px;
+
+    flex-shrink: 0;
+
+    background: #ffffffd9;
+
+    border: 1px solid #ffffff80;
+    border-radius: 16px;
+
+    text-align: center;
+}
+
+.st-expiry-hero-danger .st-expiry-big-count {
+    background: #ffffff13;
+
+    border-color: #ffffff28;
+}
+
+.st-expiry-big-count strong {
+    display: block;
+
+    color: inherit;
+
+    font-size: 34px;
+    line-height: 1.1;
+}
+
+.st-expiry-big-count span {
+    display: block;
+
+    margin-top: 4px;
+
+    font-size: 13px;
+}
+
+
+/* =====================================
+   NOTICE
+===================================== */
+
+.st-expiry-notice {
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+
+    padding: 14px 17px;
+
+    margin: 0 0 22px;
+
+    border-radius: 13px;
+}
+
+.st-expiry-notice-warning {
+    background: #fff7df;
+
+    border: 1px solid #e1c471;
+
+    color: #704e14;
+}
+
+.st-expiry-notice-danger {
+    background: #f9e6e9;
+
+    border: 1px solid #dfb1ba;
+
+    color: #812b3c;
+}
+
+.st-expiry-notice-icon {
+    display: grid;
+    place-items: center;
+
+    width: 34px;
+    height: 34px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: currentColor;
+    color: white;
+
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.st-expiry-notice strong {
+    display: block;
+
+    font-size: 16px;
+}
+
+.st-expiry-notice p {
+    margin: 1px 0 0;
+
+    color: inherit;
+
+    font-size: 14px;
+}
+
+
+/* =====================================
+   PRODUCTS GRID
+===================================== */
+
+.st-expiry-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 18px;
+
+    align-items: stretch;
+}
+
+
+/* =====================================
+   EXPIRY CARD
+===================================== */
+
+.st-expiry-card {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+
+    min-width: 0;
+
+    padding: 20px;
+
+    background: var(--st-paper);
+
+    border: 1px solid var(--st-line);
+    border-radius: 17px;
+
+    box-shadow: 0 7px 20px #34101d08;
+
+    overflow: hidden;
+}
+
+.st-expiry-card::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    right: 0;
+    bottom: 0;
+
+    width: 5px;
+}
+
+.st-expiry-card-warning {
+    border-color: #dfc57e;
+}
+
+.st-expiry-card-warning::before {
+    background: #b48d4b;
+}
+
+.st-expiry-card-danger {
+    border-color: #d9aab3;
+}
+
+.st-expiry-card-danger::before {
+    background: #a42e43;
+}
+
+
+/* =====================================
+   CARD HEADER
+===================================== */
+
+.st-expiry-card-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 12px;
+}
+
+.st-expiry-product {
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+
+    min-width: 0;
+}
+
+.st-expiry-photo {
+    display: block;
+
+    width: 72px;
+    height: 72px;
+
+    flex-shrink: 0;
+
+    object-fit: cover;
+
+    background: #f4ecdf;
+
+    border: 1px solid #dfd0ba;
+    border-radius: 14px;
+}
+
+.st-expiry-photo-empty {
+    display: grid;
+    place-items: center;
+
+    font-size: 31px;
+}
+
+.st-expiry-product-name {
+    min-width: 0;
+}
+
+.st-expiry-category {
+    display: block;
+
+    color: #785821;
+
+    font-size: 13px;
+}
+
+.st-expiry-product-name h2 {
+    margin: 1px 0 2px;
+
+    color: var(--st-wine);
+
+    font-size: 21px;
+
+    overflow-wrap: anywhere;
+}
+
+.st-expiry-code {
+    display: block;
+
+    color: #8a7b70;
+
+    font-size: 12px;
+}
+
+
+/* Status pill */
+
+.st-expiry-status {
+    flex-shrink: 0;
+
+    padding: 6px 10px;
+
+    border-radius: 25px;
+
+    white-space: nowrap;
+
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.st-expiry-status-warning {
+    background: #fff0c7;
+
+    color: #765113;
+}
+
+.st-expiry-status-danger {
+    background: #f8dde2;
+
+    color: #91283b;
+}
+
+
+/* =====================================
+   MAIN VALUES
+===================================== */
+
+.st-expiry-main-data {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 9px;
+
+    margin-top: 17px;
+}
+
+.st-expiry-data-box {
+    min-width: 0;
+
+    padding: 11px;
+
+    background: #f5eee3;
+
+    border: 1px solid #eadcca;
+    border-radius: 11px;
+}
+
+.st-expiry-data-box small {
+    display: block;
+
+    margin-bottom: 3px;
+
+    color: var(--st-muted);
+
+    font-size: 12px;
+}
+
+.st-expiry-data-box strong {
+    display: block;
+
+    color: var(--st-ink);
+
+    font-size: 16px;
+
+    overflow-wrap: anywhere;
+}
+
+.st-expiry-data-box span {
+    color: var(--st-muted);
+
+    font-size: 12px;
+}
+
+.st-expiry-stock-value {
+    color: var(--st-wine) !important;
+
+    font-size: 21px !important;
+}
+
+.st-expiry-days-warning {
+    background: #fff4d6;
+
+    border-color: #e1c678;
+}
+
+.st-expiry-days-warning strong {
+    color: #79551b;
+}
+
+.st-expiry-days-danger {
+    background: #fbe7ea;
+
+    border-color: #e0b3bb;
+}
+
+.st-expiry-days-danger strong {
+    color: #9b2b3f;
+}
+
+
+/* =====================================
+   EXTRA DETAILS
+===================================== */
+
+.st-expiry-details {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 10px 18px;
+
+    margin-top: 15px;
+
+    padding: 15px 0;
+
+    border-top: 1px solid var(--st-line);
+    border-bottom: 1px solid var(--st-line);
+}
+
+.st-expiry-details div {
+    min-width: 0;
+}
+
+.st-expiry-details span {
+    display: block;
+
+    color: var(--st-muted);
+
+    font-size: 12px;
+}
+
+.st-expiry-details strong {
+    display: block;
+
+    color: var(--st-ink);
+
+    font-size: 14px;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* =====================================
+   CARD FOOTER
+===================================== */
+
+.st-expiry-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+
+    margin-top: auto;
+    padding-top: 14px;
+}
+
+.st-expiry-blocked {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 6px 10px;
+
+    background: #efe8df;
+
+    border: 1px solid #ddd0c1;
+    border-radius: 20px;
+
+    color: #68584f;
+
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.st-expiry-open {
+    min-width: 120px;
+
+    font-size: 15px;
+}
+
+
+/* =====================================
+   EMPTY STATE
+===================================== */
+
+.st-expiry-empty {
+    max-width: 720px;
+
+    margin: 25px auto;
+
+    padding: 55px 25px;
+
+    background: var(--st-paper);
+
+    border: 1px solid var(--st-line);
+    border-top: 4px solid var(--st-gold);
+    border-radius: 19px;
+
+    text-align: center;
+
+    box-shadow: 0 8px 25px #34101d08;
+}
+
+.st-expiry-empty-icon {
+    display: grid;
+    place-items: center;
+
+    width: 76px;
+    height: 76px;
+
+    margin: 0 auto 15px;
+
+    background: #e2eee8;
+
+    border: 1px solid #b9d3c6;
+    border-radius: 50%;
+
+    color: #2e5f50;
+
+    font-size: 37px;
+}
+
+.st-expiry-empty h2 {
+    margin: 3px 0 8px;
+
+    color: var(--st-wine);
+}
+
+.st-expiry-empty p {
+    max-width: 470px;
+
+    margin: 0 auto 20px;
+
+    color: var(--st-muted);
+
+    font-size: 16px;
+}
+
+
+/* =====================================
+   RESPONSIVE
+===================================== */
+
+@media (max-width: 900px) {
+
+    .st-expiry-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .expiry-shortcuts {
+        grid-template-columns: 1fr;
+    }
+
+    .expiry-shortcut {
+        padding: 17px;
+    }
+
+    .expiry-shortcut-icon {
+        width: 50px;
+        height: 50px;
+
+        font-size: 27px;
+    }
+
+    .expiry-shortcut-count {
+        min-width: 46px;
+        height: 46px;
+
+        font-size: 19px;
+    }
+
+
+    .st-expiry-hero {
+        padding: 21px 18px;
+
+        gap: 14px;
+    }
+
+    .st-expiry-hero-copy {
+        align-items: flex-start;
+
+        gap: 12px;
+    }
+
+    .st-expiry-hero-icon {
+        width: 50px;
+        height: 50px;
+
+        border-radius: 13px;
+
+        font-size: 25px;
+    }
+
+    .st-expiry-hero h1 {
+        font-size: 25px;
+    }
+
+    .st-expiry-hero p {
+        font-size: 14px;
+    }
+
+    .st-expiry-big-count {
+        min-width: 70px;
+
+        padding: 10px;
+    }
+
+    .st-expiry-big-count strong {
+        font-size: 27px;
+    }
+
+    .st-expiry-card {
+        padding: 17px;
+    }
+
+    .st-expiry-card-head {
+        flex-direction: column;
+    }
+
+    .st-expiry-status {
+        align-self: flex-start;
+    }
+
+    .st-expiry-main-data {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .st-expiry-main-data
+    .st-expiry-data-box:first-child {
+        grid-column: 1 / -1;
+    }
+
+}
+
+
+@media (max-width: 480px) {
+
+    .expiry-shortcut {
+        align-items: flex-start;
+    }
+
+    .expiry-shortcut-copy p {
+        display: none;
+    }
+
+
+    .st-expiry-hero {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .st-expiry-big-count {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        width: 100%;
+
+        gap: 8px;
+    }
+
+    .st-expiry-big-count span {
+        margin: 0;
+    }
+
+
+    .st-expiry-photo {
+        width: 60px;
+        height: 60px;
+    }
+
+    .st-expiry-product-name h2 {
+        font-size: 19px;
+    }
+
+
+    .st-expiry-main-data {
+        grid-template-columns: 1fr;
+    }
+
+    .st-expiry-main-data
+    .st-expiry-data-box:first-child {
+        grid-column: auto;
+    }
+
+
+    .st-expiry-details {
+        grid-template-columns: 1fr;
+    }
+
+
+    .st-expiry-card-footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .st-expiry-open {
+        width: 100%;
+    }
+
+}

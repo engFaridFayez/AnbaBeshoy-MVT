@@ -1,0 +1,507 @@
+{% extends "store/base.html" %}
+
+{% block title %}
+{{ page_title }} | المخزن
+{% endblock %}
+
+{% block store_content %}
+
+<div class="st-expiry-page">
+
+    <!-- ===============================
+         Top navigation
+    ================================ -->
+
+    <div class="st-expiry-topbar">
+
+        <a
+            href="{% url 'store:catalog' %}"
+            class="st-expiry-back"
+        >
+            <span>←</span>
+            الرجوع للمخزن
+        </a>
+
+    </div>
+
+
+    <!-- ===============================
+         Hero
+    ================================ -->
+
+    <header
+        class="
+            st-expiry-hero
+            {% if page_type == 'expired' %}
+                st-expiry-hero-danger
+            {% else %}
+                st-expiry-hero-warning
+            {% endif %}
+        "
+    >
+
+        <div class="st-expiry-hero-copy">
+
+            <div class="st-expiry-hero-icon">
+
+                {% if page_type == "expired" %}
+                    ⛔
+                {% else %}
+                    ⚠️
+                {% endif %}
+
+            </div>
+
+            <div>
+
+                <p class="st-expiry-kicker">
+
+                    {% if page_type == "expired" %}
+                        يحتاج تدخل
+                    {% else %}
+                        متابعة الصلاحية
+                    {% endif %}
+
+                </p>
+
+                <h1>
+                    {{ page_title }}
+                </h1>
+
+                <p>
+
+                    {% if page_type == "expired" %}
+
+                        الدفعات التي انتهت صلاحيتها
+                        وما زالت تحتوي على رصيد بالمخزن.
+
+                    {% else %}
+
+                        الدفعات التي اقترب تاريخ انتهاء
+                        صلاحيتها وتحتاج إلى متابعة.
+
+                    {% endif %}
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="st-expiry-big-count">
+
+            <strong>
+                {{ total_count }}
+            </strong>
+
+            <span>
+                دفعة
+            </span>
+
+        </div>
+
+    </header>
+
+
+    <!-- ===============================
+         Info notice
+    ================================ -->
+
+    {% if page_type == "expired" %}
+
+        <div class="st-expiry-notice st-expiry-notice-danger">
+
+            <span class="st-expiry-notice-icon">
+                !
+            </span>
+
+            <div>
+                <strong>
+                    تنبيه هام
+                </strong>
+
+                <p>
+                    المنتجات المنتهية لا تدخل ضمن
+                    الرصيد المتاح للصرف.
+                </p>
+            </div>
+
+        </div>
+
+    {% else %}
+
+        <div class="st-expiry-notice st-expiry-notice-warning">
+
+            <span class="st-expiry-notice-icon">
+                !
+            </span>
+
+            <div>
+                <strong>
+                    يفضل استخدامها أولًا
+                </strong>
+
+                <p>
+                    النظام يعرض هنا الدفعات الواقعة
+                    داخل فترة التحذير المحددة لكل منتج.
+                </p>
+            </div>
+
+        </div>
+
+    {% endif %}
+
+
+    <!-- ===============================
+         Product batches
+    ================================ -->
+
+    {% if batches %}
+
+        <div class="st-expiry-grid">
+
+            {% for batch in batches %}
+
+                <article
+                    class="
+                        st-expiry-card
+                        {% if page_type == 'expired' %}
+                            st-expiry-card-danger
+                        {% else %}
+                            st-expiry-card-warning
+                        {% endif %}
+                    "
+                >
+
+                    <!-- Card Header -->
+
+                    <div class="st-expiry-card-head">
+
+                        <div class="st-expiry-product">
+
+                            {% if batch.product.image %}
+
+                                <img
+                                    src="{{ batch.product.image.url }}"
+                                    alt="{{ batch.product.name }}"
+                                    class="st-expiry-photo"
+                                >
+
+                            {% else %}
+
+                                <div class="st-expiry-photo st-expiry-photo-empty">
+                                    📦
+                                </div>
+
+                            {% endif %}
+
+
+                            <div class="st-expiry-product-name">
+
+                                <span class="st-expiry-category">
+                                    {{ batch.product.category.name }}
+                                </span>
+
+                                <h2>
+                                    {{ batch.product.name }}
+                                </h2>
+
+                                <span class="st-expiry-code">
+                                    {{ batch.product.code }}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            class="
+                                st-expiry-status
+                                {% if page_type == 'expired' %}
+                                    st-expiry-status-danger
+                                {% else %}
+                                    st-expiry-status-warning
+                                {% endif %}
+                            "
+                        >
+
+                            {% if page_type == "expired" %}
+
+                                منتهي
+
+                            {% else %}
+
+                                قريب الانتهاء
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Main important data -->
+
+                    <div class="st-expiry-main-data">
+
+                        <div class="st-expiry-data-box">
+
+                            <small>
+                                الكمية المتبقية
+                            </small>
+
+                            <strong class="st-expiry-stock-value">
+                                {{ batch.remaining_for_view }}
+                            </strong>
+
+                            <span>
+                                {{ batch.product.unit.symbol }}
+                            </span>
+
+                        </div>
+
+
+                        <div class="st-expiry-data-box">
+
+                            <small>
+                                تاريخ الانتهاء
+                            </small>
+
+                            <strong>
+                                {{ batch.expiry_date|date:"Y/m/d" }}
+                            </strong>
+
+                        </div>
+
+
+                        <div
+                            class="
+                                st-expiry-data-box
+                                {% if page_type == 'expired' %}
+                                    st-expiry-days-danger
+                                {% else %}
+                                    st-expiry-days-warning
+                                {% endif %}
+                            "
+                        >
+
+                            {% if page_type == "expired" %}
+
+                                <small>
+                                    منتهي منذ
+                                </small>
+
+                                <strong>
+
+                                    {% if batch.days_overdue == 1 %}
+                                        يوم واحد
+                                    {% else %}
+                                        {{ batch.days_overdue }} يوم
+                                    {% endif %}
+
+                                </strong>
+
+                            {% else %}
+
+                                <small>
+                                    الوقت المتبقي
+                                </small>
+
+                                <strong>
+
+                                    {% if batch.days_remaining == 0 %}
+
+                                        ينتهي اليوم
+
+                                    {% elif batch.days_remaining == 1 %}
+
+                                        يوم واحد
+
+                                    {% else %}
+
+                                        {{ batch.days_remaining }} يوم
+
+                                    {% endif %}
+
+                                </strong>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Extra details -->
+
+                    <div class="st-expiry-details">
+
+                        <div>
+
+                            <span>
+                                تاريخ الاستلام
+                            </span>
+
+                            <strong>
+                                {{ batch.received_date|date:"Y/m/d" }}
+                            </strong>
+
+                        </div>
+
+
+                        {% if batch.production_date %}
+
+                            <div>
+
+                                <span>
+                                    تاريخ الإنتاج
+                                </span>
+
+                                <strong>
+                                    {{ batch.production_date|date:"Y/m/d" }}
+                                </strong>
+
+                            </div>
+
+                        {% endif %}
+
+
+                        {% if batch.supplier_batch_number %}
+
+                            <div>
+
+                                <span>
+                                    رقم التشغيلة
+                                </span>
+
+                                <strong>
+                                    {{ batch.supplier_batch_number }}
+                                </strong>
+
+                            </div>
+
+                        {% endif %}
+
+
+                        {% if batch.supplier_name %}
+
+                            <div>
+
+                                <span>
+                                    المورد
+                                </span>
+
+                                <strong>
+                                    {{ batch.supplier_name }}
+                                </strong>
+
+                            </div>
+
+                        {% endif %}
+
+
+                        {% if batch.storage_location %}
+
+                            <div>
+
+                                <span>
+                                    مكان التخزين
+                                </span>
+
+                                <strong>
+                                    {{ batch.storage_location }}
+                                </strong>
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- Footer -->
+
+                    <div class="st-expiry-card-footer">
+
+                        <div>
+
+                            {% if batch.is_blocked %}
+
+                                <span class="st-expiry-blocked">
+                                    🔒 موقوف عن الصرف
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <a
+                            href="{% url 'store:product_edit' batch.product.pk %}"
+                            class="st-btn st-primary st-expiry-open"
+                        >
+                            فتح المنتج
+                        </a>
+
+                    </div>
+
+                </article>
+
+            {% endfor %}
+
+        </div>
+
+
+    {% else %}
+
+        <!-- ===============================
+             Empty State
+        ================================ -->
+
+        <div class="st-expiry-empty">
+
+            <div class="st-expiry-empty-icon">
+                ✓
+            </div>
+
+            {% if page_type == "expired" %}
+
+                <h2>
+                    لا توجد منتجات منتهية الصلاحية
+                </h2>
+
+                <p>
+                    لا توجد حاليًا دفعات منتهية
+                    تحتوي على كمية بالمخزن.
+                </p>
+
+            {% else %}
+
+                <h2>
+                    لا توجد صلاحيات قريبة
+                </h2>
+
+                <p>
+                    جميع الدفعات الحالية خارج
+                    فترة تحذير انتهاء الصلاحية.
+                </p>
+
+            {% endif %}
+
+
+            <a
+                href="{% url 'store:catalog' %}"
+                class="st-btn st-primary"
+            >
+                الرجوع للمخزن
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
