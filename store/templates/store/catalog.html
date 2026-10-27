@@ -7,346 +7,193 @@
 {% block store_content %}
 
 <header class="st-hero">
+  <div>
+    <p class="st-eyebrow">خدمة المخزن</p>
 
-    <div>
-        <p class="st-eyebrow">
-            خدمة المخزن
-        </p>
+    <h1>مخزن الدير</h1>
 
-        <h1>
-            مخزن الدير
-        </h1>
+    <p>المنتجات، الأرصدة، والصلاحية في مكان واحد.</p>
+  </div>
 
-        <p>
-            المنتجات، الأرصدة، والصلاحية في مكان واحد.
-        </p>
-    </div>
-
-    <span
-        class="st-cross"
-        aria-hidden="true"
-    >
-        ✠
-    </span>
-
+  <span class="st-cross" aria-hidden="true"> ✠ </span>
 </header>
-
 
 <!-- =====================================
      Expiry shortcuts
 ===================================== -->
 
 <div class="expiry-shortcuts">
+  <a
+    href="{% url 'store:expiring_products' %}"
+    class="expiry-shortcut expiry-shortcut--warning"
+  >
+    <div class="expiry-shortcut-icon">⚠️</div>
 
-    <a
-        href="{% url 'store:expiring_products' %}"
-        class="expiry-shortcut expiry-shortcut--warning"
-    >
+    <div class="expiry-shortcut-copy">
+      <span> متابعة الصلاحية </span>
 
-        <div class="expiry-shortcut-icon">
-            ⚠️
-        </div>
+      <h2>قرب انتهاء الصلاحية</h2>
 
-        <div class="expiry-shortcut-copy">
+      <p>المنتجات التي تحتاج متابعة قبل انتهاء صلاحيتها</p>
+    </div>
 
-            <span>
-                متابعة الصلاحية
-            </span>
+    <div class="expiry-shortcut-count">{{ expiring_count }}</div>
+  </a>
 
-            <h2>
-                قرب انتهاء الصلاحية
-            </h2>
+  <a
+    href="{% url 'store:expired_products' %}"
+    class="expiry-shortcut expiry-shortcut--danger"
+  >
+    <div class="expiry-shortcut-icon">⛔</div>
 
-            <p>
-                المنتجات التي تحتاج متابعة
-                قبل انتهاء صلاحيتها
-            </p>
+    <div class="expiry-shortcut-copy">
+      <span> تنبيه هام </span>
 
-        </div>
+      <h2>منتهي الصلاحية</h2>
 
-        <div class="expiry-shortcut-count">
-            {{ expiring_count }}
-        </div>
+      <p>منتجات انتهت صلاحيتها وما زال لها رصيد</p>
+    </div>
 
-    </a>
-
-
-    <a
-        href="{% url 'store:expired_products' %}"
-        class="expiry-shortcut expiry-shortcut--danger"
-    >
-
-        <div class="expiry-shortcut-icon">
-            ⛔
-        </div>
-
-        <div class="expiry-shortcut-copy">
-
-            <span>
-                تنبيه هام
-            </span>
-
-            <h2>
-                منتهي الصلاحية
-            </h2>
-
-            <p>
-                منتجات انتهت صلاحيتها
-                وما زال لها رصيد
-            </p>
-
-        </div>
-
-        <div class="expiry-shortcut-count">
-            {{ expired_count }}
-        </div>
-
-    </a>
-
+    <div class="expiry-shortcut-count">{{ expired_count }}</div>
+  </a>
 </div>
-
 
 <!-- =====================================
      Actions
 ===================================== -->
 
 <div class="st-toolbar">
+  {% if can_add_product %}
 
-    {% if can_add_product %}
+  <a class="st-btn st-primary" href="{% url 'store:product_add' %}">
+    + إضافة منتج
+  </a>
 
-        <a
-            class="st-btn st-primary"
-            href="{% url 'store:product_add' %}"
-        >
-            + إضافة منتج
-        </a>
+  {% endif %} {% if can_manage_categories %}
 
-    {% endif %}
+  <a class="st-btn st-light" href="{% url 'store:references' 'categories' %}">
+    إدارة الأقسام
+  </a>
 
+  {% endif %} {% if can_manage_units %}
 
-    {% if can_manage_categories %}
+  <a class="st-btn st-light" href="{% url 'store:references' 'units' %}">
+    وحدات القياس
+  </a>
 
-        <a
-            class="st-btn st-light"
-            href="{% url 'store:references' 'categories' %}"
-        >
-            إدارة الأقسام
-        </a>
+  {% endif %}
 
-    {% endif %}
-
-
-    {% if can_manage_units %}
-
-        <a
-            class="st-btn st-light"
-            href="{% url 'store:references' 'units' %}"
-        >
-            وحدات القياس
-        </a>
-
-    {% endif %}
-
+  <a href="{% url 'store:store_report' %}" class="st-btn st-light">
+    🖨️ تقرير المخزن
+  </a>
 </div>
-
 
 <!-- =====================================
      Metrics
 ===================================== -->
 
-<div
-    class="st-metrics"
-    aria-label="ملخص المخزن"
->
+<div class="st-metrics" aria-label="ملخص المخزن">
+  <div class="st-metric">
+    <small> المنتجات </small>
 
-    <div class="st-metric">
+    <strong> {{ counts.products }} </strong>
+  </div>
 
-        <small>
-            المنتجات
-        </small>
+  <div class="st-metric st-metric-danger">
+    <small> مخزون منخفض </small>
 
-        <strong>
-            {{ counts.products }}
-        </strong>
+    <strong> {{ counts.low }} </strong>
+  </div>
 
-    </div>
+  <div class="st-metric st-metric-gold">
+    <small> صلاحية قريبة </small>
 
+    <strong> {{ counts.expiring }} </strong>
+  </div>
 
-    <div class="st-metric st-metric-danger">
+  <div class="st-metric">
+    <small> به دفعات منتهية </small>
 
-        <small>
-            مخزون منخفض
-        </small>
-
-        <strong>
-            {{ counts.low }}
-        </strong>
-
-    </div>
-
-
-    <div class="st-metric st-metric-gold">
-
-        <small>
-            صلاحية قريبة
-        </small>
-
-        <strong>
-            {{ counts.expiring }}
-        </strong>
-
-    </div>
-
-
-    <div class="st-metric">
-
-        <small>
-            به دفعات منتهية
-        </small>
-
-        <strong>
-            {{ counts.expired }}
-        </strong>
-
-    </div>
-
+    <strong> {{ counts.expired }} </strong>
+  </div>
 </div>
 
-
 <p class="st-help">
-    الأرقام تعدّ المنتجات بعد البحث والقسم،
-    قبل فلتر الحالة.
-    وقد يظهر المنتج في أكثر من حالة.
+  الأرقام تعدّ المنتجات بعد البحث والقسم، قبل فلتر الحالة. وقد يظهر المنتج في
+  أكثر من حالة.
 </p>
-
 
 <!-- =====================================
      Categories
 ===================================== -->
 
-<nav
-    class="st-categories"
-    aria-label="أقسام المخزن"
->
+<nav class="st-categories" aria-label="أقسام المخزن">
+  <a href="{% url 'store:catalog' %}" class="st-category"> كل الأقسام </a>
 
-    <a
-        href="{% url 'store:catalog' %}"
-        class="st-category"
-    >
-        كل الأقسام
-    </a>
+  {% for category in categories %}
 
+  <a
+    href="{% url 'store:catalog' %}?category={{ category.pk }}"
+    class="st-category"
+  >
+    {{ category.name }}
 
-    {% for category in categories %}
+    <b> {{ category.ui_count }} </b>
+  </a>
 
-        <a
-            href="{% url 'store:catalog' %}?category={{ category.pk }}"
-            class="st-category"
-        >
-            {{ category.name }}
-
-            <b>
-                {{ category.ui_count }}
-            </b>
-        </a>
-
-    {% endfor %}
-
+  {% endfor %}
 </nav>
-
 
 <!-- =====================================
      Filters
 ===================================== -->
 
 <form
-    method="get"
-    class="st-panel st-filters"
-    action="{% url 'store:catalog' %}"
+  method="get"
+  class="st-panel st-filters"
+  action="{% url 'store:catalog' %}"
 >
+  {% include "store/includes/form_fields.html" %}
 
-    {% include "store/includes/form_fields.html" %}
+  <div class="st-filter-actions">
+    <button class="st-btn st-primary" type="submit">بحث وتصفية</button>
 
-    <div class="st-filter-actions">
-
-        <button
-            class="st-btn st-primary"
-            type="submit"
-        >
-            بحث وتصفية
-        </button>
-
-        <a
-            class="st-btn st-light"
-            href="{% url 'store:catalog' %}"
-        >
-            إظهار الكل
-        </a>
-
-    </div>
-
+    <a class="st-btn st-light" href="{% url 'store:catalog' %}"> إظهار الكل </a>
+  </div>
 </form>
-
 
 <!-- =====================================
      Products
 ===================================== -->
 
 <div class="st-results-heading">
+  <h2>المنتجات</h2>
 
-    <h2>
-        المنتجات
-    </h2>
-
-    <span>
-        {{ page_obj.paginator.count }}
-        منتج
-    </span>
-
+  <span> {{ page_obj.paginator.count }} منتج </span>
 </div>
-
 
 <div class="st-product-grid">
+  {% for card in cards %} {% include "store/includes/product_card.html" %} {%
+  empty %}
 
-    {% for card in cards %}
+  <div class="st-panel st-empty">
+    <h2>لا توجد منتجات مطابقة</h2>
 
-        {% include "store/includes/product_card.html" %}
+    <p>غيّر البحث أو القسم. يمكن للمسؤول إضافة المنتجات من الأعلى.</p>
+  </div>
 
-    {% empty %}
-
-        <div class="st-panel st-empty">
-
-            <h2>
-                لا توجد منتجات مطابقة
-            </h2>
-
-            <p>
-                غيّر البحث أو القسم.
-                يمكن للمسؤول إضافة المنتجات من الأعلى.
-            </p>
-
-        </div>
-
-    {% endfor %}
-
+  {% endfor %}
 </div>
-
 
 <!-- =====================================
      Pagination
 ===================================== -->
 
-{% include "store/includes/pagination.html" %}
+{% include "store/includes/pagination.html" %} {% if not can_operate %}
 
+<p class="st-note">
+  هذه الشاشة لعرض الأصناف والرصيد. الاستلام والصرف من خلال مسؤول المخزن. طلب
+  الاحتياجات إلكترونيًا لم يُفعّل بعد.
+</p>
 
-{% if not can_operate %}
-
-    <p class="st-note">
-        هذه الشاشة لعرض الأصناف والرصيد.
-        الاستلام والصرف من خلال مسؤول المخزن.
-        طلب الاحتياجات إلكترونيًا لم يُفعّل بعد.
-    </p>
-
-{% endif %}
-
-{% endblock %}
+{% endif %} {% endblock %}

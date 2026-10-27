@@ -1139,3 +1139,399 @@
     }
 
 }
+
+
+/* =====================================
+   STORE REPORT
+===================================== */
+
+.st-report-page {
+    padding-bottom: 40px;
+}
+
+.st-report-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.st-report-filters {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    align-items: end;
+}
+
+.st-report-sheet {
+    margin-top: 22px;
+    padding: 28px;
+    background: #fffdf8;
+    border: 1px solid #e5d9c7;
+    border-radius: 20px;
+    box-shadow: 0 8px 24px #34101d0a;
+}
+
+.st-report-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    padding-bottom: 18px;
+    border-bottom: 2px solid #eadcc6;
+}
+
+.st-report-header-main {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.st-report-cross {
+    width: 64px;
+    height: 84px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    border-radius: 34px 34px 10px 10px;
+    border: 1px solid #c8a667;
+    color: #b48d4b;
+    font: 42px/1 Georgia, serif;
+    background: linear-gradient(180deg, #fffdf8, #f7efe0);
+}
+
+.st-report-kicker {
+    margin: 0 0 6px;
+    color: #8a6b32;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.st-report-header h1 {
+    margin: 0 0 8px;
+    color: #581a2d;
+    font-size: 30px;
+}
+
+.st-report-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.st-report-meta span {
+    padding: 6px 10px;
+    background: #f4ecdf;
+    border-radius: 8px;
+    color: #5c4d43;
+    font-size: 14px;
+}
+
+.st-report-badge {
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #581a2d, #7a2944);
+    color: #fff8eb;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.st-report-summary {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    margin: 22px 0;
+}
+
+.st-report-stat {
+    padding: 16px;
+    border-radius: 14px;
+    background: #f3e1e7;
+    border: 1px solid #d8bac5;
+    text-align: center;
+}
+
+.st-report-stat small {
+    display: block;
+    color: #632139;
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+.st-report-stat strong {
+    color: #581a2d;
+    font-size: 28px;
+}
+
+.st-report-stat-warning {
+    background: #f8efd6;
+    border-color: #dcc48e;
+}
+
+.st-report-stat-danger {
+    background: #fbe8e5;
+    border-color: #dca9a1;
+}
+
+.st-report-stat-danger-soft {
+    background: #f6e0e4;
+    border-color: #d8b2bb;
+}
+
+.st-report-section {
+    margin-top: 28px;
+}
+
+.st-report-section-head {
+    margin-bottom: 12px;
+}
+
+.st-report-section-head h2 {
+    margin: 0 0 4px;
+    color: #581a2d;
+    font-size: 22px;
+}
+
+.st-report-section-head p {
+    margin: 0;
+    color: #71625b;
+    font-size: 14px;
+}
+
+.st-report-table {
+    width: 100%;
+    min-width: 980px;
+    border-collapse: collapse;
+    font-size: 15px;
+}
+
+.st-report-table thead th {
+    padding: 12px;
+    background: #581a2d;
+    color: #fff8eb;
+    border-bottom: 2px solid #b48d4b;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.st-report-table tbody td {
+    padding: 11px;
+    border-bottom: 1px solid #eadfd1;
+    vertical-align: top;
+}
+
+.st-report-table tbody tr:nth-child(even) td {
+    background: #faf6ee;
+}
+
+.st-report-product-name strong {
+    display: block;
+    color: #382c2a;
+}
+
+.st-report-product-name small {
+    display: block;
+    color: #7a6d65;
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+.st-status-pill {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.st-status-pill-success {
+    background: #deeee8;
+    color: #245347;
+}
+
+.st-status-pill-warning {
+    background: #fff0cc;
+    color: #79521e;
+}
+
+.st-status-pill-danger {
+    background: #fbe8e5;
+    color: #8b2436;
+}
+
+.st-status-pill-low {
+    background: #f6e0e4;
+    color: #7c2334;
+}
+
+.st-empty-table {
+    text-align: center;
+    color: #71625b;
+    padding: 18px;
+}
+
+.st-report-footer {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid #eadfd1;
+    text-align: center;
+}
+
+.st-report-footer p {
+    margin: 0;
+    color: #71625b;
+    font-size: 14px;
+}
+
+
+/* =====================================
+   PRINT
+===================================== */
+
+@page {
+    size: A4 landscape;
+    margin: 10mm;
+}
+
+@media print {
+
+    html,
+    body {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #fff !important;
+    }
+
+    .no-print,
+    .topbar,
+    .st-nav,
+    .st-report-toolbar,
+    .st-report-filters {
+        display: none !important;
+    }
+
+    .st-shell {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .st-report-page,
+    .st-report-sheet {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+
+        border: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+    }
+
+    /* مهم جدًا:
+       إلغاء الـ scroll container أثناء الطباعة */
+    .st-table-scroll {
+        width: 100% !important;
+        max-width: none !important;
+
+        overflow: visible !important;
+    }
+
+    .st-report-table {
+        width: 100% !important;
+        min-width: 0 !important;
+
+        table-layout: fixed !important;
+
+        border-collapse: collapse !important;
+
+        font-size: 10px !important;
+    }
+
+    .st-report-table th,
+    .st-report-table td {
+        padding: 5px 4px !important;
+
+        white-space: normal !important;
+        overflow-wrap: anywhere !important;
+        word-break: break-word !important;
+
+        vertical-align: top !important;
+    }
+
+    /* تكرار عنوان الجدول في كل صفحة */
+    .st-report-table thead {
+        display: table-header-group !important;
+    }
+
+    .st-report-table tfoot {
+        display: table-footer-group !important;
+    }
+
+    /* حاول عدم قطع صف المنتج بين صفحتين */
+    .st-report-table tr {
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+    }
+
+    .st-report-section {
+        break-inside: auto !important;
+        page-break-inside: auto !important;
+    }
+
+    /* الألوان تظهر في الطباعة */
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .st-report-header h1 {
+        font-size: 22px !important;
+    }
+
+    .st-report-summary {
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 6px !important;
+    }
+
+    .st-report-stat {
+        padding: 8px !important;
+    }
+
+    .st-report-stat strong {
+        font-size: 20px !important;
+    }
+
+}
+
+@media (max-width: 900px) {
+    .st-report-summary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .st-report-filters {
+        grid-template-columns: 1fr;
+    }
+
+    .st-report-header {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 600px) {
+    .st-report-sheet {
+        padding: 18px;
+    }
+
+    .st-report-header-main {
+        flex-direction: column;
+    }
+
+    .st-report-summary {
+        grid-template-columns: 1fr;
+    }
+}

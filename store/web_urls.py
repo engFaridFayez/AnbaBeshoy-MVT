@@ -25,4 +25,5 @@ path(
     views.expired_products,
     name="expired_products",
 ),
+path("report/", views.store_report, name="store_report"),
 ]
