@@ -766,8 +766,8 @@ class StockMovement(ValidatedModel):
 # ==================================================
 
 class AlertType(models.TextChoices):
-    LOW_STOCK = "low_stock", "مخزون منخفض"
-    EXPIRING = "expiring", "قرب انتهاء الصلاحية"
+    LOW_STOCK = "low_stock", "الكمية اوشكت علي النفاذ"
+    EXPIRING = "expiring", "صلاحية وشيكة الانتهاء"
     EXPIRED = "expired", "منتهي الصلاحية"
 
 

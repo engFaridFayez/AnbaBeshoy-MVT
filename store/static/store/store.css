@@ -1535,3 +1535,256 @@
         grid-template-columns: 1fr;
     }
 }
+
+
+/* =====================================
+   REPORT BRANDING PHOTO
+===================================== */
+
+.st-report-branding {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    flex-shrink: 0;
+}
+
+.st-report-title-block {
+    min-width: 0;
+    flex: 1;
+}
+
+.st-report-sayedna-photo-wrap {
+    width: 95px;
+    height: 95px;
+
+    flex-shrink: 0;
+
+    padding: 3px;
+
+    background: #fffaf1;
+
+    border: 2px solid #b48d4b;
+    border-radius: 16px;
+
+    box-shadow: 0 5px 16px #34101d18;
+
+    overflow: hidden;
+}
+
+.st-report-sayedna-photo {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    object-position: center;
+
+    border-radius: 11px;
+}
+
+
+/* Responsive */
+
+@media (max-width: 700px) {
+
+    .st-report-header-main {
+        flex-direction: column;
+    }
+
+    .st-report-branding {
+        width: 100%;
+    }
+
+    .st-report-sayedna-photo-wrap {
+        width: 82px;
+        height: 82px;
+    }
+
+}
+
+
+/* Print */
+
+@media print {
+
+    .st-report-branding {
+        gap: 8px !important;
+    }
+
+    .st-report-sayedna-photo-wrap {
+        width: 130px !important;
+        height: 130px !important;
+
+        padding: 2px !important;
+
+        border: 1px solid #b48d4b !important;
+        border-radius: 10px !important;
+
+        box-shadow: none !important;
+
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .st-report-sayedna-photo {
+        border-radius: 7px !important;
+
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+}
+
+/* =====================================
+   HOME SERVICE CARDS - IMAGES
+===================================== */
+
+.st-service-with-image {
+    display: flex;
+    flex-direction: column;
+
+    padding: 0;
+
+    overflow: hidden;
+
+    background: var(--st-paper);
+
+    border: 1px solid var(--st-line);
+    border-top: 0;
+    border-radius: 20px;
+
+    box-shadow:
+        0 8px 24px #34101d0c;
+
+    transition:
+        transform .18s ease,
+        box-shadow .18s ease,
+        border-color .18s ease;
+}
+
+.st-service-with-image:hover {
+    transform: translateY(-3px);
+
+    border-color: var(--st-gold);
+
+    box-shadow:
+        0 14px 34px #34101d18;
+}
+
+
+/* =====================================
+   Service Image
+===================================== */
+
+.st-service-image-wrap {
+    position: relative;
+
+    width: 100%;
+
+    aspect-ratio: 2.5 / 1;
+
+    overflow: hidden;
+
+    background: #e8dcc9;
+
+    border-bottom: 4px solid var(--st-gold);
+}
+
+.st-service-image-wrap::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background:
+        linear-gradient(
+            to top,
+            rgba(52, 16, 29, .24),
+            transparent 55%
+        );
+
+    pointer-events: none;
+}
+
+.st-service-image {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    object-position: center;
+
+    transition: transform .35s ease;
+}
+
+.st-service-with-image:hover .st-service-image {
+    transform: scale(1.025);
+}
+
+
+/* =====================================
+   Content
+===================================== */
+
+.st-service-content {
+    display: flex;
+    flex-direction: column;
+
+    flex: 1;
+
+    padding: 24px 27px 25px;
+}
+
+.st-service-label {
+    display: block;
+
+    margin-bottom: 3px;
+
+    color: #9a7333;
+
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.st-service-content h2 {
+    margin: 2px 0 5px;
+
+    color: var(--st-wine);
+
+    font-size: 29px;
+}
+
+.st-service-content p {
+    margin: 0 0 15px;
+
+    color: var(--st-muted);
+
+    font-size: 16px;
+}
+
+.st-service-content .st-service-link {
+    margin-top: auto;
+}
+
+
+/* =====================================
+   Mobile
+===================================== */
+
+@media (max-width: 650px) {
+
+    .st-service-image-wrap {
+        aspect-ratio: 2.25 / 1;
+    }
+
+    .st-service-content {
+        padding: 20px;
+    }
+
+    .st-service-content h2 {
+        font-size: 26px;
+    }
+
+}

@@ -7,15 +7,22 @@
 
 {% block extra_css %}
 {{ block.super }}
+
 <link
     rel="stylesheet"
     href="{% static 'store/store.css' %}"
 >
+
 {% endblock %}
+
 
 {% block content %}
 
 <div class="st-shell st-portal">
+
+    <!-- =====================================
+         Header
+    ====================================== -->
 
     <header class="st-hero">
 
@@ -49,77 +56,115 @@
 
     </header>
 
+
+    <!-- =====================================
+         Services
+    ====================================== -->
+
     <div class="st-service-grid">
 
-        <!-- =========================
-             RESTAURANT
-        ========================== -->
+
+        <!-- =================================
+             Restaurant
+        ================================== -->
 
         <a
             href="{% url 'accounts:meals' %}"
-            class="st-service"
+            class="st-service st-service-with-image"
         >
 
-            <span
-                class="st-service-icon"
-                aria-hidden="true"
-            >
-                🍽️
-            </span>
+            <div class="st-service-image-wrap">
 
-            <h2>
-                المطعم
-            </h2>
+                <img
+                    src="{% static 'images/services/kitchen.jpeg' %}"
+                    alt="المطعم"
+                    class="st-service-image"
+                >
 
-            <p>
-                فطار · غداء · عشاء
-            </p>
+            </div>
 
-            <span class="st-service-link">
-                اختيار الوجبات
-                <span aria-hidden="true">
-                    ←
+
+            <div class="st-service-content">
+
+                <span class="st-service-label">
+                    خدمة الوجبات
                 </span>
-            </span>
+
+                <h2>
+                    المائدة
+                </h2>
+
+                <p>
+                    فطار · غداء · عشاء
+                </p>
+
+
+                <span class="st-service-link">
+
+                    اختيار الوجبات
+
+                    <span aria-hidden="true">
+                        ←
+                    </span>
+
+                </span>
+
+            </div>
 
         </a>
 
-        <!-- =========================
-             STORE
+
+        <!-- =================================
+             Store
              Admin / Superadmin only
-        ========================== -->
+        ================================== -->
 
         {% if can_access_store %}
 
-        <a
-            href="{% url 'store:catalog' %}"
-            class="st-service"
-        >
-
-            <span
-                class="st-service-icon"
-                aria-hidden="true"
+            <a
+                href="{% url 'store:catalog' %}"
+                class="st-service st-service-with-image"
             >
-                📦
-            </span>
 
-            <h2>
-                المخزن
-            </h2>
+                <div class="st-service-image-wrap">
 
-            <p>
-                الأقسام والمنتجات والكميات
-            </p>
+                    <img
+                        src="{% static 'images/services/store.jpeg' %}"
+                        alt="المخزن"
+                        class="st-service-image"
+                    >
 
-            <span class="st-service-link">
-                فتح المخزن
+                </div>
 
-                <span aria-hidden="true">
-                    ←
-                </span>
-            </span>
 
-        </a>
+                <div class="st-service-content">
+
+                    <span class="st-service-label">
+                        إدارة المخزون
+                    </span>
+
+                    <h2>
+                        المخزن
+                    </h2>
+
+                    <p>
+                        الأقسام والمنتجات والكميات والصلاحية
+                    </p>
+
+
+                    <span class="st-service-link">
+
+                        فتح المخزن
+
+                        <span aria-hidden="true">
+                            ←
+                        </span>
+
+                    </span>
+
+                </div>
+
+            </a>
 
         {% endif %}
 

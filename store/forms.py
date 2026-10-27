@@ -5,11 +5,11 @@ from .models import Category
 
 class StoreReportFilterForm(forms.Form):
     STATE_CHOICES = [
-        ("all", "كل المنتجات"),
-        ("low", "مخزون منخفض"),
-        ("expiring", "قرب انتهاء الصلاحية"),
-        ("expired", "منتهي الصلاحية"),
-    ]
+    ("all", "كل المنتجات"),
+    ("low", "الكمية اوشكت علي النفاذ"),
+    ("expiring", "صلاحية وشيكة الانتهاء"),
+    ("expired", "منتهي الصلاحية"),
+]
 
     category = forms.ModelChoiceField(
         queryset=Category.objects.none(),

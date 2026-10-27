@@ -9,14 +9,25 @@
 
 <div class="st-report-page">
 
+    <!-- ==============================
+         أدوات التقرير - لا تظهر في الطباعة
+    =============================== -->
+
     <div class="st-report-toolbar no-print">
+
         <div class="st-report-toolbar-left">
-            <a href="{% url 'store:catalog' %}" class="st-btn st-light">
+
+            <a
+                href="{% url 'store:catalog' %}"
+                class="st-btn st-light"
+            >
                 ← الرجوع للمخزن
             </a>
+
         </div>
 
         <div class="st-report-toolbar-right">
+
             <button
                 type="button"
                 class="st-btn st-primary"
@@ -24,225 +35,575 @@
             >
                 🖨️ طباعة التقرير
             </button>
+
         </div>
+
     </div>
+
+
+    <!-- ==============================
+         فلاتر التقرير
+    =============================== -->
 
     <form
         method="get"
         action="{% url 'store:store_report' %}"
         class="st-panel st-report-filters no-print"
     >
-        <div class="st-field">
-            <label for="{{ form.category.id_for_label }}">القسم</label>
-            {{ form.category }}
-        </div>
 
         <div class="st-field">
-            <label for="{{ form.state.id_for_label }}">نوع التقرير</label>
-            {{ form.state }}
+
+            <label for="{{ form.category.id_for_label }}">
+                القسم
+            </label>
+
+            {{ form.category }}
+
         </div>
+
+
+        <div class="st-field">
+
+            <label for="{{ form.state.id_for_label }}">
+                نوع التقرير
+            </label>
+
+            {{ form.state }}
+
+        </div>
+
 
         <div class="st-filter-actions">
-            <button type="submit" class="st-btn st-primary">
+
+            <button
+                type="submit"
+                class="st-btn st-primary"
+            >
                 عرض التقرير
             </button>
 
-            <a href="{% url 'store:store_report' %}" class="st-btn st-light">
+            <a
+                href="{% url 'store:store_report' %}"
+                class="st-btn st-light"
+            >
                 إعادة الضبط
             </a>
+
         </div>
+
     </form>
 
-    <article class="st-report-sheet">
-        <header class="st-report-header">
-            <div class="st-report-header-main">
-                <div class="st-report-cross">✠</div>
 
-                <div>
-                    <p class="st-report-kicker">دير الأنبا بيشوي العامر</p>
-                    <h1>{{ report_title }}</h1>
+    <!-- ==============================
+         ورقة التقرير
+    =============================== -->
+
+    <article class="st-report-sheet">
+
+
+        <!-- ==============================
+             Header
+        =============================== -->
+
+        <header class="st-report-header">
+
+            <div class="st-report-header-main">
+
+
+                <!-- الصورة والصليب -->
+
+                <div class="st-report-branding">
+                    <div class="st-report-sayedna-photo-wrap">
+
+                        <img
+                            src="{% static 'images/branding/monastery.jpg' %}"
+                            alt="صورة الدير"
+                            class="st-report-sayedna-photo"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- عنوان التقرير -->
+
+                <div class="st-report-title-block">
+
+                    <p class="st-report-kicker">
+                        دير الأنبا بيشوي العامر
+                    </p>
+
+                    <h1>
+                        {{ report_title }}
+                    </h1>
+
 
                     <div class="st-report-meta">
-                        <span>نوع التقرير: {{ report_state_label }}</span>
+
+                        <span>
+                            نوع التقرير:
+                            {{ report_state_label }}
+                        </span>
+
 
                         {% if selected_category %}
-                            <span>القسم: {{ selected_category.name }}</span>
+
+                            <span>
+                                القسم:
+                                {{ selected_category.name }}
+                            </span>
+
                         {% else %}
-                            <span>القسم: كل الأقسام</span>
+
+                            <span>
+                                القسم:
+                                كل الأقسام
+                            </span>
+
                         {% endif %}
+
 
                         <span>
                             تاريخ الإصدار:
                             {{ generated_at|date:"Y-m-d" }}
                         </span>
 
+
                         <span>
                             الوقت:
                             {{ generated_at|date:"h:i A" }}
                         </span>
+
                     </div>
+
                 </div>
+
             </div>
+
 
             <div class="st-report-badge">
                 تقرير جاهز للطباعة
             </div>
+
         </header>
 
+
+        <!-- ==============================
+             ملخص التقرير
+        =============================== -->
+
         <section class="st-report-summary">
+
             <div class="st-report-stat">
-                <small>عدد المنتجات</small>
-                <strong>{{ rows|length }}</strong>
+
+                <small>
+                    عدد المنتجات
+                </small>
+
+                <strong>
+                    {{ rows|length }}
+                </strong>
+
             </div>
+
 
             <div class="st-report-stat st-report-stat-danger">
-                <small>مخزون منخفض</small>
-                <strong>{{ counts.low }}</strong>
+
+                <small>الكمية اوشكت علي النفاذ</small>
+
+                <strong>
+                    {{ counts.low }}
+                </strong>
+
             </div>
+
 
             <div class="st-report-stat st-report-stat-warning">
-                <small>قرب الانتهاء</small>
-                <strong>{{ counts.expiring }}</strong>
+
+                <small>صلاحية وشيكة الانتهاء</small>
+
+                <strong>
+                    {{ counts.expiring }}
+                </strong>
+
             </div>
+
 
             <div class="st-report-stat st-report-stat-danger-soft">
-                <small>منتهي الصلاحية</small>
-                <strong>{{ counts.expired }}</strong>
+
+                <small>
+                    منتهي الصلاحية
+                </small>
+
+                <strong>
+                    {{ counts.expired }}
+                </strong>
+
             </div>
+
         </section>
 
+
+        <!-- ==============================
+             ملخص الأقسام
+        =============================== -->
+
         <section class="st-report-section">
+
             <div class="st-report-section-head">
-                <h2>ملخص الأقسام</h2>
-                <p>توزيع سريع للمنتجات حسب القسم</p>
+
+                <h2>
+                    ملخص الأقسام
+                </h2>
+
+                <p>
+                    توزيع سريع للمنتجات حسب القسم
+                </p>
+
             </div>
 
+
             <div class="st-table-scroll">
+
                 <table class="st-report-table">
+
                     <thead>
+
                         <tr>
-                            <th>القسم</th>
-                            <th>عدد المنتجات</th>
-                            <th>مخزون منخفض</th>
-                            <th>قرب الانتهاء</th>
-                            <th>منتهي الصلاحية</th>
+
+                            <th>
+                                القسم
+                            </th>
+
+                            <th>
+                                عدد المنتجات
+                            </th>
+
+                            <th>
+                                مخزون منخفض
+                            </th>
+
+                            <th>
+                                قرب الانتهاء
+                            </th>
+
+                            <th>
+                                منتهي الصلاحية
+                            </th>
+
                         </tr>
+
                     </thead>
 
+
                     <tbody>
+
                         {% for item in category_summary %}
-                        <tr>
-                            <td>{{ item.name }}</td>
-                            <td>{{ item.products }}</td>
-                            <td>{{ item.low }}</td>
-                            <td>{{ item.expiring }}</td>
-                            <td>{{ item.expired }}</td>
-                        </tr>
+
+                            <tr>
+
+                                <td>
+                                    {{ item.name }}
+                                </td>
+
+                                <td>
+                                    {{ item.products }}
+                                </td>
+
+                                <td>
+                                    {{ item.low }}
+                                </td>
+
+                                <td>
+                                    {{ item.expiring }}
+                                </td>
+
+                                <td>
+                                    {{ item.expired }}
+                                </td>
+
+                            </tr>
+
+
                         {% empty %}
-                        <tr>
-                            <td colspan="5" class="st-empty-table">
-                                لا توجد بيانات متاحة.
-                            </td>
-                        </tr>
+
+                            <tr>
+
+                                <td
+                                    colspan="5"
+                                    class="st-empty-table"
+                                >
+                                    لا توجد بيانات متاحة.
+                                </td>
+
+                            </tr>
+
                         {% endfor %}
+
                     </tbody>
+
                 </table>
+
             </div>
+
         </section>
+
+
+        <!-- ==============================
+             تفاصيل المنتجات
+        =============================== -->
 
         <section class="st-report-section">
+
             <div class="st-report-section-head">
-                <h2>تفاصيل المنتجات</h2>
-                <p>عرض تفصيلي لحالة المنتجات الحالية داخل المخزن</p>
+
+                <h2>
+                    تفاصيل المنتجات
+                </h2>
+
+                <p>
+                    عرض تفصيلي لحالة المنتجات الحالية داخل المخزن
+                </p>
+
             </div>
+
 
             <div class="st-table-scroll">
+
                 <table class="st-report-table">
+
                     <thead>
+
                         <tr>
-                            <th>#</th>
-                            <th>المنتج</th>
-                            <th>القسم</th>
-                            <th>الوحدة</th>
-                            <th>الرصيد الحالي</th>
-                            <th>الحد الأدنى</th>
-                            <th>عدد الدفعات</th>
-                            <th>أقرب انتهاء</th>
-                            <th>مؤشر الصلاحية</th>
-                            <th>الحالة</th>
+
+                            <th>
+                                #
+                            </th>
+
+                            <th>
+                                المنتج
+                            </th>
+
+                            <th>
+                                القسم
+                            </th>
+
+                            <th>
+                                الوحدة
+                            </th>
+
+                            <th>
+                                الرصيد الحالي
+                            </th>
+
+                            <th>
+                                الحد الأدنى
+                            </th>
+
+                            <th>
+                                عدد الدفعات
+                            </th>
+
+                            <th>
+                                أقرب تاريخ انتهاء
+                            </th>
+
+                            <th>
+                                مؤشر الصلاحية
+                            </th>
+
+                            <th>
+                                حالة المنتج
+                            </th>
+
                         </tr>
+
                     </thead>
 
+
                     <tbody>
+
                         {% for row in rows %}
-                        <tr>
-                            <td>{{ forloop.counter }}</td>
 
-                            <td>
-                                <div class="st-report-product-name">
-                                    <strong>{{ row.name }}</strong>
+                            <tr>
 
-                                    {% if row.code %}
-                                        <small>كود: {{ row.code }}</small>
+                                <td>
+                                    {{ forloop.counter }}
+                                </td>
+
+
+                                <td>
+
+                                    <div class="st-report-product-name">
+
+                                        <strong>
+                                            {{ row.name }}
+                                        </strong>
+
+
+                                        <!-- {% if row.code %}
+
+                                            <small>
+                                                كود:
+                                                {{ row.code }}
+                                            </small>
+
+                                        {% endif %} -->
+
+
+                                        <!-- {% if row.barcode %}
+
+                                            <small>
+                                                باركود:
+                                                {{ row.barcode }}
+                                            </small>
+
+                                        {% endif %} -->
+
+                                    </div>
+
+                                </td>
+
+
+                                <td>
+                                    {{ row.category }}
+                                </td>
+
+
+                                <td>
+                                    {{ row.unit }}
+                                </td>
+
+
+                                <td>
+                                    {{ row.available_stock|floatformat:"-3" }}
+                                </td>
+
+
+                                <td>
+                                    {{ row.minimum_stock|floatformat:"-3" }}
+                                </td>
+
+
+                                <td>
+                                    {{ row.batch_count }}
+                                </td>
+
+
+                                <td>
+
+                                    {% if row.nearest_expiry %}
+
+                                        {{ row.nearest_expiry|date:"Y-m-d" }}
+
+                                    {% else %}
+
+                                        —
+
                                     {% endif %}
 
-                                    {% if row.barcode %}
-                                        <small>باركود: {{ row.barcode }}</small>
+                                </td>
+
+
+                                <td>
+                                    {{ row.days_text }}
+                                </td>
+
+
+                                <td>
+
+                                    {% if row.status_class == "danger" %}
+
+                                        <span
+                                            class="
+                                                st-status-pill
+                                                st-status-pill-danger
+                                            "
+                                        >
+                                            {{ row.status_label }}
+                                        </span>
+
+
+                                    {% elif row.status_class == "warning" %}
+
+                                        <span
+                                            class="
+                                                st-status-pill
+                                                st-status-pill-warning
+                                            "
+                                        >
+                                            {{ row.status_label }}
+                                        </span>
+
+
+                                    {% elif row.status_class == "low" %}
+
+                                        <span
+                                            class="
+                                                st-status-pill
+                                                st-status-pill-low
+                                            "
+                                        >
+                                            {{ row.status_label }}
+                                        </span>
+
+
+                                    {% else %}
+
+                                        <span
+                                            class="
+                                                st-status-pill
+                                                st-status-pill-success
+                                            "
+                                        >
+                                            {{ row.status_label }}
+                                        </span>
+
                                     {% endif %}
-                                </div>
-                            </td>
 
-                            <td>{{ row.category }}</td>
-                            <td>{{ row.unit }}</td>
-                            <td>{{ row.available_stock }}</td>
-                            <td>{{ row.minimum_stock }}</td>
-                            <td>{{ row.batch_count }}</td>
+                                </td>
 
-                            <td>
-                                {% if row.nearest_expiry %}
-                                    {{ row.nearest_expiry|date:"Y-m-d" }}
-                                {% else %}
-                                    —
-                                {% endif %}
-                            </td>
+                            </tr>
 
-                            <td>{{ row.days_text }}</td>
 
-                            <td>
-                                {% if row.status_class == "danger" %}
-                                    <span class="st-status-pill st-status-pill-danger">
-                                        {{ row.status_label }}
-                                    </span>
-                                {% elif row.status_class == "warning" %}
-                                    <span class="st-status-pill st-status-pill-warning">
-                                        {{ row.status_label }}
-                                    </span>
-                                {% elif row.status_class == "low" %}
-                                    <span class="st-status-pill st-status-pill-low">
-                                        {{ row.status_label }}
-                                    </span>
-                                {% else %}
-                                    <span class="st-status-pill st-status-pill-success">
-                                        {{ row.status_label }}
-                                    </span>
-                                {% endif %}
-                            </td>
-                        </tr>
                         {% empty %}
-                        <tr>
-                            <td colspan="10" class="st-empty-table">
-                                لا توجد منتجات مطابقة للفلاتر الحالية.
-                            </td>
-                        </tr>
+
+                            <tr>
+
+                                <td
+                                    colspan="10"
+                                    class="st-empty-table"
+                                >
+                                    لا توجد منتجات مطابقة للفلاتر الحالية.
+                                </td>
+
+                            </tr>
+
                         {% endfor %}
+
                     </tbody>
+
                 </table>
+
             </div>
+
         </section>
+
+
+        <!-- ==============================
+             Footer
+        =============================== -->
 
         <footer class="st-report-footer">
-            <p>تقرير صادر من نظام مخزن دير الأنبا بيشوي</p>
+
+            <p>
+                تقرير صادر من نظام مخزن
+                دير الأنبا بيشوي العامر
+            </p>
+
         </footer>
+
     </article>
 
 </div>

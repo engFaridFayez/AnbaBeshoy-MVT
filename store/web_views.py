@@ -53,8 +53,17 @@ def store_admin_required(view):
 
     return wrapper
 
-def base_context(request, **context):
-    return {**access_flags(request.user), **context}
+def base_context(request, **extra):
+    context = {
+        **access_flags(request.user),
+
+        "current_user": request.user,
+        "today": timezone.localdate(),
+    }
+
+    context.update(extra)
+
+    return context
 
 
 def visible_products(user):
@@ -455,10 +464,12 @@ def _build_store_report_rows(products):
     rows = []
 
     for product in products:
+
         open_batches = [
             batch
             for batch in product.batches.all()
-            if batch.remaining_quantity and batch.remaining_quantity > 0
+            if batch.remaining_quantity
+            and batch.remaining_quantity > 0
         ]
 
         expiry_batches = [
@@ -468,10 +479,11 @@ def _build_store_report_rows(products):
         ]
 
         nearest_batch = None
+
         if expiry_batches:
             nearest_batch = min(
                 expiry_batches,
-                key=lambda batch: batch.expiry_date
+                key=lambda batch: batch.expiry_date,
             )
 
         expired_batches = [
@@ -480,59 +492,144 @@ def _build_store_report_rows(products):
             if batch.expiry_date < today
         ]
 
-        warning_days = product.expiry_warning_days or 0
+        warning_days = (
+            product.expiry_warning_days or 0
+        )
 
         expiring_batches = [
             batch
             for batch in expiry_batches
-            if batch.expiry_date >= today
-            and (batch.expiry_date - today).days <= warning_days
+            if (
+                batch.expiry_date >= today
+                and
+                (
+                    batch.expiry_date - today
+                ).days <= warning_days
+            )
         ]
 
-        is_low = product.available_stock <= product.minimum_stock
-        is_expired = len(expired_batches) > 0
-        is_expiring = (not is_expired) and len(expiring_batches) > 0
+        is_low = (
+            product.available_stock
+            <= product.minimum_stock
+        )
 
-        nearest_expiry = nearest_batch.expiry_date if nearest_batch else None
+        is_expired = (
+            len(expired_batches) > 0
+        )
+
+        is_expiring = (
+            not is_expired
+            and len(expiring_batches) > 0
+        )
+
+        nearest_expiry = (
+            nearest_batch.expiry_date
+            if nearest_batch
+            else None
+        )
+
+        # قيمة افتراضية تمنع UnboundLocalError
+        days_text = "—"
 
         if is_expired:
+
             status_label = "منتهي الصلاحية"
             status_class = "danger"
             days_text = "منتهي"
+
         elif is_expiring:
-            status_label = "قرب انتهاء الصلاحية"
+
+            status_label = "صلاحية وشيكة الانتهاء"
             status_class = "warning"
-            days_left = (nearest_expiry - today).days if nearest_expiry else None
-            days_text = f"خلال {days_left} يوم" if days_left is not None else "—"
+
+            if nearest_expiry:
+                days_left = (
+                    nearest_expiry - today
+                ).days
+
+                if days_left == 0:
+                    days_text = "ينتهي اليوم"
+
+                elif days_left == 1:
+                    days_text = "متبقي يوم واحد"
+
+                else:
+                    days_text = (
+                        f"متبقي {days_left} يوم"
+                    )
+
         elif is_low:
-            status_label = "مخزون منخفض"
+
+            status_label = (
+                "الكمية اوشكت علي النفاذ"
+            )
+
             status_class = "low"
-            days_text = "—"
+
         else:
+
             status_label = "جيد"
             status_class = "success"
-            days_text = "—"
 
         rows.append({
             "product": product,
+
             "name": product.name,
+
             "code": product.code,
+
             "barcode": product.barcode,
-            "category": product.category.name,
+
+            "category": (
+                product.category.name
+            ),
+
             "unit": product.unit.symbol,
-            "available_stock": product.available_stock,
-            "minimum_stock": product.minimum_stock,
-            "batch_count": len(open_batches),
-            "nearest_expiry": nearest_expiry,
+
+            "available_stock": (
+                product.available_stock
+            ),
+
+            "minimum_stock": (
+                product.minimum_stock
+            ),
+
+            "batch_count": len(
+                open_batches
+            ),
+
+            "nearest_expiry": (
+                nearest_expiry
+            ),
+
             "days_text": days_text,
-            "status_label": status_label,
-            "status_class": status_class,
+
+            "status_label": (
+                status_label
+            ),
+
+            "status_class": (
+                status_class
+            ),
+
             "is_low": is_low,
-            "is_expiring": is_expiring,
-            "is_expired": is_expired,
+
+            "is_expiring": (
+                is_expiring
+            ),
+
+            "is_expired": (
+                is_expired
+            ),
         })
 
-    rows.sort(key=lambda row: (row["category"], row["name"]))
+    rows.sort(
+        key=lambda row: (
+            row["category"],
+            row["name"],
+        )
+    )
+
     return rows
 
 
@@ -613,25 +710,36 @@ def store_report(request):
     }
 
     if selected_state == "low":
-        rows = [row for row in all_rows if row["is_low"]]
-        report_title = "تقرير المخزون المنخفض"
+        rows = [
+            row for row in all_rows
+            if row["is_low"]
+        ]
+        report_title = "تقرير الكميات التي اوشكت علي النفاذ"
+
     elif selected_state == "expiring":
-        rows = [row for row in all_rows if row["is_expiring"]]
-        report_title = "تقرير قرب انتهاء الصلاحية"
+        rows = [
+            row for row in all_rows
+            if row["is_expiring"]
+        ]
+        report_title = "تقرير الصلاحية وشيكة الانتهاء"
+
     elif selected_state == "expired":
-        rows = [row for row in all_rows if row["is_expired"]]
+        rows = [
+            row for row in all_rows
+            if row["is_expired"]
+        ]
         report_title = "تقرير المنتجات منتهية الصلاحية"
+
     else:
         rows = all_rows
         report_title = "تقرير المخزن العام"
 
     state_labels = {
         "all": "كل المنتجات",
-        "low": "مخزون منخفض",
-        "expiring": "قرب انتهاء الصلاحية",
+        "low": "الكمية اوشكت علي النفاذ",
+        "expiring": "صلاحية وشيكة الانتهاء",
         "expired": "منتهي الصلاحية",
     }
-
     category_summary = _build_category_summary(rows)
 
     context = base_context(
