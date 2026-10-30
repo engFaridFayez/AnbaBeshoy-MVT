@@ -1,0 +1,228 @@
+{% extends "accounts/base.html" %}
+{% load static %}
+
+{% block title %}
+إدارة أصناف المطعم | طلبات الدير
+{% endblock %}
+
+{% block extra_css %}
+{{ block.super }}
+
+<link
+    rel="stylesheet"
+    href="{% static 'css/kitchen.css' %}"
+>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="ui-wrap ui-narrow">
+
+    <!-- =====================================
+         NAVIGATION
+    ====================================== -->
+
+    <div class="ui-actions">
+
+        <a
+            href="{% url 'kitchen:manage_menu' %}"
+            class="ui-button ui-secondary"
+        >
+            ← تجهيز الوجبات
+        </a>
+
+        <a
+            href="{% url 'accounts:home' %}"
+            class="ui-button ui-secondary"
+        >
+            🏠 الرئيسية
+        </a>
+
+    </div>
+
+
+    <!-- =====================================
+         HEADER
+    ====================================== -->
+
+    <header class="kitchen-items-hero">
+
+        <div>
+
+            <p class="kitchen-items-eyebrow">
+                إدارة المطعم
+            </p>
+
+            <h1>
+                🍽️ أصناف المطعم
+            </h1>
+
+            <p>
+                تعديل بيانات الأصناف والصور
+                وتحديد الأصناف النشطة.
+            </p>
+
+        </div>
+
+        <div class="kitchen-items-count">
+
+            <span>
+                عدد الأصناف
+            </span>
+
+            <strong>
+                {{ items|length }}
+            </strong>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================
+         ITEMS LIST
+    ====================================== -->
+
+    <section class="ui-panel kitchen-items-panel">
+
+        <div class="kitchen-section-heading">
+
+            <div>
+                <h2>
+                    قائمة الأصناف
+                </h2>
+
+                <p class="ui-muted">
+                    اضغط تعديل لتغيير الاسم أو القسم
+                    أو الصورة أو حالة الصنف.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="kitchen-items-list">
+
+            {% for item in items %}
+
+                <article class="kitchen-item-card">
+
+                    <!-- IMAGE -->
+
+                    <div class="kitchen-item-photo-wrap">
+
+                        {% if item.icon %}
+
+                            <img
+                                src="{{ item.icon.url }}"
+                                alt="{{ item.name }}"
+                                class="kitchen-item-photo"
+                                loading="lazy"
+                            >
+
+                        {% else %}
+
+                            <div class="kitchen-item-photo-placeholder">
+                                🍽️
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- INFO -->
+
+                    <div class="kitchen-item-info">
+
+                        <div class="kitchen-item-topline">
+
+                            <h3>
+                                {{ item.name }}
+                            </h3>
+
+
+                            {% if item.is_active %}
+
+                                <span class="kitchen-status kitchen-status-active">
+                                    ● نشط
+                                </span>
+
+                            {% else %}
+
+                                <span class="kitchen-status kitchen-status-inactive">
+                                    ● موقوف
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <div class="kitchen-item-meta">
+
+                            <span>
+                                {{ item.get_category_display }}
+                            </span>
+
+                            <span>
+                                رقم الصنف:
+                                {{ item.pk }}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ACTION -->
+
+                    <div class="kitchen-item-actions">
+
+                        <a
+                            href="{% url 'kitchen:menu_item_edit' item.pk %}"
+                            class="ui-button ui-primary"
+                        >
+                            ✏️ تعديل الصنف
+                        </a>
+
+                    </div>
+
+                </article>
+
+
+            {% empty %}
+
+                <div class="ui-empty kitchen-empty">
+
+                    <div class="kitchen-empty-icon">
+                        🍽️
+                    </div>
+
+                    <h2>
+                        لا توجد أصناف حتى الآن
+                    </h2>
+
+                    <p>
+                        أضف الأصناف من شاشة تجهيز الوجبات.
+                    </p>
+
+                    <a
+                        href="{% url 'kitchen:manage_menu' %}"
+                        class="ui-button ui-primary"
+                    >
+                        إضافة أصناف
+                    </a>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}

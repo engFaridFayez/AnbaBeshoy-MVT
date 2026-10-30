@@ -1,4 +1,3 @@
-
 {% extends "accounts/base.html" %}
 {% load static %}
 
@@ -28,6 +27,13 @@
             class="ui-button ui-secondary"
         >
             📋 تقرير المطبخ
+        </a>
+
+        <a
+            href="{% url 'kitchen:menu_items_manage' %}"
+            class="ui-button ui-secondary"
+        >
+            ✏️ إدارة الأصناف
         </a>
 
     </div>
@@ -64,25 +70,25 @@
 
         {% for value, label in meal_choices %}
 
-        <a
-            href="{% url 'kitchen:manage_menu' %}?date={{ selected_date|date:'Y-m-d' }}&amp;meal={{ value }}"
-            class="ui-meal-tab {% if selected_meal == value %}is-active{% endif %}"
-            {% if selected_meal == value %}
-                aria-current="page"
-            {% endif %}
-        >
+            <a
+                href="{% url 'kitchen:manage_menu' %}?date={{ selected_date|date:'Y-m-d' }}&amp;meal={{ value }}"
+                class="ui-meal-tab {% if selected_meal == value %}is-active{% endif %}"
+                {% if selected_meal == value %}
+                    aria-current="page"
+                {% endif %}
+            >
 
-            {% if value == "breakfast" %}
-                🌤️
-            {% elif value == "lunch" %}
-                ☀️
-            {% elif value == "dinner" %}
-                🌙
-            {% endif %}
+                {% if value == "breakfast" %}
+                    🌤️
+                {% elif value == "lunch" %}
+                    ☀️
+                {% elif value == "dinner" %}
+                    🌙
+                {% endif %}
 
-            {{ label }}
+                {{ label }}
 
-        </a>
+            </a>
 
         {% endfor %}
 
@@ -126,15 +132,15 @@
 
         {% if daily_menu.ordering_deadline %}
 
-        <p class="ui-muted">
+            <p class="ui-muted">
 
-            آخر موعد للطلب:
+                آخر موعد للطلب:
 
-            <strong>
-                {{ daily_menu.ordering_deadline|date:"j/m/Y g:i A" }}
-            </strong>
+                <strong>
+                    {{ daily_menu.ordering_deadline|date:"j/m/Y g:i A" }}
+                </strong>
 
-        </p>
+            </p>
 
         {% endif %}
 
@@ -163,26 +169,26 @@
 
             {% if daily_menu.is_published %}
 
-            <button
-                type="submit"
-                name="action"
-                value="unpublish"
-                class="ui-button ui-danger ui-wide"
-                onclick="return confirm('هل تريد إغلاق طلبات {{ meal_name }}؟')"
-            >
-                🔒 إغلاق طلبات {{ meal_name }}
-            </button>
+                <button
+                    type="submit"
+                    name="action"
+                    value="unpublish"
+                    class="ui-button ui-danger ui-wide"
+                    onclick="return confirm('هل تريد إغلاق طلبات {{ meal_name }}؟')"
+                >
+                    🔒 إغلاق طلبات {{ meal_name }}
+                </button>
 
             {% else %}
 
-            <button
-                type="submit"
-                name="action"
-                value="publish"
-                class="ui-button ui-primary ui-wide"
-            >
-                ✅ فتح طلبات {{ meal_name }}
-            </button>
+                <button
+                    type="submit"
+                    name="action"
+                    value="publish"
+                    class="ui-button ui-primary ui-wide"
+                >
+                    ✅ فتح طلبات {{ meal_name }}
+                </button>
 
             {% endif %}
 
@@ -240,115 +246,124 @@
 
                 {% for item in catalog_items %}
 
-                <label class="ui-item-row">
+                    <div class="ui-item-row">
 
-                    <!-- ITEM DETAILS -->
+                        <!-- ITEM DETAILS -->
 
-                    <span class="ui-item-name">
+                        <span class="ui-item-name">
 
-                        <strong class="ui-item-title">
+                            <strong class="ui-item-title">
 
-                            <!-- ITEM IMAGE -->
+                                <!-- ITEM IMAGE -->
 
-                            {% if item.icon %}
+                                {% if item.icon %}
 
-                                <img
-                                    src="{{ item.icon.url }}"
-                                    alt=""
-                                    class="ui-menu-photo"
-                                    width="76"
-                                    height="76"
-                                    loading="lazy"
-                                >
+                                    <img
+                                        src="{{ item.icon.url }}"
+                                        alt="{{ item.name }}"
+                                        class="ui-menu-photo"
+                                        width="76"
+                                        height="76"
+                                        loading="lazy"
+                                    >
 
-                            {% else %}
+                                {% else %}
 
-                                <span
-                                    class="ui-menu-photo ui-photo-placeholder"
-                                    aria-hidden="true"
-                                >
-                                    🍽️
+                                    <span
+                                        class="ui-menu-photo ui-photo-placeholder"
+                                        aria-hidden="true"
+                                    >
+                                        🍽️
+                                    </span>
+
+                                {% endif %}
+
+
+                                <!-- ITEM NAME -->
+
+                                <span>
+                                    {{ item.name }}
                                 </span>
 
-                            {% endif %}
+                            </strong>
 
 
-                            <!-- ITEM NAME -->
+                            <!-- ITEM CATEGORY -->
 
-                            <span>
-                                {{ item.name }}
-                            </span>
-
-                        </strong>
-
-
-                        <!-- ITEM CATEGORY -->
-
-                        <small>
-                            {{ item.get_category_display }}
-                        </small>
-
-                    </span>
-
-
-                    <!-- TOGGLE -->
-
-                    <span class="ui-toggle">
-
-                        <input
-                            type="checkbox"
-                            role="switch"
-                            name="item_ids"
-                            value="{{ item.pk }}"
-                            aria-label="إتاحة {{ item.name }} في {{ meal_name }}"
-                            {% if item.available_today %}
-                                checked
-                            {% endif %}
-                        >
-
-                        <span
-                            class="ui-toggle-track"
-                            aria-hidden="true"
-                        ></span>
-
-                        <span
-                            class="ui-toggle-text"
-                            aria-hidden="true"
-                        >
-
-                            <span class="ui-toggle-on">
-                                متاح
-                            </span>
-
-                            <span class="ui-toggle-off">
-                                غير متاح
-                            </span>
+                            <small>
+                                {{ item.get_category_display }}
+                            </small>
 
                         </span>
 
-                    </span>
 
-                </label>
+                        <!-- TOGGLE -->
 
+                        <label class="ui-toggle">
+
+                            <input
+                                type="checkbox"
+                                role="switch"
+                                name="item_ids"
+                                value="{{ item.pk }}"
+                                aria-label="إتاحة {{ item.name }} في {{ meal_name }}"
+                                {% if item.available_today %}
+                                    checked
+                                {% endif %}
+                            >
+
+                            <span
+                                class="ui-toggle-track"
+                                aria-hidden="true"
+                            ></span>
+
+                            <span
+                                class="ui-toggle-text"
+                                aria-hidden="true"
+                            >
+
+                                <span class="ui-toggle-on">
+                                    متاح
+                                </span>
+
+                                <span class="ui-toggle-off">
+                                    غير متاح
+                                </span>
+
+                            </span>
+
+                        </label>
+
+
+                        <!-- EDIT ITEM -->
+
+                        <a
+                            href="{% url 'kitchen:menu_item_edit' item.pk %}"
+                            class="ui-button ui-secondary ui-item-edit-button"
+                        >
+                            ✏️ تعديل
+                        </a>
+
+                    </div>
 
                 {% empty %}
 
-                <div class="ui-empty">
+                    <div class="ui-empty">
 
-                    <div class="ui-meal-icon">
-                        🍽️
+                        <div class="ui-meal-icon">
+                            🍽️
+                        </div>
+
+                        <h3>
+                            لا توجد أصناف حتى الآن
+                        </h3>
+
+                        <p>
+                            أضف أول صنف من القسم
+                            الموجود أسفل الصفحة.
+                        </p>
+
                     </div>
-
-                    <h3>
-                        لا توجد أصناف حتى الآن
-                    </h3>
-
-                    <p>
-                        أضف أول صنف من القسم
-                        الموجود أسفل الصفحة.
-                    </p>
-
-                </div>
 
                 {% endfor %}
 
@@ -441,10 +456,8 @@
 
 
             <p class="ui-muted">
-
                 سيتم إضافة الصنف للكتالوج
                 وإتاحته في قائمة {{ meal_name }}.
-
             </p>
 
 
@@ -484,9 +497,9 @@
 
                     {% for value, label in category_choices %}
 
-                    <option value="{{ value }}">
-                        {{ label }}
-                    </option>
+                        <option value="{{ value }}">
+                            {{ label }}
+                        </option>
 
                     {% endfor %}
 
@@ -643,35 +656,50 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         if (!file.type.startsWith("image/")) {
+
             alert("برجاء اختيار ملف صورة.");
 
             this.value = "";
             imagePreview.hidden = true;
+
             return;
         }
 
         const maxSize = 5 * 1024 * 1024;
 
         if (file.size > maxSize) {
-            alert("حجم الصورة يجب ألا يزيد عن 5 ميجابايت.");
+
+            alert(
+                "حجم الصورة يجب ألا يزيد عن 5 ميجابايت."
+            );
 
             this.value = "";
             imagePreview.hidden = true;
+
             return;
         }
 
         previewUrl = URL.createObjectURL(file);
 
         previewImage.src = previewUrl;
+
         imagePreview.hidden = false;
 
     });
 
-    window.addEventListener("pagehide", function () {
-        if (previewUrl) {
-            URL.revokeObjectURL(previewUrl);
+
+    window.addEventListener(
+        "pagehide",
+        function () {
+
+            if (previewUrl) {
+                URL.revokeObjectURL(
+                    previewUrl
+                );
+            }
+
         }
-    });
+    );
 
 });
 

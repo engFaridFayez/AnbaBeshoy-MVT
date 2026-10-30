@@ -460,3 +460,974 @@
         transition: none;
     }
 }
+
+
+
+
+
+
+
+/* =========================================================
+   KITCHEN ITEMS MANAGEMENT
+   إدارة أصناف المطعم
+========================================================= */
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.kitchen-items-hero,
+.kitchen-edit-hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 24px;
+
+    margin-bottom: 22px;
+    padding: 28px 30px;
+
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #581a2d 0%,
+            #34101d 100%
+        );
+
+    border: 1px solid #b48d4b;
+    border-radius: 22px;
+
+    box-shadow:
+        0 12px 30px rgba(52, 16, 29, 0.15);
+}
+
+
+.kitchen-items-hero h1,
+.kitchen-edit-hero h1 {
+    margin: 4px 0 8px;
+
+    color: #ffffff;
+
+    font-size: clamp(27px, 4vw, 38px);
+    line-height: 1.3;
+}
+
+
+.kitchen-items-hero p,
+.kitchen-edit-hero p {
+    margin: 0;
+
+    color: rgba(255, 255, 255, 0.82);
+}
+
+
+.kitchen-items-eyebrow {
+    margin: 0 !important;
+
+    color: #dfc58e !important;
+
+    font-size: 13px;
+    font-weight: 800;
+
+    letter-spacing: 0.04em;
+}
+
+
+/* =========================================================
+   ITEMS COUNT
+========================================================= */
+
+.kitchen-items-count {
+    min-width: 115px;
+
+    padding: 15px 20px;
+
+    text-align: center;
+
+    background:
+        rgba(255, 255, 255, 0.09);
+
+    border:
+        1px solid rgba(223, 197, 142, 0.45);
+
+    border-radius: 17px;
+
+    box-sizing: border-box;
+}
+
+
+.kitchen-items-count span {
+    display: block;
+
+    margin-bottom: 3px;
+
+    color:
+        rgba(255, 255, 255, 0.75);
+
+    font-size: 12px;
+}
+
+
+.kitchen-items-count strong {
+    display: block;
+
+    color: #f0d9a6;
+
+    font-size: 32px;
+    line-height: 1;
+}
+
+
+/* =========================================================
+   MAIN PANEL
+========================================================= */
+
+.kitchen-items-panel {
+    padding: 24px;
+}
+
+
+.kitchen-section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 16px;
+
+    margin-bottom: 20px;
+}
+
+
+.kitchen-section-heading h2 {
+    margin: 0 0 4px;
+
+    color: #581a2d;
+
+    font-size: 22px;
+}
+
+
+.kitchen-section-heading p {
+    margin: 0;
+}
+
+
+/* =========================================================
+   ITEMS LIST
+========================================================= */
+
+.kitchen-items-list {
+    display: grid;
+
+    gap: 12px;
+
+    width: 100%;
+}
+
+
+/* =========================================================
+   ITEM CARD
+========================================================= */
+
+.kitchen-item-card {
+    display: grid;
+
+    grid-template-columns:
+        84px
+        minmax(0, 1fr)
+        auto;
+
+    align-items: center;
+
+    gap: 18px;
+
+    width: 100%;
+
+    padding: 14px;
+
+    overflow: hidden;
+
+    background: #fffdf8;
+
+    border: 1px solid #eadfce;
+    border-radius: 17px;
+
+    box-sizing: border-box;
+
+    transition:
+        transform 0.16s ease,
+        box-shadow 0.16s ease,
+        border-color 0.16s ease;
+}
+
+
+.kitchen-item-card:hover {
+    transform: translateY(-2px);
+
+    border-color: #c7a766;
+
+    box-shadow:
+        0 9px 24px
+        rgba(52, 16, 29, 0.09);
+}
+
+
+/* =========================================================
+   FIXED ITEM IMAGE
+========================================================= */
+
+.kitchen-item-photo-wrap {
+    position: relative;
+
+    display: block;
+
+    width: 84px !important;
+    height: 84px !important;
+
+    min-width: 84px !important;
+    max-width: 84px !important;
+
+    min-height: 84px !important;
+    max-height: 84px !important;
+
+    overflow: hidden;
+
+    background: #f5ede2;
+
+    border: 1px solid #e0cfb4;
+    border-radius: 14px;
+
+    box-sizing: border-box;
+
+    flex: none !important;
+}
+
+
+/* مهم:
+   ده بيجبر أي صورة مهما كان حجمها الأصلي
+   إنها تفضل 84 × 84
+*/
+
+.kitchen-item-photo-wrap
+img.kitchen-item-photo {
+
+    display: block !important;
+
+    width: 84px !important;
+    height: 84px !important;
+
+    min-width: 84px !important;
+    max-width: 84px !important;
+
+    min-height: 84px !important;
+    max-height: 84px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    object-fit: cover !important;
+    object-position: center !important;
+
+    border: 0 !important;
+    border-radius: 13px;
+
+    box-sizing: border-box;
+
+    transform: none !important;
+}
+
+
+/* Placeholder */
+
+.kitchen-item-photo-placeholder {
+    display: flex !important;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 84px !important;
+    height: 84px !important;
+
+    min-width: 84px !important;
+    max-width: 84px !important;
+
+    min-height: 84px !important;
+    max-height: 84px !important;
+
+    margin: 0 !important;
+
+    background: #f5ede2;
+
+    color: #581a2d;
+
+    font-size: 30px;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   ITEM INFORMATION
+========================================================= */
+
+.kitchen-item-info {
+    min-width: 0;
+
+    overflow: hidden;
+}
+
+
+.kitchen-item-topline {
+    display: flex;
+
+    align-items: center;
+
+    flex-wrap: wrap;
+
+    gap: 9px;
+
+    margin-bottom: 7px;
+}
+
+
+.kitchen-item-topline h3 {
+    margin: 0;
+
+    color: #3d2029;
+
+    font-size: 19px;
+    font-weight: 800;
+
+    line-height: 1.35;
+
+    overflow-wrap: anywhere;
+}
+
+
+.kitchen-item-meta {
+    display: flex;
+
+    align-items: center;
+
+    flex-wrap: wrap;
+
+    gap: 7px;
+}
+
+
+.kitchen-item-meta span {
+    display: inline-flex;
+
+    align-items: center;
+
+    padding: 5px 9px;
+
+    color: #71625b;
+
+    background: #f6f0e7;
+
+    border-radius: 999px;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.kitchen-status {
+    display: inline-flex;
+
+    align-items: center;
+
+    width: fit-content;
+
+    padding: 5px 9px;
+
+    border-radius: 999px;
+
+    font-size: 12px;
+    font-weight: 800;
+
+    white-space: nowrap;
+}
+
+
+.kitchen-status-active {
+    color: #25633d;
+
+    background: #e9f6ee;
+}
+
+
+.kitchen-status-inactive {
+    color: #8a2937;
+
+    background: #fbecef;
+}
+
+
+/* =========================================================
+   ITEM ACTION
+========================================================= */
+
+.kitchen-item-actions {
+    display: flex;
+
+    align-items: center;
+    justify-content: flex-end;
+
+    min-width: 120px;
+}
+
+
+.kitchen-item-actions .ui-button {
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   EDIT PAGE PANEL
+========================================================= */
+
+.kitchen-edit-panel {
+    padding: 27px;
+}
+
+
+/* =========================================================
+   CURRENT PRODUCT INFO
+========================================================= */
+
+.kitchen-edit-product {
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+    margin-bottom: 27px;
+    padding-bottom: 22px;
+
+    border-bottom: 1px solid #eadfce;
+}
+
+
+.kitchen-edit-product h2 {
+    margin: 3px 0;
+
+    color: #581a2d;
+
+    font-size: 26px;
+}
+
+
+.kitchen-edit-product p {
+    margin: 0;
+}
+
+
+/* =========================================================
+   EDIT PAGE IMAGE
+========================================================= */
+
+.kitchen-edit-photo-wrap {
+    display: block;
+
+    width: 105px !important;
+    height: 105px !important;
+
+    min-width: 105px !important;
+    max-width: 105px !important;
+
+    min-height: 105px !important;
+    max-height: 105px !important;
+
+    overflow: hidden;
+
+    background: #f5ede2;
+
+    border: 2px solid #c8a968;
+    border-radius: 19px;
+
+    box-sizing: border-box;
+
+    flex: none;
+}
+
+
+.kitchen-edit-photo-wrap
+img.kitchen-edit-photo {
+
+    display: block !important;
+
+    width: 105px !important;
+    height: 105px !important;
+
+    min-width: 105px !important;
+    max-width: 105px !important;
+
+    min-height: 105px !important;
+    max-height: 105px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    object-fit: cover !important;
+    object-position: center !important;
+
+    border-radius: 16px;
+
+    box-sizing: border-box;
+}
+
+
+.kitchen-edit-photo-placeholder {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 105px;
+    height: 105px;
+
+    background: #f5ede2;
+
+    font-size: 42px;
+}
+
+
+/* =========================================================
+   EDIT FORM
+========================================================= */
+
+.kitchen-edit-form {
+    display: grid;
+
+    gap: 19px;
+}
+
+
+.kitchen-form-field {
+    margin: 0;
+}
+
+
+.kitchen-form-field label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #4a3037;
+
+    font-weight: 800;
+}
+
+
+.kitchen-form-field
+input[type="text"],
+.kitchen-form-field
+input[type="file"],
+.kitchen-form-field
+select {
+
+    width: 100%;
+
+    padding: 12px 14px;
+
+    color: #392d2b;
+
+    background: #ffffff;
+
+    border: 1px solid #dcccc0;
+    border-radius: 12px;
+
+    font: inherit;
+
+    outline: none;
+
+    box-sizing: border-box;
+}
+
+
+.kitchen-form-field
+input[type="text"]:focus,
+.kitchen-form-field
+input[type="file"]:focus,
+.kitchen-form-field
+select:focus {
+
+    border-color: #b48d4b;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(180, 141, 75, 0.13);
+}
+
+
+/* =========================================================
+   FILE FIELD
+========================================================= */
+
+.kitchen-file-field {
+    padding: 12px;
+
+    background: #faf6ef;
+
+    border: 1px dashed #d1b987;
+    border-radius: 13px;
+
+    box-sizing: border-box;
+}
+
+
+.kitchen-file-field input {
+    width: 100%;
+
+    border: 0 !important;
+
+    padding: 0 !important;
+
+    background: transparent !important;
+}
+
+
+/* =========================================================
+   ACTIVE BOX
+========================================================= */
+
+.kitchen-active-box {
+    padding: 15px;
+
+    background: #faf6ef;
+
+    border: 1px solid #e2d5c2;
+    border-radius: 14px;
+}
+
+
+.kitchen-active-toggle {
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    cursor: pointer;
+}
+
+
+.kitchen-active-toggle input {
+    width: 21px;
+    height: 21px;
+
+    flex-shrink: 0;
+
+    accent-color: #581a2d;
+
+    cursor: pointer;
+}
+
+
+.kitchen-active-copy {
+    display: grid;
+
+    gap: 3px;
+}
+
+
+.kitchen-active-copy strong {
+    color: #4b2933;
+}
+
+
+.kitchen-active-copy small {
+    color: #786963;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   ERRORS
+========================================================= */
+
+.kitchen-field-errors {
+    display: grid;
+
+    gap: 4px;
+
+    margin-top: 6px;
+}
+
+
+.kitchen-field-errors span {
+    color: #a5263b;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   EDIT ACTIONS
+========================================================= */
+
+.kitchen-edit-actions {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    flex-wrap: wrap;
+
+    margin-top: 5px;
+    padding-top: 20px;
+
+    border-top: 1px solid #eadfce;
+}
+
+
+.kitchen-save-button {
+    min-width: 180px;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.kitchen-empty {
+    padding: 45px 20px;
+
+    text-align: center;
+}
+
+
+.kitchen-empty-icon {
+    margin-bottom: 10px;
+
+    font-size: 42px;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 850px) {
+
+    .kitchen-item-card {
+        grid-template-columns:
+            84px
+            minmax(0, 1fr);
+    }
+
+    .kitchen-item-actions {
+        grid-column: 1 / -1;
+
+        min-width: 0;
+    }
+
+    .kitchen-item-actions .ui-button {
+        width: 100%;
+
+        text-align: center;
+
+        box-sizing: border-box;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .kitchen-items-hero,
+    .kitchen-edit-hero {
+        align-items: flex-start;
+
+        gap: 15px;
+
+        padding: 20px;
+
+        border-radius: 18px;
+    }
+
+
+    .kitchen-items-count {
+        min-width: 75px;
+
+        padding: 10px 12px;
+    }
+
+
+    .kitchen-items-count strong {
+        font-size: 25px;
+    }
+
+
+    .kitchen-items-panel {
+        padding: 15px;
+    }
+
+
+    .kitchen-item-card {
+        grid-template-columns:
+            68px
+            minmax(0, 1fr);
+
+        gap: 12px;
+
+        padding: 11px;
+    }
+
+
+    /* Mobile image size */
+
+    .kitchen-item-photo-wrap {
+        width: 68px !important;
+        height: 68px !important;
+
+        min-width: 68px !important;
+        max-width: 68px !important;
+
+        min-height: 68px !important;
+        max-height: 68px !important;
+    }
+
+
+    .kitchen-item-photo-wrap
+    img.kitchen-item-photo {
+
+        width: 68px !important;
+        height: 68px !important;
+
+        min-width: 68px !important;
+        max-width: 68px !important;
+
+        min-height: 68px !important;
+        max-height: 68px !important;
+    }
+
+
+    .kitchen-item-photo-placeholder {
+        width: 68px !important;
+        height: 68px !important;
+
+        min-width: 68px !important;
+        max-width: 68px !important;
+
+        min-height: 68px !important;
+        max-height: 68px !important;
+
+        font-size: 25px;
+    }
+
+
+    .kitchen-item-topline {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 5px;
+    }
+
+
+    .kitchen-item-topline h3 {
+        font-size: 17px;
+    }
+
+
+    .kitchen-item-actions {
+        grid-column: 1 / -1;
+    }
+
+
+    .kitchen-item-actions .ui-button {
+        width: 100%;
+
+        text-align: center;
+    }
+
+
+    /* Edit page */
+
+    .kitchen-edit-panel {
+        padding: 18px;
+    }
+
+
+    .kitchen-edit-product {
+        align-items: center;
+
+        gap: 14px;
+    }
+
+
+    .kitchen-edit-photo-wrap {
+        width: 80px !important;
+        height: 80px !important;
+
+        min-width: 80px !important;
+        max-width: 80px !important;
+
+        min-height: 80px !important;
+        max-height: 80px !important;
+    }
+
+
+    .kitchen-edit-photo-wrap
+    img.kitchen-edit-photo {
+
+        width: 80px !important;
+        height: 80px !important;
+
+        min-width: 80px !important;
+        max-width: 80px !important;
+
+        min-height: 80px !important;
+        max-height: 80px !important;
+    }
+
+
+    .kitchen-edit-photo-placeholder {
+        width: 80px;
+        height: 80px;
+
+        font-size: 34px;
+    }
+
+
+    .kitchen-edit-product h2 {
+        font-size: 21px;
+    }
+
+
+    .kitchen-edit-actions {
+        display: grid;
+
+        grid-template-columns: 1fr;
+
+        width: 100%;
+    }
+
+
+    .kitchen-edit-actions
+    .ui-button {
+
+        width: 100%;
+
+        text-align: center;
+
+        box-sizing: border-box;
+    }
+
+}

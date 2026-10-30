@@ -1,0 +1,780 @@
+{% extends "accounts/base.html" %}
+
+{% block title %}
+{{ page_title }} | طلبات الدير
+{% endblock %}
+
+
+{% block extra_css %}
+{{ block.super }}
+
+<style>
+
+/* =========================================
+   KITCHEN ITEM EDIT PAGE
+========================================= */
+
+.ki-edit-page {
+    width: min(100%, 820px);
+    margin: 28px auto 50px;
+    padding: 0 18px;
+    box-sizing: border-box;
+}
+
+
+/* =========================================
+   NAVIGATION
+========================================= */
+
+.ki-edit-nav {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+
+    margin-bottom: 18px;
+}
+
+.ki-edit-nav a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 42px;
+    padding: 9px 16px;
+
+    color: #581a2d;
+    background: #fffaf2;
+
+    border: 1px solid #d8c5a7;
+    border-radius: 11px;
+
+    text-decoration: none;
+    font-weight: 700;
+
+    transition: .18s ease;
+}
+
+.ki-edit-nav a:hover {
+    background: #f4eadb;
+    border-color: #b48d4b;
+}
+
+
+/* =========================================
+   HERO
+========================================= */
+
+.ki-edit-hero {
+    margin-bottom: 18px;
+    padding: 25px 28px;
+
+    color: #fff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #581a2d,
+            #34101d
+        );
+
+    border: 1px solid #b48d4b;
+    border-radius: 20px;
+
+    box-shadow:
+        0 10px 28px rgba(52, 16, 29, .12);
+}
+
+.ki-edit-hero small {
+    display: block;
+    margin-bottom: 4px;
+
+    color: #dfc58e;
+
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.ki-edit-hero h1 {
+    margin: 0 0 7px;
+
+    color: #fff;
+
+    font-size: 30px;
+}
+
+.ki-edit-hero p {
+    margin: 0;
+
+    color: rgba(255,255,255,.82);
+}
+
+
+/* =========================================
+   MAIN CARD
+========================================= */
+
+.ki-edit-card {
+    padding: 26px;
+
+    background: #fffdf8;
+
+    border: 1px solid #e5d9c7;
+    border-radius: 20px;
+
+    box-shadow:
+        0 8px 26px rgba(52, 16, 29, .07);
+}
+
+
+/* =========================================
+   CURRENT ITEM
+========================================= */
+
+.ki-edit-current {
+    display: flex;
+    align-items: center;
+
+    gap: 18px;
+
+    margin-bottom: 26px;
+    padding-bottom: 22px;
+
+    border-bottom: 1px solid #eadfce;
+}
+
+.ki-edit-current-photo {
+    width: 110px;
+    height: 110px;
+
+    min-width: 110px;
+    max-width: 110px;
+
+    min-height: 110px;
+    max-height: 110px;
+
+    overflow: hidden;
+
+    background: #f5ede2;
+
+    border: 2px solid #b48d4b;
+    border-radius: 17px;
+
+    box-sizing: border-box;
+}
+
+.ki-edit-current-photo img {
+    display: block;
+
+    width: 110px !important;
+    height: 110px !important;
+
+    max-width: 110px !important;
+    max-height: 110px !important;
+
+    object-fit: cover !important;
+    object-position: center !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.ki-edit-current-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 100%;
+
+    font-size: 40px;
+}
+
+.ki-edit-current-info {
+    min-width: 0;
+}
+
+.ki-edit-current-info small {
+    color: #8b756b;
+}
+
+.ki-edit-current-info h2 {
+    margin: 4px 0;
+
+    color: #581a2d;
+
+    font-size: 26px;
+}
+
+.ki-edit-current-info p {
+    margin: 0;
+
+    color: #71625b;
+}
+
+
+/* =========================================
+   FORM
+========================================= */
+
+.ki-edit-form {
+    display: grid;
+    gap: 20px;
+}
+
+.ki-edit-field {
+    display: grid;
+    gap: 7px;
+}
+
+.ki-edit-field > label {
+    color: #42272f;
+
+    font-weight: 800;
+    font-size: 14px;
+}
+
+.ki-edit-field input[type="text"],
+.ki-edit-field input[type="file"],
+.ki-edit-field select {
+    width: 100%;
+
+    min-height: 46px;
+
+    padding: 11px 13px;
+
+    color: #382c2a;
+
+    background: #fff;
+
+    border: 1px solid #cdbda8;
+    border-radius: 11px;
+
+    font: inherit;
+
+    outline: none;
+
+    box-sizing: border-box;
+}
+
+.ki-edit-field input[type="text"]:focus,
+.ki-edit-field select:focus,
+.ki-edit-field input[type="file"]:focus {
+    border-color: #b48d4b;
+
+    box-shadow:
+        0 0 0 3px rgba(180, 141, 75, .12);
+}
+
+
+/* =========================================
+   FILE FIELD
+========================================= */
+
+.ki-edit-file-box {
+    padding: 13px;
+
+    background: #faf6ef;
+
+    border: 1px dashed #ceb787;
+    border-radius: 12px;
+
+    overflow: hidden;
+}
+
+.ki-edit-file-box input[type="file"] {
+    padding: 5px;
+    border: 0;
+    background: transparent;
+}
+
+
+/* Django ClearableFileInput */
+
+.ki-edit-file-box a {
+    color: #581a2d;
+    font-weight: 700;
+}
+
+.ki-edit-file-box label {
+    margin-inline-start: 6px;
+
+    color: #71625b;
+}
+
+
+/* =========================================
+   ACTIVE
+========================================= */
+
+.ki-edit-active {
+    padding: 15px 17px;
+
+    background: #faf6ef;
+
+    border: 1px solid #e1d4c0;
+    border-radius: 13px;
+}
+
+.ki-edit-active label {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    cursor: pointer;
+}
+
+.ki-edit-active input[type="checkbox"] {
+    width: 22px;
+    height: 22px;
+
+    flex-shrink: 0;
+
+    accent-color: #581a2d;
+}
+
+.ki-edit-active-text {
+    display: grid;
+    gap: 2px;
+}
+
+.ki-edit-active-text strong {
+    color: #4b2933;
+}
+
+.ki-edit-active-text small {
+    color: #75665f;
+}
+
+
+/* =========================================
+   ERRORS
+========================================= */
+
+.ki-edit-errors {
+    display: grid;
+    gap: 4px;
+
+    margin-top: 4px;
+}
+
+.ki-edit-errors span {
+    color: #a42b3d;
+
+    font-size: 13px;
+}
+
+.ki-edit-general-error {
+    padding: 12px 14px;
+
+    color: #8a2937;
+
+    background: #fbecef;
+
+    border: 1px solid #e2b7bf;
+    border-radius: 11px;
+}
+
+
+/* =========================================
+   BUTTONS
+========================================= */
+
+.ki-edit-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    flex-wrap: wrap;
+
+    margin-top: 4px;
+    padding-top: 20px;
+
+    border-top: 1px solid #eadfce;
+}
+
+.ki-edit-save,
+.ki-edit-cancel {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 44px;
+
+    padding: 10px 20px;
+
+    border-radius: 11px;
+
+    font: inherit;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    text-decoration: none;
+
+    box-sizing: border-box;
+}
+
+.ki-edit-save {
+    min-width: 190px;
+
+    color: #fff;
+
+    background: #581a2d;
+
+    border: 1px solid #581a2d;
+}
+
+.ki-edit-save:hover {
+    background: #34101d;
+}
+
+.ki-edit-cancel {
+    color: #581a2d;
+
+    background: #fffaf2;
+
+    border: 1px solid #d7c5a8;
+}
+
+.ki-edit-cancel:hover {
+    border-color: #b48d4b;
+    background: #f5ebdc;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+    .ki-edit-page {
+        margin-top: 18px;
+        padding: 0 12px;
+    }
+
+    .ki-edit-hero {
+        padding: 20px;
+    }
+
+    .ki-edit-hero h1 {
+        font-size: 25px;
+    }
+
+    .ki-edit-card {
+        padding: 17px;
+    }
+
+    .ki-edit-current-photo {
+        width: 82px;
+        height: 82px;
+
+        min-width: 82px;
+        max-width: 82px;
+
+        min-height: 82px;
+        max-height: 82px;
+    }
+
+    .ki-edit-current-photo img {
+        width: 82px !important;
+        height: 82px !important;
+
+        max-width: 82px !important;
+        max-height: 82px !important;
+    }
+
+    .ki-edit-current-info h2 {
+        font-size: 21px;
+    }
+
+    .ki-edit-actions {
+        display: grid;
+
+        grid-template-columns: 1fr;
+    }
+
+    .ki-edit-save,
+    .ki-edit-cancel {
+        width: 100%;
+    }
+
+}
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="ki-edit-page">
+
+    <!-- =====================================
+         NAVIGATION
+    ====================================== -->
+
+    <div class="ki-edit-nav">
+
+        <a href="{% url 'kitchen:menu_items_manage' %}">
+            ← إدارة الأصناف
+        </a>
+
+        <a href="{% url 'kitchen:manage_menu' %}">
+            🍽️ تجهيز الوجبات
+        </a>
+
+    </div>
+
+
+    <!-- =====================================
+         HEADER
+    ====================================== -->
+
+    <header class="ki-edit-hero">
+
+        <small>
+            إدارة المطعم
+        </small>
+
+        <h1>
+            ✏️ {{ page_title }}
+        </h1>
+
+        <p>
+            عدّل بيانات الصنف ثم اضغط حفظ التعديلات.
+        </p>
+
+    </header>
+
+
+    <!-- =====================================
+         MAIN CARD
+    ====================================== -->
+
+    <section class="ki-edit-card">
+
+
+        <!-- CURRENT ITEM -->
+
+        <div class="ki-edit-current">
+
+            <div class="ki-edit-current-photo">
+
+                {% if item.icon %}
+
+                    <img
+                        src="{{ item.icon.url }}"
+                        alt="{{ item.name }}"
+                    >
+
+                {% else %}
+
+                    <div class="ki-edit-current-placeholder">
+                        🍽️
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="ki-edit-current-info">
+
+                <small>
+                    تعديل الصنف
+                </small>
+
+                <h2>
+                    {{ item.name }}
+                </h2>
+
+                <p>
+                    {{ item.get_category_display }}
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================
+             FORM
+        ====================================== -->
+
+        <form
+            method="post"
+            enctype="multipart/form-data"
+            class="ki-edit-form"
+        >
+
+            {% csrf_token %}
+
+
+            <!-- GENERAL ERRORS -->
+
+            {% if form.non_field_errors %}
+
+                <div class="ki-edit-general-error">
+
+                    {% for error in form.non_field_errors %}
+
+                        <div>
+                            {{ error }}
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
+
+
+            <!-- NAME -->
+
+            <div class="ki-edit-field">
+
+                <label for="{{ form.name.id_for_label }}">
+                    اسم الصنف
+                </label>
+
+                {{ form.name }}
+
+                {% if form.name.errors %}
+
+                    <div class="ki-edit-errors">
+
+                        {% for error in form.name.errors %}
+
+                            <span>
+                                {{ error }}
+                            </span>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- CATEGORY -->
+
+            <div class="ki-edit-field">
+
+                <label for="{{ form.category.id_for_label }}">
+                    القسم
+                </label>
+
+                {{ form.category }}
+
+                {% if form.category.errors %}
+
+                    <div class="ki-edit-errors">
+
+                        {% for error in form.category.errors %}
+
+                            <span>
+                                {{ error }}
+                            </span>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- IMAGE -->
+
+            <div class="ki-edit-field">
+
+                <label for="{{ form.icon.id_for_label }}">
+                    صورة الصنف
+                </label>
+
+                <div class="ki-edit-file-box">
+                    {{ form.icon }}
+                </div>
+
+                <small>
+                    اختر صورة جديدة فقط إذا كنت تريد تغيير الصورة الحالية.
+                </small>
+
+                {% if form.icon.errors %}
+
+                    <div class="ki-edit-errors">
+
+                        {% for error in form.icon.errors %}
+
+                            <span>
+                                {{ error }}
+                            </span>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- ACTIVE -->
+
+            <div class="ki-edit-active">
+
+                <label>
+
+                    {{ form.is_active }}
+
+                    <span class="ki-edit-active-text">
+
+                        <strong>
+                            الصنف نشط
+                        </strong>
+
+                        <small>
+                            عند إيقافه لن يظهر ضمن الأصناف الجديدة المتاحة للاختيار.
+                        </small>
+
+                    </span>
+
+                </label>
+
+            </div>
+
+
+            <!-- ACTIONS -->
+
+            <div class="ki-edit-actions">
+
+                <button
+                    type="submit"
+                    class="ki-edit-save"
+                >
+                    💾 حفظ التعديلات
+                </button>
+
+                <a
+                    href="{% url 'kitchen:menu_items_manage' %}"
+                    class="ki-edit-cancel"
+                >
+                    إلغاء
+                </a>
+
+            </div>
+
+        </form>
+
+    </section>
+
+</div>
+
+{% endblock %}

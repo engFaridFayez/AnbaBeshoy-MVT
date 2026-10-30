@@ -166,34 +166,51 @@
      Products
 ===================================== -->
 
+<!-- =====================================
+     Products
+===================================== -->
+
 <div class="st-results-heading">
   <h2>المنتجات</h2>
 
-  <span> {{ page_obj.paginator.count }} منتج </span>
+  <span>{{ page_obj.paginator.count }} منتج</span>
 </div>
 
 <div class="st-product-grid">
-  {% for card in cards %} {% include "store/includes/product_card.html" %} {%
-  empty %}
 
-  <div class="st-panel st-empty">
-    <h2>لا توجد منتجات مطابقة</h2>
+  {% for card in cards %}
 
-    <p>غيّر البحث أو القسم. يمكن للمسؤول إضافة المنتجات من الأعلى.</p>
-  </div>
+    {% include "store/includes/product_card.html" %}
+
+  {% empty %}
+
+    <div class="st-panel st-empty">
+      <h2>لا توجد منتجات مطابقة</h2>
+
+      <p>
+        غيّر البحث أو القسم.
+        يمكن للمسؤول إضافة المنتجات من الأعلى.
+      </p>
+    </div>
 
   {% endfor %}
+
 </div>
 
 <!-- =====================================
      Pagination
 ===================================== -->
 
-{% include "store/includes/pagination.html" %} {% if not can_operate %}
+{% include "store/includes/pagination.html" %}
+
+{% if not can_operate %}
 
 <p class="st-note">
-  هذه الشاشة لعرض الأصناف والرصيد. الاستلام والصرف من خلال مسؤول المخزن. طلب
-  الاحتياجات إلكترونيًا لم يُفعّل بعد.
+  هذه الشاشة لعرض الأصناف والرصيد.
+  الاستلام والصرف من خلال مسؤول المخزن.
+  طلب الاحتياجات إلكترونيًا لم يُفعّل بعد.
 </p>
 
-{% endif %} {% endblock %}
+{% endif %}
+
+{% endblock %}

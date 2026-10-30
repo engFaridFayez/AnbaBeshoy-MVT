@@ -25,5 +25,16 @@ urlpatterns = [
         views.manage_daily_menu,
         name="manage_menu",
     ),
+    path(
+    "items/",
+    views.menu_items_manage,
+    name="menu_items_manage",
+),
+
+path(
+    "items/<int:pk>/edit/",
+    views.menu_item_edit,
+    name="menu_item_edit",
+),
 
 ]

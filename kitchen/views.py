@@ -11,7 +11,7 @@ from django.core.exceptions import (
 from django.db import transaction
 from django.db.models import Count, Sum, Q
 from django.http import Http404
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.utils import timezone
 from django.views.decorators.http import (
     require_GET,
@@ -19,6 +19,7 @@ from django.views.decorators.http import (
 )
 from django import forms
 from accounts.models import User
+from kitchen.forms import MenuItemForm
 
 from .models import (
     DailyMenu,
@@ -38,6 +39,62 @@ MEAL_TYPES = {
     "lunch": "غداء",
     "dinner": "عشاء",
 }
+
+@login_required
+def menu_items_manage(request):
+    items = MenuItem.objects.all().order_by(
+        "category",
+        "name",
+    )
+
+    return render(
+        request,
+        "kitchen/menu_items_manage.html",
+        {
+            "items": items,
+        },
+    )
+
+@login_required
+def menu_item_edit(request, pk):
+    item = get_object_or_404(
+        MenuItem,
+        pk=pk,
+    )
+
+    if request.method == "POST":
+        form = MenuItemForm(
+            request.POST,
+            request.FILES,
+            instance=item,
+        )
+
+        if form.is_valid():
+            form.save()
+
+            messages.success(
+                request,
+                "تم تعديل الصنف بنجاح.",
+            )
+
+            return redirect(
+                "kitchen:menu_items_manage"
+            )
+
+    else:
+        form = MenuItemForm(
+            instance=item,
+        )
+
+    return render(
+        request,
+        "kitchen/menu_item_form.html",
+        {
+            "form": form,
+            "item": item,
+            "page_title": "تعديل الصنف",
+        },
+    )
 
 
 def ordering_is_open(menu):
